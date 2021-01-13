@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE mapper
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="project.rasp.mapper.UserMapper">
+       <select id="getUserById" resultType="User" parameterType="int">
+	    select
+	      id, name, password
+	    from
+	      users
+	    where
+	      id = #{id}
+	  </select>
+	  
+
+	  <!-- 테스트로 만들어봄 -->
+	   <select id="getInformation" resultType="User">
+	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
+	   select * from users where id = 1;
+	  </select>
+
+	  
+	  
+	   <insert id="add" parameterType="User" keyProperty="id">
+	   <!-- keyProperty="id"는 DB컬럼명임 -->
+	    insert into
+	    users (name, password)
+	    values (#{name}, #{password})
+	  </insert>
+	  
+	   <update id="update" parameterType="User">
+	    update
+	      users
+	    set
+	      name = #{name},
+	      password = #{password}
+	    where
+	      id = #{id}
+	  </update>
+  </mapper>
+

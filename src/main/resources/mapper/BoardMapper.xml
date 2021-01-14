@@ -11,13 +11,14 @@
 	  
 	   <select id="getContentlist" resultType="Board">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
-	   select * from board
+	   select * from board order by board.board_id desc
 	  </select>
 	  
 	  
 	  <select id="Comment" resultType="Comment" parameterType="int">
 	   <!-- 댓글 조회 -->
-	 select * from comment where board_id = #{board_id}
+	 select * from comment 
+	 where board_id = #{board_id} order by comment.comment_number desc 
 	    </select>
 
 
@@ -39,5 +40,17 @@
 	VALUES ( #{board_id}, 'test',  #{comment_content}, now() )
 	    </insert>
 	    
+	    
+	    
+	<delete id="DeleteContent" parameterType="int" > 
+	delete from board where board_id = #{board_id} 
+	</delete>
+	
+	
+	<update id="UpdateContent" parameterType="map" > 
+	update board set subject = #{subject}, content = #{content}
+	where board_id = #{board_id}; 
+	</update>
+	
   </mapper>
 

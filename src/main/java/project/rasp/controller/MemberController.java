@@ -10,17 +10,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,18 +37,20 @@ import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
 import project.rasp.model.User;
+import project.rasp.service.UserService;
 
 /**
  * Handles requests for the application home page.
  */
+@ComponentScan
 @Controller
-public class LoginController {
-
-@Autowired
-	UserMapper usermapper;
+public class MemberController {
 	
+	@Qualifier("userServiceimpl")
+	@Autowired
+	 private UserService userService;
 
-	
+
 
 	@RequestMapping(value = "/loginfail", method = RequestMethod.GET)
 	public String loginfail(HttpServletRequest request) {
@@ -72,30 +80,41 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/LoginCheck", method = RequestMethod.POST)
-	public String loginSuccess(HttpServletRequest request, HttpSession session) {
+	public String LoginCheck(HttpServletRequest request, HttpSession session, @ModelAttribute User user) {
+
+		/*스프링 프레임워크 로그인 참고 해볼곳
+		 * 
+		 * https://m.blog.naver.com/PostView.nhn?blogId=heartflow89&logNo=221108884368&proxyReferer=https:%2F%2Fwww.google.com%2F
+		 * 검색은 "스프링 프레임워크 로그인" 이라고 해야됨 안그러면 계속
+		 * 스프링 부트로 해서  나옴  
+		 * 
+		 * */
+
+		try {
+			System.out.println("모델 attrubute 로그인 값 : "+ user);
+		//	System.out.println("usermapper 값 : " + usermapper.UserLoginCheck(user));
+			boolean result = userService.UserLoginCheck(user, session);
+			System.out.println("로그인 체크 컨트롤러 : " + result);
+
+			// if (result) {
+			System.out.println("로그인 호출");
 		
-		String userID = request.getParameter("userID");
-		String userPassword = request.getParameter("userPassword");
-		Boolean result  = usermapper.UserLoginCheck();
-		
-		if (result) {
-		System.out.println("로그인 성공");
-		
-	
-		System.out.println("로그인 성공 여부 : " + result);
-				
-		System.out.println("입력받은 아이디 : " + userID);
-		System.out.println("입력받은 비밀번호 : " + userPassword);
-		  System.out.println("접속요청 아이피 : " +  request.getRemoteAddr());
-		  return "redirect:board"; // 로그인 성공시 보드로
-		}else {
-			 System.out.println("!!!!!!!!!!!!!!! 로그인 실패 사용자 아이피 : " + request.getRemoteAddr()); 
-			 return "login";
+
+		} catch (Exception e) {
+			System.out.println("로그인 예외 발생 : " + e);
+			 System.out.println("!!!!!!!!!!!!!!! 로그인 실패 사용자 아이피 : " + request.getRemoteAddr());
 		}
+
+		  System.out.println("접속요청 아이피 : " +  request.getRemoteAddr());
+		 // return "redirect:board"; // 로그인 성공시 보드로
+		/// }else {
+			 
+			 return "login";
+		// }
 		
 		
 
+	 }
+
+	
 	}
-
-
-}

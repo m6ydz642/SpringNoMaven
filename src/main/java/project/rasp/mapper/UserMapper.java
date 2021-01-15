@@ -17,6 +17,6 @@ public interface UserMapper {
 	 * int id);
 	 */
 	
-	public Boolean UserLoginCheck();
+	public boolean UserLoginCheck(User user);
 
 }

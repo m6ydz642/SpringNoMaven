@@ -1,7 +1,7 @@
 
 package project.rasp.mapper;
 
-import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class Userimpl implements UserMapper {
 	private SqlSession sqlsession;
 
 	@Override
-	public boolean UserLoginCheck(User user) {
+	public boolean UserLoginCheck(User user, HttpSession session) {
 		String name = sqlsession.selectOne("project.rasp.mapper.UserMapper.UserLoginCheck", user);
 		System.out.println("sql UserMapper 세션 로그인 체크 내용 : " + name);
 		return (name == null) ? false : true;

@@ -1,13 +1,13 @@
-package project.rasp.mapper;
+package project.rasp.service;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
+
+import javax.servlet.http.HttpSession;
 
 import project.rasp.model.User;
 
 
 
-public interface UserMapper {
+public interface UserService {
 
 	/*
 	 * public User getUserById(int id); public int add(User user); public int
@@ -17,6 +17,6 @@ public interface UserMapper {
 	 * int id);
 	 */
 	
-	public boolean UserLoginCheck(User user);
+	public boolean UserLoginCheck(User user, HttpSession session);
 
 }

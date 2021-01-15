@@ -1,7 +1,6 @@
 package project.rasp.mapper;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpSession;
 
 import project.rasp.model.User;
 
@@ -17,6 +16,6 @@ public interface UserMapper {
 	 * int id);
 	 */
 	
-	public boolean UserLoginCheck(User user);
+	public boolean UserLoginCheck(User user, HttpSession session);
 
 }

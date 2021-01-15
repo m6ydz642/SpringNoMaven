@@ -37,6 +37,9 @@
 	    <beans:property name="username" value="joon"/>
 	    <beans:property name="password" value="1234"/>
     </beans:bean>  
+	
+
+
 	  
 	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 	  <beans:property name="dataSource" ref="dataSource"/>
@@ -73,4 +76,17 @@
      <beans:property name="basePackage" value="project.rasp.mapper" />
    </beans:bean>
 	
+<!-- 	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+  <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+ </beans:bean>
+  -->
+ 	
+	<beans:bean id="userimpl" class="project.rasp.mapper.Userimpl" >
+ </beans:bean>
+ 
+ <!-- <beans:bean id="UserServiceimpl" class="project.rasp.service.UserServiceimpl"/> -->
+ 
+	<context:component-scan base-package="project.rasp.controller"></context:component-scan>
+
+    
 </beans:beans>

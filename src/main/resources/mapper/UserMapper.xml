@@ -14,7 +14,7 @@
 	  
 
 	  <!-- 테스트로 만들어봄 -->
-	   <select id="UserLoginCheck" resultType="Boolean">
+	   <select id="UserLoginCheck" resultType="User" parameterType="User">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
 	   select * from customer where userid = #{userid} 
 	   and userpassword = #{userpassword};

@@ -31,20 +31,20 @@
 
    <!-- 로그인 정보를 숨기면서 전송post -->
 
-   <form method="post" action="loginAction.jsp">
+   <form method="post" action="LoginCheck">
 
     <h3 style="text-align: center;"> 로그인화면 </h3>
 
     <div class="form-group">
 
-     <input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
+     <input type="text" class="form-control" placeholder="아이디" name="userid" maxlength="20">
 
     </div>
 
       
     <div class="form-group">
 
-     <input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20">
+     <input type="password" class="form-control" placeholder="비밀번호" name="userpassword" maxlength="20">
 
     </div>
 

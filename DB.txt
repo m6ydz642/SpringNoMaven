@@ -5,6 +5,7 @@
 CREATE TABLE customer( 
    customer_id INT NOT NULL AUTO_increment primary key , 
    userid VARCHAR(50) unique,
+   userpassword VARCHAR(50) NOT NULL,
    username VARCHAR(50) NOT NULL, 
    join_date timestamp
 );
@@ -36,6 +37,7 @@ alter table comment add FOREIGN KEY(board_id) REFERENCES board ( board_id ) ON d
 
 INSERT INTO BOARD (board_id, username, subject, content, write_date )VALUES (2, 'name',  'subject', 'content',now() );
 INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (3, '테스트 유저',  '3번글 댓글내용 입니다', now() );
+INSERT INTO customer (userid,userpassword,username,join_date) values ('user','1234','name' , now());
 // INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (4, '테스트 유저',  '4번글 댓글내용 입니다', now() );
 // INSERT INTO BOARD (username, subject, content, write_date )VALUES ('준영',  '보노보노100마리', '냉무',now() );
 

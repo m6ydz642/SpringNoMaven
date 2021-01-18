@@ -1,16 +1,42 @@
 package project.rasp.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import lombok.val;
+import project.rasp.mapper.BoardMapper;
+import project.rasp.mapper.UserMapper;
+import project.rasp.model.Board;
+import project.rasp.model.Comment;
 import project.rasp.model.User;
 import project.rasp.service.UserService;
 
@@ -41,21 +67,31 @@ public class MemberController {
 	
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login(HttpServletRequest request) {
+	public String login(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		System.out.println("로그인 호출");
 		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		System.out.println("로그인 요청 현재 세션 값 : " + session.getAttribute("logininfo"));
+		Object value = session.getAttribute("logininfo"); 
+		System.out.println("value 값 : " + value);
 		
-		/*
-		 * System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-		 * request.getRemoteAddr()); System.out.println("!!!!!!!!!!!!!!! 사유 : 로그인 실패");
-		 */
+		if (value != null) {
+			
+			  out.println("<script language='javascript'> ");
+			  out.println("alert('이미 로그인 되어있습니다 ^^;');"); //
+			  out.println("location.href = 'board' </script>"); 
+			  out.flush();
+			  response.flushBuffer();
+		}
 				
 		return "login"; // login.jsp로 이동
 
 	}
 	
 	@RequestMapping(value = "/LoginCheck", method = RequestMethod.POST)
-	public String LoginCheck(HttpServletRequest request, HttpSession session, @ModelAttribute User user) {
+	public String LoginCheck(Model model, HttpServletRequest request,HttpServletResponse response, HttpSession session, @ModelAttribute User user) throws IOException {
 
 		/*스프링 프레임워크 로그인 참고 해볼곳
 		 * 
@@ -64,25 +100,51 @@ public class MemberController {
 		 * 스프링 부트로 해서  나옴  
 		 * 
 		 * */
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
 
 		try {
 			System.out.println("모델 attrubute 로그인 값 : "+ user);
 		//	System.out.println("usermapper 값 : " + usermapper.UserLoginCheck(user));
 			boolean result = userService.UserLoginCheck(user, session);
 			System.out.println("로그인 체크 컨트롤러 : " + result);
-
-			// if (result) {
 			System.out.println("로그인 호출");
+			if (result) {
 		
-
+				System.out.println("로그인 성공!!!!!!!!!");
+				System.out.println("로그인 유저 이름 : " + user.getUserid()); 
+				
+				session.setAttribute("logininfo", user); // 로그인 정보 세션 등록
+				// 이거 비밀번호 까지 같이 가서객체타입으로 안쓰려고 했는데 생각해보니  
+				// jsp에 이미 좀 키값 사용해놓은게 좀 많음 ㅋㅋ 
+				
+				session.setAttribute("loginid", user.getUserid()); // 로그인 아이디 등록
+				
+				System.out.println("로그인 세션등록 성공");
+				System.out.println("세션 값 : " + session.getAttribute("logininfo"));
+				
+				return "redirect:board";
+			}else {
+				System.out.println("멤버 컨트롤러에서 로그인 실패 처리 : " + result);
+				
+	
+				  out.println("<script language='javascript'> ");
+				  out.println("alert('아이디 혹은 비밀번호가 틀렸습니다 ^^;');"); //
+				  out.println("location.href=login;"); out.println("</script>"); 
+				  out.flush();
+				  response.flushBuffer();
+				  System.out.println("!!!!!!!!!!!!!!! 로그인 실패 사용자 감지 아이피 : " +
+				  request.getRemoteAddr());
+				  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
+				  
+			}
 		} catch (Exception e) {
 			System.out.println("로그인 예외 발생 : " + e);
-			 System.out.println("!!!!!!!!!!!!!!! 로그인 실패 사용자 아이피 : " + request.getRemoteAddr());
+			 System.out.println("!!!!!!!!!!!!!!! 로그인 예외발생 사용자 아이피 : " + request.getRemoteAddr());
 		}
 
 		  System.out.println("접속요청 아이피 : " +  request.getRemoteAddr());
-		 // return "redirect:board"; // 로그인 성공시 보드로
-		/// }else {
 			 
 			 return "login";
 		// }
@@ -90,6 +152,31 @@ public class MemberController {
 		
 
 	 }
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		System.out.println("로그아웃 호출");
+		
+		/*
+		 * request.setCharacterEncoding("UTF-8");
+		 * response.setContentType("text/html; charset=UTF-8"); PrintWriter out =
+		 * response.getWriter(); System.out.println("로그아웃 요청 현재 세션 값 : " +
+		 * session.getAttribute("logininfo")); Object value =
+		 * session.getAttribute("logininfo"); System.out.println("value 값 : " + value);
+		 * 
+		 * value = null;
+		 * 
+		 * if (value == null) {
+		 * 
+		 * out.println("<script language='javascript'> ");
+		 * out.println("alert('로그아웃 되었습니다 ^^;');"); //
+		 * out.println("location.href = 'board' </script>");
+		 * 
+		 * out.flush(); response.flushBuffer(); }
+		 */
+		session.invalidate(); // 세션 제거
+				
+		return "redirect:board"; // login.jsp로 이동
 
+	}
 	
 	}

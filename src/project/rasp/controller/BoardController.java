@@ -1,30 +1,39 @@
 package project.rasp.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import lombok.val;
+import project.rasp.Customfunction;
 import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
-
+import project.rasp.model.User;
 
 /**
  * Handles requests for the application home page.
@@ -32,19 +41,18 @@ import project.rasp.model.Comment;
 @Controller
 public class BoardController {
 
-	@Autowired
+	 @Autowired
 	BoardMapper boardmapper;
 	private Board board;
 
-	/*
-	 * @Autowired
-	 * 
-	 * @Qualifier("Comment")
-	 */
+
 	BoardMapper commemtmapper;
 
 	UserMapper usermapper;
 	private Comment comment;
+	
+	private Customfunction customfunction = new Customfunction(); 
+	// Customfunction customfunction; // 클래스에서 빈 주입 해놓음
 
 	Board a = new Board(); // 일단 스프링 의존주입 같은거 몰라서 static으로 함
 	// 다른 함수에서 다시 객체생성하는 순간 주소가 달라서 초기화 됨
@@ -55,6 +63,7 @@ public class BoardController {
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
+	
 	/*********************************************************/
 	public ModelAndView AnyRedirect(String url) {
 		// 주소 안보이게 하는 리다이렉트 함수
@@ -86,12 +95,19 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boardwrite", method = RequestMethod.GET)
-	public String BoardWrite() {
+	public String BoardWrite(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws IOException {
 		System.out.println("게시판 글작성 호출");
 
-		// 조만간 세션 검사해서 아이디 확인여부 넣어야 됨
+	
+		// 객체 주입해서 스프링 방식으로 진행 하려고 했는데
+		// 잘 안되서 일단 객체생성으로 함 ㅠㅠ
+		String value = customfunction.MemberCheck(session, request, response);
 
-		return "boardwrite";
+			// 그냥 인터페이스로 오버로딩 할까...............?
+		
+		System.out.println("보드 글작성 value값  확인 : " + value);
+		// return "boardwrite";
+		return value;
 
 	}
 
@@ -157,7 +173,7 @@ public class BoardController {
 	@RequestMapping(value = "/wow", method = RequestMethod.GET) // post로 바꿔야 됨
 	public String wow(HttpServletRequest request) {
 		System.out.println("wow  페이지 호출");
-		logger.debug("시발");
+		logger.debug("와우로거 테스트");
 		String Modify_Number_Write = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
 		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 와우로거");
 		System.out.println("wow 페이지할 글 번호 : " + Modify_Number_Write);
@@ -169,9 +185,10 @@ public class BoardController {
 
 	}
 
-	/*********************************************************/
+	/**
+	 * @throws IOException *******************************************************/
 	@RequestMapping(value = "/boardmodifywrite", method = RequestMethod.GET) // post로 바꿔야 됨
-	public String BoardModifyWrite(HttpServletRequest request, Model model) {
+	public String BoardModifyWrite(HttpServletRequest request, Model model, HttpSession session, HttpServletResponse response) throws IOException {
 		System.out.println("게시판 수정할 페이지 호출");
 		// String Modify_Number_Write = request.getParameter("board_id"); // content에
 		// input태그에 name값을 계속씀
@@ -182,12 +199,36 @@ public class BoardController {
 		// int board_num = Integer.parseInt(request.getParameter("board_id"));
 		//
 
+		String DBcheckValue = customfunction.MemberDB_Check(session, request, response);
+		System.out.println("DBcheckValue 값 : " + DBcheckValue);
+		
 		int board_num = a.getBoard_id();
 		System.out.println("a.getBoard_id = " + a.getBoard_id());
-		Board boardDb = boardmapper.Content(board_num); // 객체타입으로 넣음
+		
+		Map map = new HashMap();
+		map.put("board_id", board_num); // 글번호 
+		map.put("userid", session.getAttribute("loginid")); 
+		// 현재 세션에서 존재하는 아이디
+		// 자기 아이디 아닌상태로 수정 요청하면 DB조회시 결과가 달라서 조회 안됨
+		System.out.println("boardmodifywrite map key (board_num) : " + board_num);
+		System.out.println("boardmodifywrite map key (loginid) : " + session.getAttribute("loginid"));
+		
+		boolean ModifiyResult = false;
+		boardmapper.UpdateValidationContent(map); // 수정 요청시 검증
+		
+		if (ModifiyResult == false) {
+			customfunction.UserValidation(session, request, response, ModifiyResult);
+			System.out.println("글 수정 실패 : " + ModifiyResult);
+			return "login";
+		}else {
+		
+		System.out.println("글 수정 쿼리 결과 " + ModifiyResult);
+	
+			Board boardDb = boardmapper.Content(board_num); // 객체타입으로 넣음
 
-		model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
-
+			model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
+		}
+	
 		return "boardmodifywrite"; // 해당 jsp로 이동
 
 	}
@@ -257,6 +298,13 @@ public class BoardController {
 
 	}
 
+	@Override
+	public String toString() {
+		System.out.println("재정의");
+		String test = "재정의?";
+		return test;
+	}
+	
 	@RequestMapping(value = "/writecomplete", method = RequestMethod.POST)
 	public String writecomplete(HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
@@ -264,15 +312,18 @@ public class BoardController {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 
-		String writer = (String) session.getAttribute("writer");
-		// 사용자 세션 아직 null임 로그인 기능 안해서
+		// String writer = (String) session.getAttribute("writer");
+		// String writer =  (String) session.getAttribute("logininfo"); // 로그인 정보 확인
+		
 		String subject = request.getParameter("subject");
 
 		String content = request.getParameter("content");
 
+		 String writer = request.getParameter("writer");
+		System.out.println("작성자 파라메터로 한번 받아와 봄 : " + writer);
 		// 글수정
 		Map map = new HashMap();
-		// map.put("writer", writer); // 작성자 아직 널 값임
+		map.put("userid", writer.trim()); // 공백제거 아...짱나네 ㅋㅋㅋㅋㅋㅋㅋㅋ
 		map.put("subject", subject);
 		map.put("content", content);
 		boardmapper.WriteContent(map);
@@ -285,19 +336,19 @@ public class BoardController {
 
 		PrintWriter out = response.getWriter();
 
-		/*
-		 * if (writer == null) { // 로그인 안한 사용자가 접근시
-		 * 
-		 * out.println("<script language='javascript'> ");
-		 * out.println("alert('로그인부터 하세요 ^^;');"); //
-		 * out.println("location.href=login;"); out.println("</script>"); out.flush();
-		 * response.flushBuffer();
-		 * System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-		 * request.getRemoteAddr());
-		 * System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
-		 * 
-		 * return "request"; // alert후 로그인창으로 보내버릴거임 }
-		 */
+		
+		  if (writer == null) { // 로그인 안한 사용자가 접근시
+		  
+		  out.println("<script language='javascript'> ");
+		  out.println("alert('로그인부터 하세요 ^^;');"); //
+		  out.println("location.href=login;"); out.println("</script>"); out.flush();
+		  response.flushBuffer();
+		  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
+		  request.getRemoteAddr());
+		  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
+		 
+		 return "login"; // alert후 로그인창으로 보내버릴거임
+		  }
 
 		// System.out.println("글쓰기 옵션 " + boardmapper.WriteContent(board));
 		// 이거 띄웠는데 계속 500 error뜨고 있었네 ㅡㅡ;
@@ -319,9 +370,9 @@ public class BoardController {
 		String commentcontent = request.getParameter("commentcontent");
 		System.out.println("댓글 작성 내용 : " + commentcontent);
 
-		// String username = request.getParameter("commentcontent");
-
-		// map.put("writer", writer); // 아직 널 값임
+		String userid = request.getParameter("comment_userid");
+		System.out.println("댓글 전달받은 userid : " + userid);
+		map.put("userid", userid); // 아직 널 값임
 		map.put("comment_content", commentcontent);
 		map.put("board_id", board_num);
 
@@ -332,54 +383,7 @@ public class BoardController {
 		return "redirect:boardcontent?board_id=" + board_num;
 
 	}
-	/*
-	 * @RequestMapping(value = "/loginfail", method = RequestMethod.GET) public
-	 * String loginfail(HttpServletRequest request) {
-	 * System.out.println("로그인 실패 호출");
-	 * 
-	 * 
-	 * System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-	 * request.getRemoteAddr()); System.out.println("!!!!!!!!!!!!!!! 사유 : 로그인 실패");
-	 * return "loginerror";
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @RequestMapping(value = "/login", method = RequestMethod.GET) public String
-	 * login(HttpServletRequest request) { System.out.println("로그인 호출");
-	 * 
-	 * 
-	 * 
-	 * System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-	 * request.getRemoteAddr()); System.out.println("!!!!!!!!!!!!!!! 사유 : 로그인 실패");
-	 * 
-	 * 
-	 * 
-	 * 
-	 * return "login";
-	 * 
-	 * }
-	 * 
-	 * @RequestMapping(value = "/LoginCheck", method = RequestMethod.POST) public
-	 * String loginSuccess(HttpServletRequest request, HttpSession session) {
-	 * 
-	 * String userID = request.getParameter("userID"); String userPassword =
-	 * request.getParameter("userPassword");
-	 * 
-	 * System.out.println("로그인 성공");
-	 * 
-	 * Boolean result = usermapper.UserLogin(); System.out.println("로그인 성공 여부 : " +
-	 * result);
-	 * 
-	 * System.out.println("입력받은 아이디 : " + userID); System.out.println("입력받은 비밀번호 : "
-	 * + userPassword); System.out.println("접속요청 아이피 : " + request.getRemoteAddr());
-	 * 
-	 * System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-	 * request.getRemoteAddr()); System.out.println("!!!!!!!!!!!!!!! 사유 : 로그인 실패");
-	 * 
-	 * return "redirect:board"; // 로그인 성공시 보드로
-	 * 
-	 * }
-	 */
+
+	
 
 }

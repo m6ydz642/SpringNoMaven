@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
+import org.apache.ibatis.binding.BindingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class BoardController {
 	
 	private Customfunction customfunction = new Customfunction(); 
 	// Customfunction customfunction; // 클래스에서 빈 주입 해놓음
+	// 빈주입 할줄 몰라서 객체생성해서 씀 ^^ㅋㅋㅋㅋㅋㅋㅋ
 
 	Board a = new Board(); // 일단 스프링 의존주입 같은거 몰라서 static으로 함
 	// 다른 함수에서 다시 객체생성하는 순간 주소가 달라서 초기화 됨
@@ -90,7 +92,7 @@ public class BoardController {
 		list = boardmapper.getContentlist(board);
 		model.addAttribute("contentlist", list); // 값 넣음
 		System.out.println("들어간 list 갯수 : " + list.size());
-
+		// System.out.println("list 날짜 : " + board.getDate());
 		return "board"; // board.jsp로 이동
 	}
 
@@ -102,8 +104,6 @@ public class BoardController {
 		// 객체 주입해서 스프링 방식으로 진행 하려고 했는데
 		// 잘 안되서 일단 객체생성으로 함 ㅠㅠ
 		String value = customfunction.MemberCheck(session, request, response);
-
-			// 그냥 인터페이스로 오버로딩 할까...............?
 		
 		System.out.println("보드 글작성 value값  확인 : " + value);
 		// return "boardwrite";
@@ -112,14 +112,52 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boarddelete", method = RequestMethod.GET)
-	public String BoardDelete(HttpServletRequest request) {
+	public String BoardDelete(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws IOException {
 		System.out.println("게시판 글삭제 호출");
 		String Delete_Number = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
 		System.out.println("글삭제 호출 글 번호 : " + Delete_Number);
 		// 조만간 세션 검사해서 아이디 확인여부 넣어야 됨
 		// board_id값 받아야 됨
-		boardmapper.DeleteContent(Integer.parseInt(Delete_Number)); // int로 전송
+		
+		Map map = new HashMap();
+		map.put("board_id", Delete_Number); // 글번호 
+		map.put("userid", session.getAttribute("loginid"));
+		System.out.println("Delete_Number map key (board_num) : " + Delete_Number);
+		System.out.println("Delete_Number map key (loginid) : " + session.getAttribute("loginid"));
+		// 현재 세션에서 존재하는 아이디
+		// 자기 아이디 아닌상태로 수정 요청하면 DB조회시 결과가 달라서 조회 안되게
+		
+		
+		boolean ModifiyResult = false; // false로 초기화
+
+		try {
+			
+
+			 ModifiyResult = boardmapper.UpdateValidationContent(map); // 삭제 요청시 검증
+									// 함수이름이 update인건 update하기전 조회확인용으로 하려고 했는데 
+									// 쿼리문이 select라서 그냥 회원이 한게 맞냐만 검증하는 거라
+			 						//	그냥 써도 무방
+			
+			
+	
+			System.out.println("글 삭제 검증 쿼리 결과 " + ModifiyResult);
+		
+			Board boardDb = boardmapper.Content(Integer.parseInt(Delete_Number)); // 객체타입으로 넣음
+
+			model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
+			
+			boardmapper.DeleteContent(Integer.parseInt(Delete_Number)); // 글삭제 요청 int로 전송
+		} catch (BindingException e) {
+			System.out.println("글삭제 BindingException 예외 발생 : " + e);
+			customfunction.UserValidationFail(session, request, response, ModifiyResult);
+			return "board";
+			
+		}
+		
+		
+		
+		
 
 		return "redirect:board";
 
@@ -214,20 +252,28 @@ public class BoardController {
 		System.out.println("boardmodifywrite map key (loginid) : " + session.getAttribute("loginid"));
 		
 		boolean ModifiyResult = false;
-		boardmapper.UpdateValidationContent(map); // 수정 요청시 검증
 		
-		if (ModifiyResult == false) {
-			customfunction.UserValidation(session, request, response, ModifiyResult);
-			System.out.println("글 수정 실패 : " + ModifiyResult);
-			return "login";
-		}else {
+		System.out.println("map.get = " + map.get("userid"));
 		
-		System.out.println("글 수정 쿼리 결과 " + ModifiyResult);
-	
+		try {
+			ModifiyResult = boardmapper.UpdateValidationContent(map); // 수정 요청시 검증	
+		
+			
+			System.out.println("글 수정 쿼리 결과 " + ModifiyResult);
+		
 			Board boardDb = boardmapper.Content(board_num); // 객체타입으로 넣음
 
 			model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
+			
+		} catch (BindingException e) {
+			customfunction.UserValidationFail(session, request, response, ModifiyResult);
+			// 예외 발생시 한번더 alert창을 띄우기 위해 함수 호출
+			
+			System.out.println("글수정 예외 발생 : " + e);
+			// 아이디 존재 안하면 쿼리안되서 false나오면 if문 처리하면 되는데 
+			// 얘들이 계속 boolean타입인데 계속 null 나와서 그냥 예외로 처리함 ㅋㅋ
 		}
+		
 	
 		return "boardmodifywrite"; // 해당 jsp로 이동
 
@@ -281,6 +327,10 @@ public class BoardController {
 		System.out.println("작성자 = " + boardDb.getUsername());
 		System.out.println("게시글 제목 = " + boardDb.getSubject());
 		System.out.println("게시글 내용 = " + boardDb.getContent());
+		
+		System.out.println("조회수 결과 : "); // 조회수 증가
+		boardmapper.UpdateViewCount(boardDb.getBoard_id());
+		
 		// comment(board_num); // 댓글 호출
 
 		/*****************************************************/
@@ -298,12 +348,6 @@ public class BoardController {
 
 	}
 
-	@Override
-	public String toString() {
-		System.out.println("재정의");
-		String test = "재정의?";
-		return test;
-	}
 	
 	@RequestMapping(value = "/writecomplete", method = RequestMethod.POST)
 	public String writecomplete(HttpSession session, HttpServletRequest request, HttpServletResponse response,

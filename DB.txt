@@ -5,24 +5,26 @@
 CREATE TABLE customer( 
    customer_id INT NOT NULL AUTO_increment primary key , 
    userid VARCHAR(50) unique,
-   userpassword VARCHAR(50) NOT NULL,
-   username VARCHAR(50) NOT NULL, 
+   userpassword varchar(50) not null,
+   username VARCHAR(50) , 
    join_date timestamp
 );
 
 create table board (
 board_id int AUTO_increment, /*게시글 번호*/
-username varchar(50) not null,
+userid VARCHAR(50) not null,
+username varchar(50),
 subject varchar(1000) not null,
 content varchar(5000) not null,
-view_count int, 
+view_count int default 0, 
 write_date timestamp
 );
 
 create table comment (
 board_id int not null, /* 보드 게시판에 게시글 번호 */
 comment_number int AUTO_increment, /*댓글 번호 */
-username varchar(50) not null,
+userid VARCHAR(50) not null,
+username varchar(50),
 comment_content varchar(1000) not null,
 comment_date timestamp
 );
@@ -37,17 +39,17 @@ alter table comment add FOREIGN KEY(board_id) REFERENCES board ( board_id ) ON d
 
 INSERT INTO BOARD (board_id, username, subject, content, write_date )VALUES (2, 'name',  'subject', 'content',now() );
 INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (3, '테스트 유저',  '3번글 댓글내용 입니다', now() );
-INSERT INTO customer (userid,userpassword,username,join_date) values ('user','1234','name' , now());
 // INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (4, '테스트 유저',  '4번글 댓글내용 입니다', now() );
 // INSERT INTO BOARD (username, subject, content, write_date )VALUES ('준영',  '보노보노100마리', '냉무',now() );
-
+insert into customer (userid, userpassword, username, join_date) values ('user','1234','언노운', now());
+insert into customer (userid, userpassword, username, join_date) values ('test','1234','언노운_test', now());
 
 
 /*게시글 작성 조인 쿼리문 */
 
 select a.board_id as "게시글 번호", a.username, a.subject, a.content, a.view_count, a.write_date, b.board_id as "댓글 번호", b.username, b.comment_content, b.comment_date
 from board a, comment b
-where a.board_id = b.board_id and a.board_id = 1; // 1번글에 대한 댓글과 게시글 조회용인데 이거 망함
+where a.board_id = b.board_id and a.board_id = 1; // 1번글에 대한 댓글과 게시글 조회
 
 ------------------------------------------------------------------------
 	INSERT INTO BOARD (username, subject, content, write_date )

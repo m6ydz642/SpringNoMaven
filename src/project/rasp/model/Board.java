@@ -1,17 +1,49 @@
 package project.rasp.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.sun.jmx.snmp.Timestamp;
+
 public class Board { //. 게시판 리스트
 	private int board_id;
+	private String userid;
 	private String username;
 	private String subject;
 	private String content;
 	private int view_count;
+	private String[] write_date;
 	
-	// 타임 스탬프는 나중에 ㅎㅎ
+	
+	
+
+
+	public String[] getWrite_date() {
+		return write_date;
+	}
+	public void setWrite_date(String write_date) throws ParseException {
+		
+		/*게터에서 애초부터 년,월,일로  잘라서 나가게 해놈 
+		 * jstl태그로 안됨 ㅡ.ㅡ ;;; 
+		 * 
+		 * */
+		String[] split = write_date.split(" ");
+		this.write_date = split;
+	}
 	
 	public int getBoard_id() {
 		return board_id;
 	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	@Autowired
 	public void setBoard_id(int board_id) {
 		this.board_id = board_id;
 	}

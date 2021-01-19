@@ -1,11 +1,13 @@
 <!--<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">-->
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>게시글 작성</title>
 </head>
+ <jsp:include page="menu/menubar2.jsp" />
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
@@ -28,7 +30,9 @@
       <div class="form-group">
         <!-- <label for="writer">작성자</label> -->
       <!--   <input type="text" class="form-control" id="writer" name="writer" placeholder="내용을 입력하세요."> -->
-       <p><b>작성자 : 로그인세션값 받아와야 함 - 보류</b></p>
+       <p ><b>작성자 : <c:out value="${logininfo.userid}"/></b></p>
+       <input name ="writer" value=" <c:out value="${logininfo.userid}"/>" readonly="readonly" hidden="">
+       	<!-- 작성자 name값으로 파라메터로 전달하려고 hidden으로 숨김 -->
       </div>
       <div class="form-group">
         <label for="content">내용</label>

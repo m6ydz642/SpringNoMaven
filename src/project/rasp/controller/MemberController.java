@@ -156,23 +156,26 @@ public class MemberController {
 	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
 		System.out.println("로그아웃 호출");
 		
-		/*
-		 * request.setCharacterEncoding("UTF-8");
-		 * response.setContentType("text/html; charset=UTF-8"); PrintWriter out =
-		 * response.getWriter(); System.out.println("로그아웃 요청 현재 세션 값 : " +
-		 * session.getAttribute("logininfo")); Object value =
-		 * session.getAttribute("logininfo"); System.out.println("value 값 : " + value);
-		 * 
-		 * value = null;
-		 * 
-		 * if (value == null) {
-		 * 
-		 * out.println("<script language='javascript'> ");
-		 * out.println("alert('로그아웃 되었습니다 ^^;');"); //
-		 * out.println("location.href = 'board' </script>");
-		 * 
-		 * out.flush(); response.flushBuffer(); }
-		 */
+//		
+		 request.setCharacterEncoding("UTF-8");
+	 response.setContentType("text/html; charset=UTF-8"); 
+		 PrintWriter out = response.getWriter(); 
+//		 System.out.println("로그아웃 요청 현재 세션 값 : " +
+//		  session.getAttribute("logininfo")); 
+//		 Object value = session.getAttribute("logininfo");
+//		 System.out.println("value 값 : " + value);
+//		  
+//		  value = null;
+//		 
+//		  if (value == null) {
+////		  
+//		  out.println("<script language='javascript'> ");
+//		  out.println("alert('잘가시게.........또르르르....;');"); //
+//		  out.println("location.href = 'board' </script>");
+////		  
+//		  out.flush(); response.flushBuffer(); 
+////		  }
+//		 
 		session.invalidate(); // 세션 제거
 				
 		return "redirect:board"; // login.jsp로 이동

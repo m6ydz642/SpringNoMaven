@@ -22,6 +22,7 @@
     
     
 </head>
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
 function fn_contentView(board_id){
 
@@ -34,6 +35,27 @@ function fn_contentView(board_id){
 
 }
 
+
+function searchBoard() {
+
+
+	$.ajax({
+	url : '/board/search',
+	type : 'post',
+	data :{ search: $('#search').val() },
+	success : function (data){
+		$('#area').html(data);
+		console.log("검색내용 : " + search.value);
+		alert("아직 안만듦 ㅎㅎ ajax 검색내용 : " + search.value);
+	}, error: function (e) {
+		console.log("오류발생!!!!!!!");
+		alert("ajax 오류발생 빼애애애애애액!");
+	}
+	
+	});
+	
+}
+</script>
 
 
 </script>
@@ -59,19 +81,18 @@ function fn_contentView(board_id){
 		
 			<%-- <a href="#" onClick="fn_contentView(<c:out value="${item.board_id}"/>)"> --%>
 			
-	<tr style="cursor:pointer;" onclick="fn_contentView(<c:out value="${item.board_id}"/>)"> 
-					<td><c:out value="${item.board_id}" /></td>
-	     			<td><c:out value="${item.subject}" /></td>
-					<td><c:out value="${item.userid}" /></td>
-					<td><c:out value="${item.write_date[0]}" /></td>
+	<tr id="board" style="cursor:pointer;" onclick="fn_contentView(<c:out value="${item.board_id}"/>)"> 
+					<td id="board_id"><c:out value="${item.board_id}" /></td>
+	     			<td id="board_subject" ><c:out value="${item.subject}" /></td>
+					<td id="board_userid" ><c:out value="${item.userid}" /></td>
+					<td id="board_write_date" ><c:out value="${item.write_date[0]}" /></td>
 					<!--  split으로 잘라서 온거라 배열 형태로 들어가있음 ㅋㅋ 
 					그래서 0번부터가 날짜고 1번은 시간 2번은 모르겠다 한공백당 한종류씩 떨어짐 -->
 
 					<%--  <fmt:formatDate value="${item.write_date}" pattern="yyyy.MM.dd" />  --%>
-					<td>${item.view_count}</td>
+					<td id="board_view_count">${item.view_count}</td>
 		
 				</tr>
-		
 			</c:forEach>
 <!-- ---------------------------------------------------------------- -->
 			<c:if test="${contentlist eq '[]'}">
@@ -92,13 +113,23 @@ function fn_contentView(board_id){
            <a class="btn btn-default" href="/boardwrite">글쓰기</a>
         
           </c:if>
-           
+     <!--       
         <div class="text-center">
            <ul class="pagination">
      
     
            </ul>
-        </div>
+        </div> -->
+        
+        <form class="navbar-form navbar-right" onsubmit="searchBoard();">
+			 <div class="form-group">
+			  <input type="text" id="search" name="search" class="form-control" placeholder="검색어를 입력하세요.">
+			 </div>
+			  <button type="submit" class="btn btn-default">검색</button>
+		    </form>
+
+        
+        
    </div>        
     </body>
     

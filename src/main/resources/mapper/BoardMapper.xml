@@ -5,6 +5,17 @@
   <mapper namespace="project.rasp.mapper.BoardMapper">
 	  
 	  
+	    <select id="BackUpData"  resultType="Board" parameterType="Board">
+	   <!-- 데이터백업 select -->
+	  select * from board;
+	    </select>
+	    
+	    
+	  <select id="CommentCount"  resultType="int" parameterType="int">
+	   <!-- 댓글 갯수 -->
+	  select count(*) from comment where board_id = #{board_id};
+	    </select>
+	    
 	  
 	  
 	   <update id="UpdateViewCount" parameterType="int" >

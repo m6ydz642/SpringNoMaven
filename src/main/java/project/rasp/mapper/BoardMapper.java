@@ -26,5 +26,7 @@ public interface BoardMapper {// 이게 사실 서비스나 마찬가지임
   public boolean UpdateValidationContent(Map map); // 글 수정 검증 
   public boolean DeleteValidationContent(Map map); // 글 삭제 검증인데 안씀 ㅋㅋㅋㅋㅋ
   public void UpdateViewCount(int board_id); // 조회수 증가
+  public int CommentCount(int board_id); // 댓글 개수 카운트, 할랬는데 일단 보류
+  public List<Board> BackUpData(Board board); // 게시글 백업구문 생성 소스
   
 }

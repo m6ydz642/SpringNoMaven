@@ -25,7 +25,31 @@
 
 <!-- common CSS -->
 
-<link rel="stylesheet" href="<c:url value='/resources/common/css/common.css'/>" >
+<%-- <link rel="stylesheet" href="<c:url value='/resources/common/css/common.css'/>" > --%>
+
+
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script>
+function searchFun() {
+
+
+		$.ajax({
+		url : '/board/search',
+		type : 'get',
+		data :{ search: $('#search').val() },
+		success : function (data){
+			$('#area').html(data);
+			console.log("검색내용 : " + search.value);
+			alert("이건 아마 안쓸듯 ㅋㅋ 검색내용 : " + search.value);
+		}, error: function (e) {
+			console.log("오류발생!!!!!!!");
+			alert("ajax 오류발생");
+		}
+		
+		});
+		
+}
+</script>
 
 
 
@@ -34,6 +58,7 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
   <a class="navbar-brand" href="/home">홈페이지</a>
+  
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
 
@@ -106,11 +131,11 @@
 </c:if>
     </ul>
 
-    <form name="search" action="/search"  class="form-inline my-2 my-md-0" >
+ <!--   <form   class="form-inline my-2 my-md-0" onsubmit="searchFun();" > 
 
-      <input class="form-control" type="text" placeholder="Search">
+      <input class="form-control" type="text" placeholder="Search" name="search" id="search">
 
-    </form>
+  </form>  -->
   
   
 

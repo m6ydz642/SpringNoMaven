@@ -92,7 +92,16 @@ public class BoardController {
 		list = boardmapper.getContentlist(board);
 		model.addAttribute("contentlist", list); // 값 넣음
 		System.out.println("들어간 list 갯수 : " + list.size());
-		// System.out.println("list 날짜 : " + board.getDate());
+		
+		
+		/* 잠시 보류 오전 11:09 2021-01-20
+		 * System.out.println("댓글 개수 호출 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"); int
+		 * commentcount = boardmapper.CommentCount(1);
+		 * model.addAttribute("commentcount",commentcount);
+		 * System.out.println("댓글 개수 : " + commentcount);
+		 */
+		
+		
 		return "board"; // board.jsp로 이동
 	}
 
@@ -342,7 +351,7 @@ public class BoardController {
 		System.out.println("댓글 갯수 : " + commentlist.size());
 		// System.out.println("댓글 번호 : 보류중 : " + comment.getUsername() );
 		model.addAttribute("comment", commentlist);
-
+		
 		/*****************************************************/
 		return "boardcontent";
 
@@ -425,6 +434,24 @@ public class BoardController {
 
 		// model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
 		return "redirect:boardcontent?board_id=" + board_num;
+
+	}
+	
+	
+	@RequestMapping(value = "/backup", method = RequestMethod.GET)
+	public String boardbackup(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
+		System.out.println("보드 백업 기능 호출");
+
+
+		List list = null;
+		list = boardmapper.BackUpData(board);
+		model.addAttribute("boardbackup", list); // 값 넣음
+
+
+		
+		System.out.println("백업할 리스트 개수 : " + list.size());
+		// model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
+		return "backup";
 
 	}
 

@@ -108,11 +108,12 @@
 			</tr>
 
 
+
 		</tbody>
-		<td><c:out value="${boardcontent.content}" /></td>
 
+	
 	</table>
-
+	${boardcontent.content}
 </div>	<!-- 부트스트랩 디자인 컨테이너 가운데 정렬 범위 -->	
 
 	<c:set var="commentvalue" value="${comment}" />

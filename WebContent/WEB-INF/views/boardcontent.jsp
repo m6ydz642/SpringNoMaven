@@ -144,17 +144,28 @@
 
 	<c:forEach var="comment" items="${comment}">
 <div class="container">	
-  댓글번호: ${comment.comment_number } <br>
-  작성자: ${comment.userid } (${comment.comment_date[0]}) <br>
-  <c:if test="${comment.comment_content eq ''}" >
-  <font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font><br>
-  </c:if>
-  
-   <c:if test="${comment.comment_content ne ''}">
-  
-   <p style="text-indent: 1em;">${comment.comment_content } <br></p>
-   
-  </c:if>
+	<p>
+	<!-- 프로필 사진 -->
+		<img alt="Profile" src="../../image/profile.png" width="50px" height="50px" align="left">
+		 댓글번호: ${comment.comment_number } <br>
+		 작성자: <b>${comment.userid }</b> <font color="gray" size="1.5">(${comment.comment_date[0]})</font> <br>
+				<c:if test="${comment.comment_content eq ''}">
+					<font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font>
+					<br>
+				</c:if>
+
+				<c:if test="${comment.comment_content ne ''}">
+						<br>
+					<p style="text-indent:0em;">${comment.comment_content }
+						
+					</p>
+
+				</c:if>
+
+
+			</p>
+	
+
   
 <!-- <div style="text-align:right"> 글자 오른쪽 정렬 -->
 

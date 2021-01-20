@@ -144,20 +144,21 @@
 
 	<c:forEach var="comment" items="${comment}">
 <div class="container">	
-	
   댓글번호: ${comment.comment_number } <br>
-  작성자: ${comment.userid } <br>
+  작성자: ${comment.userid } (${comment.comment_date[0]}) <br>
   <c:if test="${comment.comment_content eq ''}" >
   <font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font><br>
   </c:if>
   
    <c:if test="${comment.comment_content ne ''}">
-  내용 : ${comment.comment_content } <br>
+  
+   <p style="text-indent: 1em;">${comment.comment_content } <br></p>
+   
   </c:if>
   
-<!-- <div style="text-align:right"> 글자 오른쪽 정렬-->
+<!-- <div style="text-align:right"> 글자 오른쪽 정렬 -->
 
- 작성날짜 : ${comment.write_date} </div><br>
+</div>
 <div class="container">	
 		<hr size="3">
 </div>

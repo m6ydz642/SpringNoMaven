@@ -2,6 +2,7 @@
 package project.rasp.mapper;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class Userimpl implements UserMapper {
 	private SqlSession sqlsession;
 
 	@Override
-	public boolean UserLoginCheck(User user) {
+	public boolean UserLoginCheck(User user , HttpSession session) {
 		User name; // printf로 출력 해볼려는데 객체타입이 String으로 안들어가서 
 		// 객체 타입한개 더 선언해서 넣음띠
 		name = sqlsession.selectOne("project.rasp.mapper.UserMapper.UserLoginCheck", user);
@@ -25,5 +26,7 @@ public class Userimpl implements UserMapper {
 		return (name == null) ? false : true;
 
 	}
+
+	
 
 }

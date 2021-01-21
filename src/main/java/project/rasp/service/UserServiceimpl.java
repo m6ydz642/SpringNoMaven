@@ -22,7 +22,7 @@ public class UserServiceimpl implements UserService {
 	public boolean UserLoginCheck(User user, HttpSession session) {
 		System.out.println("UserLoginCheck 서비스 호출 : " + user);
 		
-		boolean result = userimpl.UserLoginCheck(user);
+		boolean result = userimpl.UserLoginCheck(user, session);
 		if (result) {
 		System.out.println("로그인 체크 호출 유저아이디 : " + user.getUserid());
 		System.out.println("로그인 체크 호출 유저패스워드 :  " + user.getUserpassword());

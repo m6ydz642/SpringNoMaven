@@ -3,7 +3,11 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.resource.mapper"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.resource.sql"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.resource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.src.resource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/config.mybatis"/>
         <property name="context-root" value="SpringNoMaven"/>
         <property name="java-output-path" value="/SpringNoMaven/build/classes"/>
     </wb-module>

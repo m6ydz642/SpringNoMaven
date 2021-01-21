@@ -6,7 +6,6 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sun.jmx.snmp.Timestamp;
 
 public class Board { //. 게시판 리스트
 	private int board_id;

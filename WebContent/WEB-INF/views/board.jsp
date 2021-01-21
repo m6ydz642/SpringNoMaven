@@ -40,22 +40,50 @@ function searchBoard() {
 
 
 	$.ajax({
-	url : '/board/search',
-	type : 'post',
-	data :{ search: $('#search').val() },
-	success : function (data){
-		$('#area').html(data);
+	url : "/search",
+	type : "get",
+	 dataType : "json",
+
+	data : {search : $("#search").val() },
+	
+	success : function (data, textStatus){
+		 var obj = JSON.parse(data);
+		console.log("오브젝트 내용 : " + obj);
+		// $('#area').html(data);
 		console.log("검색내용 : " + search.value);
-		alert("아직 안만듦 ㅎㅎ ajax 검색내용 : " + search.value);
+	/* 	$('#board .board_id').replaceWith('<td>1</td>');
+		$('#board .board_subject').replaceWith('</td>');
+		$('#board .board_userid').replaceWith('<td>사람</td>');
+		$('#board .board_write_date').replaceWith('<td>2012-12-12</td>');
+		$('#board .board_view_count').replaceWith('<td>123</td>'); */
+		
+		 test += " ajax 바뀔곳 : " + search.value + " : ";	// 개소름
+		 $("#testdiv").replaceWith(test);
+			  
+		/* 	var changeurl = "${pageContext.request.contextPath}/board";
+			changeurl = changeurl + "?search="+search.value;
+			location.href = changeurl; */
+       
+		 alert("ajax 검색내용 : " + search.value);
+			console.log("사이즈 : " + data);
+		
 	}, error: function (e) {
-		console.log("오류발생!!!!!!!");
-		alert("ajax 오류발생 빼애애애애애액!");
+		console.log("오류발생!!!!!!! : " + e.value);
+		alert("ajax 오류발생 ");
 	}
 	
 	});
 	
 }
-</script>
+
+function press(f){ 
+	if(f.keyCode == 13)
+	{ //javascript에서는 13이 enter키를 의미함 
+		formname.submit(); //formname에 사용자가 지정한 form의 name입력 
+	
+	} 
+}
+	
 
 
 </script>
@@ -82,15 +110,15 @@ function searchBoard() {
 			<%-- <a href="#" onClick="fn_contentView(<c:out value="${item.board_id}"/>)"> --%>
 			
 	<tr id="board" style="cursor:pointer;" onclick="fn_contentView(<c:out value="${item.board_id}"/>)"> 
-					<td id="board_id"><c:out value="${item.board_id}" /></td>
-	     			<td id="board_subject" ><c:out value="${item.subject}" /></td>
-					<td id="board_userid" ><c:out value="${item.userid}" /></td>
-					<td id="board_write_date" ><c:out value="${item.write_date[0]}" /></td>
+					<td class="board_id"><c:out value="${item.board_id}" /></td>
+	     			<td class="board_subject" ><c:out value="${item.subject}" /></td>
+					<td class="board_userid" ><c:out value="${item.userid}" /></td>
+					<td class="board_write_date" ><c:out value="${item.write_date[0]}" /></td>
 					<!--  split으로 잘라서 온거라 배열 형태로 들어가있음 ㅋㅋ 
 					그래서 0번부터가 날짜고 1번은 시간 2번은 모르겠다 한공백당 한종류씩 떨어짐 -->
 
 					<%--  <fmt:formatDate value="${item.write_date}" pattern="yyyy.MM.dd" />  --%>
-					<td id="board_view_count">${item.view_count}</td>
+					<td class="board_view_count">${item.view_count}</td>
 		
 				</tr>
 			</c:forEach>
@@ -113,6 +141,17 @@ function searchBoard() {
            <a class="btn btn-default" href="/boardwrite">글쓰기</a>
         
           </c:if>
+          
+          <div id="testdiv">
+          여기에 객체 리스트 나올거 
+          <c:forEach var="selist" items="${searchlistadd}">
+          글번호 : ${selist.board_id} <br>
+          제목 : ${selist.subject} <br>
+          조회수 : ${selist.view_count} <br>
+          
+          </c:forEach>
+          </div>
+          
      <!--       
         <div class="text-center">
            <ul class="pagination">
@@ -121,13 +160,26 @@ function searchBoard() {
            </ul>
         </div> -->
         
-        <form class="navbar-form navbar-right" onsubmit="searchBoard();">
-			 <div class="form-group">
-			  <input type="text" id="search" name="search" class="form-control" placeholder="검색어를 입력하세요.">
-			 </div>
-			  <button type="submit" class="btn btn-default">검색</button>
-		    </form>
+        <!--   <form class="navbar-form navbar-right" onsubmit="searchBoard();">   -->
+        <!-- 나중에 이거 고쳐야 됨  -->
+        
+			<div class="navbar-form navbar-right">
+			 <div class="form-group" >
+			  <input onsubmit="searchBoard();" type="text" id="search" 
+			  name="search" class="form-control" placeholder="검색어를 입력하세요.">
+			  
+			 <input type="submit" onclick="searchBoard();" >
+		
+			  <!-- <button   type="submit" class="btn btn-default">검색</button> -->
+	   		</div>
+	   		</div>
+	   
+	    <!-- </form>  -->
 
+	   
+	   
+	   
+</div>
         
         
    </div>        

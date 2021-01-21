@@ -3,32 +3,20 @@ package project.rasp.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.apache.ibatis.binding.BindingException;
-import org.apache.ibatis.javassist.compiler.ast.Keyword;
-import org.h2.util.json.JSONArray;
-import org.h2.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,13 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import lombok.val;
 import project.rasp.Customfunction;
 import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
-import project.rasp.model.User;
 
 /**
  * Handles requests for the application home page.
@@ -474,7 +460,7 @@ public class BoardController {
 
 		Map map = new HashMap();
 		List list = boardmapper.SearchContentList(search);
-		org.json.JSONObject obj = new org.json.JSONObject();
+		// org.json.JSONObject obj = new org.json.JSONObject();
 		ModelAndView mv = new ModelAndView();
 	try {
 		 System.out.println("검색내용 requestParam : " + search);		
@@ -484,10 +470,10 @@ public class BoardController {
 			map.put("searchlist", list);
 			map.put("search", search);
 			
-			obj.put("searchlistadd", list);
+		//	obj.put("searchlistadd", list);
 			mv.addObject("result", list);
 			mv.setViewName("board");
-			System.out.println("json obj : " + obj);
+			// System.out.println("json obj : " + obj);
 
 			
 

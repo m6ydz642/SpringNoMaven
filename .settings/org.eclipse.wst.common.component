@@ -2,6 +2,8 @@
     <wb-module deploy-name="SpringNoMaven">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.resource"/>
         <property name="context-root" value="SpringNoMaven"/>
         <property name="java-output-path" value="/SpringNoMaven/build/classes"/>
     </wb-module>

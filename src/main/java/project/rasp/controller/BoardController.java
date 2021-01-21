@@ -16,15 +16,23 @@ import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.apache.ibatis.binding.BindingException;
+import org.apache.ibatis.javassist.compiler.ast.Keyword;
+import org.h2.util.json.JSONArray;
+import org.h2.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -456,5 +464,51 @@ public class BoardController {
 	}
 
 	
+	/**
+	 *****************************************************************/
+	@RequestMapping(value = "/search", method = RequestMethod.GET) // value = "search", required = false
+	@ResponseBody
+	public ModelAndView   view(@RequestParam (defaultValue = "search") String search,
+	Model model, HttpServletRequest request , Board board) throws Exception {
+		System.out.println("search 호출");
 
+		Map map = new HashMap();
+		List list = boardmapper.SearchContentList(search);
+		org.json.JSONObject obj = new org.json.JSONObject();
+		ModelAndView mv = new ModelAndView();
+	try {
+		 System.out.println("검색내용 requestParam : " + search);		
+		 
+		
+			System.out.println("검색 결과 내용 사이즈 : " + list.size());
+			map.put("searchlist", list);
+			map.put("search", search);
+			
+			obj.put("searchlistadd", list);
+			mv.addObject("result", list);
+			mv.setViewName("board");
+			System.out.println("json obj : " + obj);
+
+			
+
+	} catch (Exception e) {
+		System.out.println("검색기능 예외 발생 : " + e);
+		System.out.println("예외 상태 map 들어간 값 : " + map);
+		
+	}
+
+		 return mv ;
+
+	}
+	
+	/*******************************************************************/
+	
+	@RequestMapping(value = "/test2", method = RequestMethod.GET)
+	public String view2(@RequestParam (value = "search", required = false, defaultValue = "search") String search,
+	Model model, HttpServletRequest request ) throws Exception {
+	
+System.out.println("test2 페이지 호출");
+
+return "honme";
+	}
 }

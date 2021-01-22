@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
@@ -45,16 +47,6 @@ public class HomeController {
 		
 		return "home";
 	}
-	
-	@RequestMapping("/search")
-	public String view(Model model) {
-		// 데이터만 설정이 가능
-		System.out.println("/list 리스트 호출");
-		System.out.println("request.jsp로 안내함");
-		return "request";
-	}
-	
-
 
 
 	/*

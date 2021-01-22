@@ -33,7 +33,7 @@
 	url = url + "?board_id="+board_id;
 	
 	location.href = url;
-	alert("댓글 함수 호출 글번호 : " + board_id);
+	// alert("댓글 함수 호출 글번호 : " + board_id);
 
 }
  

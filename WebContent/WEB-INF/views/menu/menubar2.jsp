@@ -57,7 +57,7 @@ function searchFun() {
 
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
-  <a class="navbar-brand" href="/home">홈페이지</a>
+  <a class="navbar-brand" href="/">홈페이지</a>
   
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@ function searchFun() {
 
       <li class="nav-item active">
 
-        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 
       </li>
 

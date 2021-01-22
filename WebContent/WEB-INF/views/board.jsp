@@ -47,11 +47,14 @@ function searchBoard() {
 	data : {search : $("#search").val() },
 	 async: true,
 	success : function (data, textStatus){
-
+		 $('#ajax').remove();
 		 var obj = JSON.parse(data);
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
 		 var nothing = "";
 		console.log("데이터 길이 : " + obj.searchlist.length); // 길이
+		// $("#board").empty();
+		// $("#board .board_id").empty();
+		
 		if (obj.searchlist.length > 0) {
 	
 			
@@ -62,17 +65,20 @@ function searchBoard() {
 		console.log("subject : " + obj.searchlist[i]["subject"]); // 제목
 		console.log("content : " + obj.searchlist[i]["content"]); // 내용
 
-			$("#board").remove();
+		
 			tag += '<tr id="board' + '">'
 			tag += obj.searchlist[i]["board_id"]
 			tag += obj.searchlist[i]["subject"] 
 			tag +=  obj.searchlist[i]["userid"]
 			tag +=  obj.searchlist[i]["write_date"]
 			tag +=  obj.searchlist[i]["view_count"]
-			
+		
 		'</tr>';
-	
-		$("#board").append(tag);
+	 
+            // Contents 영역 교체
+          //  $('#board').html(obj);
+
+		$("#ajax").append(tag);
 		console.log("태그 추가 성공");
 }
 		var test = "";
@@ -149,7 +155,9 @@ function press(f){
 					<td class="board_view_count">${item.view_count}</td>
 		
 				</tr>
+				
 			</c:forEach>
+
 <!-- ---------------------------------------------------------------- -->
 			<c:if test="${contentlist eq '[]'}">
 				<tr>

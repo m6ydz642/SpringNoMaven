@@ -1,8 +1,6 @@
 package project.rasp.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public class Comment {
@@ -12,23 +10,23 @@ public class Comment {
 	private String userid;
 	private String username;
 	private String comment_content;
-	private String[] write_date;
+	private String[] comment_date;
 	
 	
 	
 
 
-	public String[] getWrite_date() {
-		return write_date;
+	public String[] getComment_date() {
+		return comment_date;
 	}
-	public void setWrite_date(String write_date) throws ParseException {
+	public void setComment_date(String write_date) throws ParseException {
 		
 		/*게터에서 애초부터 년,월,일로  잘라서 나가게 해놈 
 		 * jstl태그로 안됨 ㅡ.ㅡ ;;; 
 		 * 
 		 * */
 		String[] split = write_date.split(" ");
-		this.write_date = split;
+		this.comment_date = split;
 	}
 	
 	public int getBoard_id() {

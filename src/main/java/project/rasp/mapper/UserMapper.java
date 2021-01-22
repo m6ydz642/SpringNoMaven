@@ -1,7 +1,11 @@
 package project.rasp.mapper;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
+
+import project.rasp.model.Board;
 import project.rasp.model.User;
 
 
@@ -16,6 +20,8 @@ public interface UserMapper {
 	 * int id);
 	 */
 	
-	public boolean UserLoginCheck(User user, HttpSession session);
+	public boolean UserLoginCheck(User user);
+	
+	public List<Board> SearchContentList(@Param ("search")String search) throws Exception; // 검색결과 리스트
 
 }

@@ -31,7 +31,7 @@ function fn_contentView(board_id){
 	url = url + "?board_id="+board_id;
 	
 	location.href = url;
-	alert("함수 호출 글번호 : " + board_id);
+	// alert("함수 호출 글번호 : " + board_id);
 
 }
 
@@ -50,35 +50,19 @@ function searchBoard() {
 
 		 var obj = JSON.parse(data);
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
+		 var nothing = "";
 		console.log("데이터 길이 : " + obj.searchlist.length); // 길이
+		if (obj.searchlist.length > 0) {
+	
+			
+		
 		for (var i = 0; i <obj.searchlist.length; i++) {  
 		console.log("board_id : " + obj.searchlist[i]["board_id"]); // 글번호
 		console.log("userid : " + obj.searchlist[i]["userid"]); // 아이디
 		console.log("subject : " + obj.searchlist[i]["subject"]); // 제목
 		console.log("content : " + obj.searchlist[i]["content"]); // 내용
-		
-	/* 	$('#board .board_id').replaceWith('<td>' + obj.searchlist[i]['board_id'] + '</td>');
-		$('#board .board_subject').replaceWith('<td>' + obj.searchlist[i]['subject'] + '</td>');
-		$('#board .board_userid').replaceWith('<td>' + obj.searchlist[i]['userid'] + '</td>');
-		$('#board .board_write_date').replaceWith('<td>' + obj.searchlist[i]['write_date'] + '</td>');
-		$('#board .board_view_count').replaceWith('<td>' + obj.searchlist[i]['view_count'] + '</td>');
-	 */
-		 
-		 
-		
-/* 		tag += '<td class="board_id' + '">' + obj.searchlist[i]["board_id"] +'</td>'
-		tag += '<td class="board_subject' + '">' + obj.searchlist[i]["subject"] +'</td>'
-		tag += '<td class="board_userid'+ '">' + obj.searchlist[i]["userid"] +'</td>'
-		tag += '<td class="board_write_date'+ '">' + obj.searchlist[i]["write_date"] +'</td>'
-		tag += '<td class="board_view_count'+ '">' + obj.searchlist[i]["view_count"] +'</td>'
-		 */
+
 			$("#board").remove();
-/* 			$("#board board_id").remove();
-			$("#board board_subject").remove();
-			$("#board board_userid").remove();
-			$("#board board_write_date").remove();
-			$("#board board_view_count").remove(); */
-		
 			tag += '<tr id="board' + '">'
 			tag += obj.searchlist[i]["board_id"]
 			tag += obj.searchlist[i]["subject"] 
@@ -92,15 +76,24 @@ function searchBoard() {
 		console.log("태그 추가 성공");
 }
 		var test = "";
-		 test += " ajax 바뀔곳 : " + search.value + " : ";	// 개소름
-		 $("#testdiv").replaceWith(test);
+		 test += "검색명 : " + search.value ;	// 개소름
+		// $("#testdiv").replaceWith(test);
 			  
-		/* 	var changeurl = "${pageContext.request.contextPath}/board";
-			changeurl = changeurl + "?search="+search.value;
-			location.href = changeurl; */
+
        
 		 alert("ajax 검색내용 : " + search.value);
-
+		}else{
+			console.log("검색결과 null");
+			 alert(search.value + "에 대한 검색결과가 없습니다! ");
+			 console.log("데이터 길이 : " + obj.searchlist.length);
+		//	 $("#board").remove();
+			 nothing += '<tr id="board' + '">'
+			nothing += '앙 공백띠'
+				'</tr>';
+			$("#board").append(nothing);
+			
+	
+		}
 		
 	}, error: function (e) {
 		console.log("오류발생!!!!!!! : " + e.value);
@@ -178,13 +171,27 @@ function press(f){
           </c:if>
           
           <div id="testdiv">
-          여기에 객체 리스트 나올거 
-          <c:forEach var="selist" items="${searchlistadd}">
-          글번호 : ${selist.board_id} <br>
-          제목 : ${selist.subject} <br>
-          조회수 : ${selist.view_count} <br>
+          <br>
           
-          </c:forEach>
+          <font color="blue" size="3">인터넷 익스플로러로 접속시 디자인에서 오류가 발생합니다</font>
+          <br><br>
+          <font color="red" size="4"> 회원가입은 없습니다 <br> </font>
+          ID : 1234 <br>
+          PW : 1234 <br>
+          
+          <br>
+          
+          or <br><br>
+          
+          ID : user <br>
+          PW : 1234 <br>
+          
+          <br>
+        현재 게시판 select 결과 -> insert 전환 백업쿼리 생성 <br>
+         <a href="http://60.100.123.75/backup">http://60.100.123.75/backup</a>
+          
+          
+ 
           </div>
           
      <!--       
@@ -201,9 +208,9 @@ function press(f){
 			<div class="navbar-form navbar-right">
 			 <div class="form-group" >
 			  <input onsubmit="searchBoard();" type="text" id="search" 
-			  name="search" class="form-control" placeholder="검색어를 입력하세요.">
+			  name="search" class="form-control" placeholder="검색어  공사중입니다">
 			  
-			 <input type="submit" onclick="searchBoard();" >
+			 <input value="공사중" type="submit" onclick="searchBoard();" >
 		
 			  <!-- <button   type="submit" class="btn btn-default">검색</button> -->
 	   		</div>

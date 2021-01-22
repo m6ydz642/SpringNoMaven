@@ -42,21 +42,56 @@ function searchBoard() {
 	$.ajax({
 	url : "/search",
 	type : "get",
-	 dataType : "json",
+	// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
 
 	data : {search : $("#search").val() },
-	
+	 async: true,
 	success : function (data, textStatus){
+
 		 var obj = JSON.parse(data);
-		console.log("오브젝트 내용 : " + obj);
-		// $('#area').html(data);
-		console.log("검색내용 : " + search.value);
-	/* 	$('#board .board_id').replaceWith('<td>1</td>');
-		$('#board .board_subject').replaceWith('</td>');
-		$('#board .board_userid').replaceWith('<td>사람</td>');
-		$('#board .board_write_date').replaceWith('<td>2012-12-12</td>');
-		$('#board .board_view_count').replaceWith('<td>123</td>'); */
+		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
+		console.log("데이터 길이 : " + obj.searchlist.length); // 길이
+		for (var i = 0; i <obj.searchlist.length; i++) {  
+		console.log("board_id : " + obj.searchlist[i]["board_id"]); // 글번호
+		console.log("userid : " + obj.searchlist[i]["userid"]); // 아이디
+		console.log("subject : " + obj.searchlist[i]["subject"]); // 제목
+		console.log("content : " + obj.searchlist[i]["content"]); // 내용
 		
+	/* 	$('#board .board_id').replaceWith('<td>' + obj.searchlist[i]['board_id'] + '</td>');
+		$('#board .board_subject').replaceWith('<td>' + obj.searchlist[i]['subject'] + '</td>');
+		$('#board .board_userid').replaceWith('<td>' + obj.searchlist[i]['userid'] + '</td>');
+		$('#board .board_write_date').replaceWith('<td>' + obj.searchlist[i]['write_date'] + '</td>');
+		$('#board .board_view_count').replaceWith('<td>' + obj.searchlist[i]['view_count'] + '</td>');
+	 */
+		 
+		 
+		
+/* 		tag += '<td class="board_id' + '">' + obj.searchlist[i]["board_id"] +'</td>'
+		tag += '<td class="board_subject' + '">' + obj.searchlist[i]["subject"] +'</td>'
+		tag += '<td class="board_userid'+ '">' + obj.searchlist[i]["userid"] +'</td>'
+		tag += '<td class="board_write_date'+ '">' + obj.searchlist[i]["write_date"] +'</td>'
+		tag += '<td class="board_view_count'+ '">' + obj.searchlist[i]["view_count"] +'</td>'
+		 */
+			$("#board").remove();
+/* 			$("#board board_id").remove();
+			$("#board board_subject").remove();
+			$("#board board_userid").remove();
+			$("#board board_write_date").remove();
+			$("#board board_view_count").remove(); */
+		
+			tag += '<tr id="board' + '">'
+			tag += obj.searchlist[i]["board_id"]
+			tag += obj.searchlist[i]["subject"] 
+			tag +=  obj.searchlist[i]["userid"]
+			tag +=  obj.searchlist[i]["write_date"]
+			tag +=  obj.searchlist[i]["view_count"]
+			
+		'</tr>';
+	
+		$("#board").append(tag);
+		console.log("태그 추가 성공");
+}
+		var test = "";
 		 test += " ajax 바뀔곳 : " + search.value + " : ";	// 개소름
 		 $("#testdiv").replaceWith(test);
 			  
@@ -65,7 +100,7 @@ function searchBoard() {
 			location.href = changeurl; */
        
 		 alert("ajax 검색내용 : " + search.value);
-			console.log("사이즈 : " + data);
+
 		
 	}, error: function (e) {
 		console.log("오류발생!!!!!!! : " + e.value);

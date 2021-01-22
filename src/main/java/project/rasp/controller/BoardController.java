@@ -3,20 +3,33 @@ package project.rasp.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 
 import org.apache.ibatis.binding.BindingException;
+import org.apache.ibatis.javassist.compiler.ast.Keyword;
+import org.h2.util.json.JSONArray;
+import org.h2.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,11 +37,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import lombok.val;
 import project.rasp.Customfunction;
 import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
+import project.rasp.model.User;
 
 /**
  * Handles requests for the application home page.
@@ -452,38 +467,43 @@ public class BoardController {
 	
 	/**
 	 *****************************************************************/
-	@RequestMapping(value = "/search", method = RequestMethod.GET) // value = "search", required = false
-	@ResponseBody
-	public ModelAndView   view(@RequestParam (defaultValue = "search") String search,
-	Model model, HttpServletRequest request , Board board) throws Exception {
-		System.out.println("search 호출");
+	@RequestMapping(value = "/search", method = RequestMethod.GET, 
+			produces = "application/text; charset=utf8") // value = "search", required = false
+	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
 
+ 
+	
+	@ResponseBody
+	public String   view(@RequestParam (defaultValue = "search") String search,
+	Model model, HttpServletRequest request ,HttpServletResponse response, Board board) throws Exception {
+		System.out.println("search 호출");
 		Map map = new HashMap();
-		List list = boardmapper.SearchContentList(search);
-		// org.json.JSONObject obj = new org.json.JSONObject();
-		ModelAndView mv = new ModelAndView();
+		List jsonlist = new ArrayList();
+		 List list = boardmapper.SearchContentList(search);
+		// List list = usermapper.
+		org.json.JSONObject obj = new org.json.JSONObject();
+		// ModelAndView mv = new ModelAndView();
+	//	PrintWriter out = response.getWriter();
+		response.setCharacterEncoding("UTF-8");
 	try {
 		 System.out.println("검색내용 requestParam : " + search);		
 		 
 		
 			System.out.println("검색 결과 내용 사이즈 : " + list.size());
-			map.put("searchlist", list);
-			map.put("search", search);
+			// map.put("searchlist", list);
+			 map.put("search", search);
 			
-		//	obj.put("searchlistadd", list);
-			mv.addObject("result", list);
-			mv.setViewName("board");
-			// System.out.println("json obj : " + obj);
-
-			
-
+			obj.put("searchlist", list);
+			jsonlist.add(list);
+			System.out.println("json값 :  " + jsonlist);
+	
 	} catch (Exception e) {
 		System.out.println("검색기능 예외 발생 : " + e);
-		System.out.println("예외 상태 map 들어간 값 : " + map);
+	
 		
 	}
-
-		 return mv ;
+	System.out.println("obj.toString() : " + obj.toString());
+		 return obj.toString() ; // 시발 이거 어이없네 ㅋㅋㅋㅋㅋㅋㅋ
 
 	}
 	

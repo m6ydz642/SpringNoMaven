@@ -43,7 +43,6 @@ import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
-import project.rasp.model.Search;
 import project.rasp.model.User;
 
 /**

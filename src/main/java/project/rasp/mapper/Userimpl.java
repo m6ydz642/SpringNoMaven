@@ -1,6 +1,8 @@
 
 package project.rasp.mapper;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project.rasp.model.Board;
 import project.rasp.model.User;
 
 @Repository
@@ -25,6 +28,12 @@ public class Userimpl implements UserMapper {
 		System.out.println("sql UserMapper 세션 로그인 체크 내용 : " + name);
 		return (name == null) ? false : true;
 
+	}
+
+	@Override
+	public List<Board> SearchContentList(String search) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

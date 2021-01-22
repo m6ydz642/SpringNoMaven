@@ -8,6 +8,8 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.resource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/main.src.resource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/config.mybatis"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <property name="context-root" value="SpringNoMaven"/>
         <property name="java-output-path" value="/SpringNoMaven/build/classes"/>
     </wb-module>

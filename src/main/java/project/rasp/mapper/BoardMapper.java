@@ -9,8 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import project.rasp.model.Board;
 import project.rasp.model.User;
 import project.rasp.model.Comment;
-import project.rasp.model.Search;
-
 
 public interface BoardMapper {// 이게 사실 서비스나 마찬가지임
 	// 인터페이스에서 구현한 후 BoardImpl에서 리턴으로 객체 생성하던지 리턴만 하던지함

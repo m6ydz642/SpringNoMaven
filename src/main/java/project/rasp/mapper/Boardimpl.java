@@ -8,7 +8,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import project.rasp.model.Board;
-import project.rasp.model.Search;
 
 public class Boardimpl implements BoardMapper{
 

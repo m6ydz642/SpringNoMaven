@@ -43,6 +43,7 @@ import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
+import project.rasp.model.Search;
 import project.rasp.model.User;
 
 /**
@@ -470,28 +471,25 @@ public class BoardController {
 	@RequestMapping(value = "/search", method = RequestMethod.GET, 
 			produces = "application/text; charset=utf8") // value = "search", required = false
 	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
-
- 
-	
 	@ResponseBody
 	public String   view(@RequestParam (defaultValue = "search") String search,
-	Model model, HttpServletRequest request ,HttpServletResponse response, Board board) throws Exception {
+	Model model, HttpServletRequest request ,HttpServletResponse response ) throws Exception {
 		System.out.println("search 호출");
+		System.out.println("검색내용 requestParam : " + search);	
 		Map map = new HashMap();
 		List jsonlist = new ArrayList();
 		 List list = boardmapper.SearchContentList(search);
-		// List list = usermapper.
+
 		org.json.JSONObject obj = new org.json.JSONObject();
-		// ModelAndView mv = new ModelAndView();
-	//	PrintWriter out = response.getWriter();
-		response.setCharacterEncoding("UTF-8");
+		 map.put("search", search);
+			System.out.println("map 내용 : " + map);
+
 	try {
-		 System.out.println("검색내용 requestParam : " + search);		
+		 	
 		 
 		
 			System.out.println("검색 결과 내용 사이즈 : " + list.size());
-			// map.put("searchlist", list);
-			 map.put("search", search);
+			
 			
 			obj.put("searchlist", list);
 			jsonlist.add(list);

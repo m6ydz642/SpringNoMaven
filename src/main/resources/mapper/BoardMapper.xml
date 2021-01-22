@@ -5,10 +5,10 @@
   <mapper namespace="project.rasp.mapper.BoardMapper">
 	  
 	  <!-- 검색 기능 -->
-	     <select id="SearchContentList" resultType="Board" parameterType="String">
+	     <select id="SearchContentList" resultType="list" parameterType="string">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
 	   select * from board where subject like '%#{search}%' 
-	   or content like '%#{search}%';
+	   or subject like '%#{search}%';
 	  </select>
 	  
 	  

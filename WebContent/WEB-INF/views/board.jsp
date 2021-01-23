@@ -58,7 +58,8 @@ function searchBoard() {
 		if (obj.searchlist.length > 0) { // 데이터가 1개 이상이면
 	
 			 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
-		
+			 $('#morebutton').remove();
+			 
 		for (var i = 0; i <obj.searchlist.length; i++) {  
 		console.log("board_id : " + obj.searchlist[i]["board_id"]); // 글번호
 		console.log("userid : " + obj.searchlist[i]["userid"]); // 아이디
@@ -241,7 +242,7 @@ function morelist() {
            <!-- 나중에 게시글 몇개 이상일때 나오는걸로 바꿔야 됨 -->
                 <center>
         <!-- 글 10개? 정도 이상 되야 더보기 버튼 나타나는 걸로 if문 처리하기 (검색결과도 동일하게 limit를 걸던지 -->
-			<input class="btn btn-secondary btn-sm" type="submit" value="더보기" onclick="morelist();"/> <br>
+			<input id="morebutton" class="btn btn-secondary btn-sm" type="submit" value="더보기" onclick="morelist();"/> <br>
            </center>
 <!-- ---------------------------------------------------------------- -->		
            

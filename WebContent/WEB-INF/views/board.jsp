@@ -47,13 +47,13 @@ function searchBoard() {
 	data : {search : $("#search").val() },
 	 async: true,
 	success : function (data, textStatus){
-		 $('#ajax').remove();
+
+		 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
 		 var obj = JSON.parse(data);
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
 		 var nothing = "";
 		console.log("데이터 길이 : " + obj.searchlist.length); // 길이
-		// $("#board").empty();
-		// $("#board .board_id").empty();
+
 		
 		if (obj.searchlist.length > 0) {
 	
@@ -65,20 +65,26 @@ function searchBoard() {
 		console.log("subject : " + obj.searchlist[i]["subject"]); // 제목
 		console.log("content : " + obj.searchlist[i]["content"]); // 내용
 
-		
-			tag += '<tr id="board' + '">'
-			tag += obj.searchlist[i]["board_id"]
-			tag += obj.searchlist[i]["subject"] 
-			tag +=  obj.searchlist[i]["userid"]
-			tag +=  obj.searchlist[i]["write_date"]
-			tag +=  obj.searchlist[i]["view_count"]
-		
-		'</tr>';
-	 
-            // Contents 영역 교체
-          //  $('#board').html(obj);
+		 //   tag += '<table class= "table' + '">'
+		 	tag += '<tr id="board' + '" +  onclick ="fn_contentView('+ obj.searchlist[i]["board_id"] + ')">' 
+			tag += '<td class="board_id' + '">' + obj.searchlist[i]["board_id"] + '</td>' 
+			tag += '<td>' + obj.searchlist[i]["subject"]  + '</td>'
+			tag +=  '<td>' + obj.searchlist[i]["userid"] + '</td>'
+			tag +=  '<td>' + obj.searchlist[i]["write_date"] + '</td>'
+			tag += '<td>' +  obj.searchlist[i]["view_count"] + '</td>'
+		 	tag += '</tr>'
+		// 	tag += '</table>'
+		/*  	var tag = "<tr id='board'>" + 
+          		"<td class='board_id'>" + obj.searchlist[i]["board_id"] + "</td>" + 
+          		"<td class='board_subject'>" + obj.searchlist[i]["subject"] + "</td>" + 
+          		"<td class='board_userid'>" + obj.searchlist[i]["userid"] + "</td>" + 
+          		"<td class='write_date'>" + obj.searchlist[i]["write_date"] + "</td>" + 
+          		"<td class='view_count'>" + obj.searchlist[i]["view_count"] + "</td>" + 
+      	  "</tr>"    */
+      	
 
-		$("#ajax").append(tag);
+		$(".table").append(tag);
+      	  console.log("태그 내용 : " + tag);
 		console.log("태그 추가 성공");
 }
 		var test = "";
@@ -91,8 +97,9 @@ function searchBoard() {
 		}else{
 			console.log("검색결과 null");
 			 alert(search.value + "에 대한 검색결과가 없습니다! ");
+			 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
 			 console.log("데이터 길이 : " + obj.searchlist.length);
-		//	 $("#board").remove();
+	
 			 nothing += '<tr id="board' + '">'
 			nothing += '앙 공백띠'
 				'</tr>';
@@ -139,11 +146,13 @@ function press(f){
 
 
  <!-- ---------------------------------------------------------------- -->
+			
 			<c:forEach var="item" items="${contentlist}">
 		
 			<%-- <a href="#" onClick="fn_contentView(<c:out value="${item.board_id}"/>)"> --%>
-			
+		
 	<tr id="board" style="cursor:pointer;" onclick="fn_contentView(<c:out value="${item.board_id}"/>)"> 
+	
 					<td class="board_id"><c:out value="${item.board_id}" /></td>
 	     			<td class="board_subject" ><c:out value="${item.subject}" /></td>
 					<td class="board_userid" ><c:out value="${item.userid}" /></td>
@@ -153,9 +162,9 @@ function press(f){
 
 					<%--  <fmt:formatDate value="${item.write_date}" pattern="yyyy.MM.dd" />  --%>
 					<td class="board_view_count">${item.view_count}</td>
-		
+			</div>
 				</tr>
-				
+			
 			</c:forEach>
 
 <!-- ---------------------------------------------------------------- -->

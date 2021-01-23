@@ -29,27 +29,13 @@ comment_content varchar(1000) not null,
 comment_date timestamp
 );
 
-
-// ALTER TABLE board  ADD FOREIGN KEY (board_id) REFERENCES comment ( board_id) on delete cascade; /*외래키*/ 
-
-
 alter table comment add FOREIGN KEY(board_id) REFERENCES board ( board_id ) ON delete CASCADE;
 
 /*insert문 */
 
-INSERT INTO BOARD (board_id, username, subject, content, write_date )VALUES (2, 'name',  'subject', 'content',now() );
-INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (3, '테스트 유저',  '3번글 댓글내용 입니다', now() );
-// INSERT INTO comment(board_id, username, comment_content, comment_date )VALUES (4, '테스트 유저',  '4번글 댓글내용 입니다', now() );
-// INSERT INTO BOARD (username, subject, content, write_date )VALUES ('준영',  '보노보노100마리', '냉무',now() );
 insert into customer (userid, userpassword, username, join_date) values ('user','1234','언노운', now());
+insert into customer (userid, userpassword, username, join_date) values ('1234','1234','언노운_test', now());
 insert into customer (userid, userpassword, username, join_date) values ('test','1234','언노운_test', now());
-
-
-/*게시글 작성 조인 쿼리문 */
-
-select a.board_id as "게시글 번호", a.username, a.subject, a.content, a.view_count, a.write_date, b.board_id as "댓글 번호", b.username, b.comment_content, b.comment_date
-from board a, comment b
-where a.board_id = b.board_id and a.board_id = 1; // 1번글에 대한 댓글과 게시글 조회
 
 ------------------------------------------------------------------------
 	INSERT INTO BOARD (username, subject, content, write_date )

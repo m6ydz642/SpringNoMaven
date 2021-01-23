@@ -44,7 +44,7 @@
 		url = url + "?board_id="+board_id;
 		
 		
-		alert("글삭제 함수 호출 글번호 : " + board_id);
+		// alert("글삭제 함수 호출 글번호 : " + board_id);
 		
 		var result = confirm("글을 레알 삭제하시겠어요?");
 		// 삭제 확인 여부
@@ -64,7 +64,7 @@
 		url = url + "?board_id="+board_id;
 		 location.href = url;
 		
-		alert("글수정 함수 호출 글번호 : " + board_id);
+		// alert("글수정 함수 호출 글번호 : " + board_id);
 		
 	}
  

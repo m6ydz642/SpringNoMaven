@@ -97,13 +97,15 @@ function searchBoard() {
 		}else{
 			console.log("검색결과 null");
 			 alert(search.value + "에 대한 검색결과가 없습니다! ");
-			 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
+			
 			 console.log("데이터 길이 : " + obj.searchlist.length);
-	
-			 nothing += '<tr id="board' + '">'
-			nothing += '앙 공백띠'
-				'</tr>';
-			$("#board").append(nothing);
+
+			 	nothing += '<tr id="board">' 
+				nothing += '<td>' + '검색결과가 없어용' + '</td>'
+				nothing += '</tr>'
+
+				
+				 $(".table").append(nothing);
 			
 	
 		}
@@ -117,15 +119,22 @@ function searchBoard() {
 	
 }
 
-function press(f){ 
+/* function press(f){ 
 	if(f.keyCode == 13)
 	{ //javascript에서는 13이 enter키를 의미함 
 		formname.submit(); //formname에 사용자가 지정한 form의 name입력 
 	
 	} 
 }
-	
+	 */
 
+	 function Enter_Check(){
+	        // 엔터키의 코드는 13입니다.
+	    if(event.keyCode == 13){
+	    	searchBoard();  // 실행할 이벤트
+	    }
+	}
+	 
 
 </script>
        <body>
@@ -225,7 +234,7 @@ function press(f){
 			<div class="navbar-form navbar-right">
 			 <div class="form-group" >
 			  <input onsubmit="searchBoard();" type="text" id="search" 
-			  name="search" class="form-control" placeholder="검색어  공사중입니다">
+			  name="search" class="form-control" placeholder="검색어  공사중입니다"  onkeydown="Enter_Check();">
 			  
 			 <input value="공사중" type="submit" onclick="searchBoard();" >
 		

@@ -48,16 +48,16 @@ function searchBoard() {
 	 async: true,
 	success : function (data, textStatus){
 
-		 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
+		
 		 var obj = JSON.parse(data);
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
 		 var nothing = "";
 		console.log("데이터 길이 : " + obj.searchlist.length); // 길이
 
 		
-		if (obj.searchlist.length > 0) {
+		if (obj.searchlist.length > 0) { // 데이터가 1개 이상이면
 	
-			
+			 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
 		
 		for (var i = 0; i <obj.searchlist.length; i++) {  
 		console.log("board_id : " + obj.searchlist[i]["board_id"]); // 글번호
@@ -94,7 +94,10 @@ function searchBoard() {
 
        
 		 alert("ajax 검색내용 : " + search.value);
+		}else if (search.value == ""){
+			alert("검색할 내용을 입력하세요 ^^;;;;;;");
 		}else{
+			 $('.table td').remove();
 			console.log("검색결과 null");
 			 alert(search.value + "에 대한 검색결과가 없습니다! ");
 			

@@ -44,7 +44,7 @@
 	  
 	   <select id="getContentlist" resultType="Board">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
-	   select * from board order by board.board_id desc
+	   select * from board order by board.board_id desc limit 0,5
 	  </select>
 	  
 

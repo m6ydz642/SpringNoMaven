@@ -99,12 +99,12 @@ function searchBoard() {
 		}else{
 			 $('.table td').remove();
 			console.log("검색결과 null");
-			 alert(search.value + "에 대한 검색결과가 없습니다! ");
+			 alert(search.value + " 에 대한 검색결과가 없습니다! ");
 			
 			 console.log("데이터 길이 : " + obj.searchlist.length);
 
 			 	nothing += '<tr id="board">' 
-				nothing += '<td>' + '검색결과가 없어용' + '</td>'
+				nothing += '<td>' + search.value + ' 에 대한 검색결과가 없어용' + '</td>'
 				nothing += '</tr>'
 
 				
@@ -121,16 +121,63 @@ function searchBoard() {
 	});
 	
 }
+/*************************************************************************/
+ // 더보기 버튼
+function morelist() {
 
-/* function press(f){ 
-	if(f.keyCode == 13)
-	{ //javascript에서는 13이 enter키를 의미함 
-		formname.submit(); //formname에 사용자가 지정한 form의 name입력 
+	var morelist="";
+	$.ajax({
+	url : "/morelist",
+	type : "get",
+	// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
+
+	data : {morelist : morelist },
+	 async: true,
+	success : function (data, textStatus){
+
+		alert('공사중 입니다 아직 페이징 카운트 안되어 있음');
+		console.log('data내용 ' + data);
+		 var obj = JSON.parse(data);
+		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
+		 var nothing = "";
+		console.log("더보기 데이터 길이 : " + obj.morelist.length); // 길이
+
 	
-	} 
-}
-	 */
+		if (obj.morelist.length > 0) { // 데이터가 1개 이상이면
+	
+			// $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
+		
+		for (var i = 0; i <obj.morelist.length; i++) {  
+		console.log("board_id : " + obj.morelist[i]["board_id"]); // 글번호
+		console.log("userid : " + obj.morelist[i]["userid"]); // 아이디
+		console.log("subject : " + obj.morelist[i]["subject"]); // 제목
+		console.log("content : " + obj.morelist[i]["content"]); // 내용
 
+		 //   tag += '<table class= "table' + '">'
+		 	tag += '<tr id="board' + '" +  onclick ="fn_contentView('+ obj.morelist[i]["board_id"] + ')">' 
+			tag += '<td class="board_id' + '">' + obj.morelist[i]["board_id"] + '</td>' 
+			tag += '<td>' + obj.morelist[i]["subject"]  + '</td>'
+			tag +=  '<td>' + obj.morelist[i]["userid"] + '</td>'
+			tag +=  '<td>' + obj.morelist[i]["write_date"] + '</td>'
+			tag += '<td>' +  obj.morelist[i]["view_count"] + '</td>'
+		 	tag += '</tr>'
+
+		$(".table").append(tag);
+      	  console.log("ajax 태그 내용 : " + tag);
+		console.log("ajax 태그 추가 성공");
+}
+	
+		} 
+		
+	}, error: function (e) {
+		console.log("더보기 오류발생!!!!!!! : " + e.value);
+		alert("더보기 ajax 오류발생 ");
+	}
+	
+	});
+	
+}
+	/*************************************************************************/
 	 function Enter_Check(){
 	        // 엔터키의 코드는 13입니다.
 	    if(event.keyCode == 13){
@@ -182,21 +229,25 @@ function searchBoard() {
 <!-- ---------------------------------------------------------------- -->
 			<c:if test="${contentlist eq '[]'}">
 				<tr>
-					<td style="text-align:center">게시물이 없습니다 등록하지 마세요 ㅎㅎ</td>
+					<td style="text-align:center">게시물이 없습니다 !</td>
 				</tr>
-<!-- ---------------------------------------------------------------- -->
-
 
 			</c:if>
+<!-- ---------------------------------------------------------------- -->			
+			
 		</tbody>
            </table>
            <hr>
+           <!-- 나중에 게시글 몇개 이상일때 나오는걸로 바꿔야 됨 -->
+                <center>
+        <!-- 글 10개? 정도 이상 되야 더보기 버튼 나타나는 걸로 if문 처리하기 (검색결과도 동일하게 limit를 걸던지 -->
+			<input class="btn btn-secondary btn-sm" type="submit" value="더보기" onclick="morelist();"/> <br>
+           </center>
+<!-- ---------------------------------------------------------------- -->		
            
           <c:if test="${logininfo.userid ne null}">
           <!-- logininfo = 로그인 할때 들어간 세션값임  -->
-          
-           <a class="btn btn-default" href="/boardwrite">글쓰기</a>
-        
+                 <a class="btn btn-success" href="/boardwrite">글쓰기</a>
           </c:if>
           
           <div id="testdiv">
@@ -223,23 +274,16 @@ function searchBoard() {
  
           </div>
           
-     <!--       
-        <div class="text-center">
-           <ul class="pagination">
-     
-    
-           </ul>
-        </div> -->
-        
+
         <!--   <form class="navbar-form navbar-right" onsubmit="searchBoard();">   -->
         <!-- 나중에 이거 고쳐야 됨  -->
         
 			<div class="navbar-form navbar-right">
 			 <div class="form-group" >
 			  <input onsubmit="searchBoard();" type="text" id="search" 
-			  name="search" class="form-control" placeholder="검색어  공사중입니다"  onkeydown="Enter_Check();">
+			  name="search" class="form-control" placeholder="검색할 글제목을 입력해주세요"  onkeydown="Enter_Check();">
 			  
-			 <input value="공사중" type="submit" onclick="searchBoard();" >
+			 <input class="btn btn-primary btn-sm" value="검색" type="submit" onclick="searchBoard();" >
 		
 			  <!-- <button   type="submit" class="btn btn-default">검색</button> -->
 	   		</div>

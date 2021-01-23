@@ -513,4 +513,26 @@ System.out.println("test2 페이지 호출");
 
 return "honme";
 	}
+	
+	/**************************************************************************************/
+	// 게시글 더보기
+	@RequestMapping(value = "/morelist", method = RequestMethod.GET, 
+			produces = "application/text; charset=utf8") // value = "search", required = false
+	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
+	@ResponseBody
+	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response ) 
+			throws Exception {
+		System.out.println("게시글 더보기 호출");
+		
+		Map map = new HashMap();
+		List jsonlist = new ArrayList();
+		  List list = boardmapper.getContentlist(board);
+
+		org.json.JSONObject obj = new org.json.JSONObject();
+		obj.put("morelist", list);
+		System.out.println("더보기 버튼 ajax json : " + obj.toString());
+		return obj.toString() ; // json으로 리턴할 예정
+
+	}
+	/**************************************************************************************/
 }

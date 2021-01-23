@@ -74,7 +74,7 @@
 
 </script>
 <body>
-<<div class="container">
+<div class="container">
 	<table class="table">
 		<tbody>
 		<thead>
@@ -137,7 +137,7 @@
 <hr size="3">
 
 	<c:if test="${commentvalue eq '[]'}">
- 		<font color="gray" size="5">댓글이 없습니다! 등록하지 마세요!</font> <br>
+ 		<font color="gray" size="5">댓글이 없습니다!</font> <br>
  		<hr size="3">
 	</c:if>
 	

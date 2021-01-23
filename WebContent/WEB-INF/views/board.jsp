@@ -72,7 +72,7 @@ function searchBoard() {
 			tag +=  '<td>' + obj.searchlist[i]["userid"] + '</td>'
 			tag +=  '<td>' + obj.searchlist[i]["write_date"] + '</td>'
 			tag += '<td>' +  obj.searchlist[i]["view_count"] + '</td>'
-		 	tag += '</tr>'
+		 	tag += '</tr>';
 		// 	tag += '</table>'
 		/*  	var tag = "<tr id='board'>" + 
           		"<td class='board_id'>" + obj.searchlist[i]["board_id"] + "</td>" + 
@@ -82,11 +82,11 @@ function searchBoard() {
           		"<td class='view_count'>" + obj.searchlist[i]["view_count"] + "</td>" + 
       	  "</tr>"    */
       	
-
+		}
 		$(".table").append(tag);
       	  console.log("태그 내용 : " + tag);
 		console.log("태그 추가 성공");
-}
+
 		var test = "";
 		 test += "검색명 : " + search.value ;	// 개소름
 		// $("#testdiv").replaceWith(test);
@@ -160,12 +160,12 @@ function morelist() {
 			tag +=  '<td>' + obj.morelist[i]["userid"] + '</td>'
 			tag +=  '<td>' + obj.morelist[i]["write_date"] + '</td>'
 			tag += '<td>' +  obj.morelist[i]["view_count"] + '</td>'
-		 	tag += '</tr>'
-
+		 	tag += '</tr>';
+		}
 		$(".table").append(tag);
       	  console.log("ajax 태그 내용 : " + tag);
 		console.log("ajax 태그 추가 성공");
-}
+
 	
 		} 
 		

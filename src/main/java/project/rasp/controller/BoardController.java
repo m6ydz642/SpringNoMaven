@@ -74,6 +74,7 @@ public class BoardController {
 	// 아마 스프링은 원래 Service 만들어서 return해야 됨
 	// 객체로 만들어도 상관은 없지만 스프링은 그걸 써서
 
+	Paging count = new Paging();
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
 	
@@ -523,19 +524,23 @@ return "honme";
 			produces = "application/text; charset=utf8") // value = "search", required = false
 	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
 	@ResponseBody
-	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response
-			) 
+	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response,
+			@RequestParam (defaultValue = "countnum")int countnum		) 
 			throws Exception {
 		System.out.println("게시글 더보기 호출");
 		
 		Map map = new HashMap();
 		 
 		// numberOfRequests = numberOfRequests *5;
-		int count = 5;
-		int numberOfRequests = 0;
-		numberOfRequests = 0;
-		  List list = boardmapper.getContentMorelist(count, numberOfRequests);
-		  System.out.println("numberOfRequests : " + numberOfRequests);
+	
+		int numberOfRequests = 5;
+		countnum += 1;
+		paging.setCntPage(5);
+		int test = paging.getCntPage();
+		
+		System.out.println("카운트 넘버 : " + test);
+		  List list = boardmapper.getContentMorelist(test, numberOfRequests);
+		  System.out.println("sql limit : " + test + ", " + numberOfRequests);
 		  
 			System.out.println("더보기에 들어간 list 갯수 : " + list.size());
 		org.json.JSONObject obj = new org.json.JSONObject();

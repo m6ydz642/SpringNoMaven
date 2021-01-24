@@ -130,9 +130,12 @@ function searchBoard() {
  // 더보기 버튼
 function morelist() {
 
+	var countnum = 5;
+
+	
 	var morelist="";
 	$.ajax({
-	url : "/morelist",
+	url : "/morelist?countnum="+countnum,
 	type : "get",
 	// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
 

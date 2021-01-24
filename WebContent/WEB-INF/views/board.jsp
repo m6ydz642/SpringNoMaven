@@ -152,7 +152,7 @@ function morelist() {
 	 async: true,
 	success : function (data, textStatus){
 
-		alert('공사중 입니다 아직 페이징 카운트 안되어 있음');
+		// alert('공사중 입니다 아직 페이징 카운트 안되어 있음');
 		console.log('data내용 ' + data);
 		 var obj = JSON.parse(data);
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
@@ -204,17 +204,42 @@ function morelist() {
 	});
 	
 }
-	/*************************************************************************/
-	 function Enter_Check(){
-	        // 엔터키의 코드는 13입니다.
-	    if(event.keyCode == 13){
-	    	searchBoard();  // 실행할 이벤트
-	    }
-	}
-	 
+/*************************************************************************/
+// 검색기능 엔터 
+ 
+function Enter_Check(){
+       // 엔터키의 코드는 13입니다.
+   if(event.keyCode == 13){
+   	searchBoard();  // 실행할 이벤트
+   }
+}
 
+/*************************************************************************/
+function getCookie(name) { 
+	var cookie = document.cookie; 
+	if (document.cookie != "") { 
+		var cookie_array = cookie.split("; "); 
+		for ( var index in cookie_array) { 
+			var cookie_name = cookie_array[index].split("=");
+			if (cookie_name[0] == "popupYN") { return cookie_name[1]; 
+			} 
+			} 
+		} return ; 
+		}
+
+	 /*************************************************************************/
+	 function openPopup(url) { 
+		 var cookieCheck = getCookie("popupYN"); 
+		 if (cookieCheck != "N") {
+			 window.open(url, '', 'width=450,height=750,left=0,top=0') 
+		 }
+		}
+
+	
 </script>
        <body>
+       <body onload="javascript:openPopup('popup')">
+
        <div class="container">
     <table class="table table-hover">
         <thead>
@@ -295,7 +320,7 @@ function morelist() {
           PW : 1234 <br>
           
           <br>
-        현재 게시판 select 결과 -> insert 전환 백업쿼리 생성 <br>
+        게시판 전체 select 결과 -> insert 전환 백업쿼리 생성 (개발자용 편의모드 or 임시 백업)<br>
          <a href="http://60.100.123.75/backup">http://60.100.123.75/backup</a>
           
           

@@ -491,13 +491,12 @@ public class BoardController {
 	
 	/*******************************************************************/
 	
-	@RequestMapping(value = "/test2", method = RequestMethod.GET)
-	public String view2(@RequestParam (value = "search", required = false, defaultValue = "search") String search,
-	Model model, HttpServletRequest request ) throws Exception {
+	@RequestMapping(value = "/popup", method = RequestMethod.GET)
+	public String popup(Model model, HttpServletRequest request ) throws Exception {
 	
-System.out.println("test2 페이지 호출");
+System.out.println("팝업 페이지 호출");
 
-return "honme";
+return "popup";
 	}
 	
 	/**************************************************************************************/

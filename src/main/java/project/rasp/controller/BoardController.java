@@ -3,12 +3,9 @@ package project.rasp.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,19 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.binding.BindingException;
-import org.apache.ibatis.javassist.compiler.ast.Keyword;
-import org.h2.util.json.JSONArray;
-import org.h2.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,14 +25,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-import lombok.val;
 import project.rasp.Customfunction;
 import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
 import project.rasp.model.Paging;
-import project.rasp.model.User;
 
 /**
  * Handles requests for the application home page.
@@ -77,7 +64,7 @@ public class BoardController {
 	Paging count = new Paging();
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
-	
+	int countnum = 0;
 	/*********************************************************/
 	public ModelAndView AnyRedirect(String url) {
 		// 주소 안보이게 하는 리다이렉트 함수
@@ -99,19 +86,13 @@ public class BoardController {
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
 	public String list(Model model) throws Exception {
 		logger.info("게시판 호출");
-
+		countnum = 0; // 카운트를 전역 변수로 했기 때문에 
+		// 새로고침을 해도 값 초기화가 안됨 그래서 여기서 지워버림 ^^;;
 		List list = null;
 		list = boardmapper.getContentlist(board);
 		model.addAttribute("contentlist", list); // 값 넣음
 		System.out.println("들어간 list 갯수 : " + list.size());
-		
-		
-		/* 잠시 보류 오전 11:09 2021-01-20
-		 * System.out.println("댓글 개수 호출 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"); int
-		 * commentcount = boardmapper.CommentCount(1);
-		 * model.addAttribute("commentcount",commentcount);
-		 * System.out.println("댓글 개수 : " + commentcount);
-		 */
+	
 		
 		
 		return "board"; // board.jsp로 이동
@@ -524,8 +505,8 @@ return "honme";
 			produces = "application/text; charset=utf8") // value = "search", required = false
 	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
 	@ResponseBody
-	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response,
-			@RequestParam (defaultValue = "countnum")int countnum		) 
+	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response
+				) 
 			throws Exception {
 		System.out.println("게시글 더보기 호출");
 		
@@ -534,20 +515,21 @@ return "honme";
 		// numberOfRequests = numberOfRequests *5;
 	
 		int numberOfRequests = 5;
-		countnum += 1;
-		paging.setCntPage(5);
-		int test = paging.getCntPage();
+	
 		
-		System.out.println("카운트 넘버 : " + test);
-		  List list = boardmapper.getContentMorelist(test, numberOfRequests);
-		  System.out.println("sql limit : " + test + ", " + numberOfRequests);
-		  
+		System.out.println("카운트 넘버 : " + countnum);
+		  List list = boardmapper.getContentMorelist(countnum, numberOfRequests);
+		  System.out.println("sql limit : " + countnum + ", " + numberOfRequests);
+		  countnum += 5;
 			System.out.println("더보기에 들어간 list 갯수 : " + list.size());
 		org.json.JSONObject obj = new org.json.JSONObject();
 		obj.put("morelist", list);
+		obj.put("countnum", countnum);
 		System.out.println("더보기 버튼 ajax json : " + obj.toString());
 		return obj.toString() ; // json으로 리턴할 예정
 
 	}
+	
+	
 	/**************************************************************************************/
 }

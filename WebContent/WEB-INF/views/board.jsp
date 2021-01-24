@@ -126,20 +126,29 @@ function searchBoard() {
 	});
 	
 }
+var count = 0;
+function button_onclick(){
+ 
+   count += 5; 
+	      alert(count +"회 클릭하셨습니다.");
+	 }
+
+	
 /*************************************************************************/
  // 더보기 버튼
 function morelist() {
 
-	var countnum = 5;
+	var countnum = 0;
 
+	countnum += 5;
 	
 	var morelist="";
 	$.ajax({
-	url : "/morelist?countnum="+countnum,
+	url : "/morelist",
 	type : "get",
 	// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
 
-	data : {morelist : morelist },
+	data : {morelist : countnum },
 	 async: true,
 	success : function (data, textStatus){
 
@@ -149,13 +158,16 @@ function morelist() {
 		 var tag = ""; // 초기값 안주면 계속 undefined앞에 같이 나옴
 		 var nothing = "";
 		console.log("더보기 데이터 길이 : " + obj.morelist.length); // 길이
-
-	
+		var startNum = 10;
+		/// button_onclick();
 		if (obj.morelist.length > 0) { // 데이터가 1개 이상이면
-	
+			
 			// $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
 		
 		for (var i = 0; i <obj.morelist.length; i++) {  
+			
+			var idx = Number(startNum)+Number(i)+5;
+			
 		console.log("board_id : " + obj.morelist[i]["board_id"]); // 글번호
 		console.log("userid : " + obj.morelist[i]["userid"]); // 아이디
 		console.log("subject : " + obj.morelist[i]["subject"]); // 제목
@@ -173,7 +185,7 @@ function morelist() {
 		$(".table").append(tag);
       	  console.log("ajax 태그 내용 : " + tag);
 		console.log("ajax 태그 추가 성공");
-
+		console.log("idx : " + idx);
 	
 		}else if (obj.morelist.length <= 0) {
 			var notag="";

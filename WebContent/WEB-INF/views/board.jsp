@@ -95,7 +95,7 @@ function searchBoard() {
 			  
 
        
-		 alert("ajax 검색내용 : " + search.value);
+		// alert("ajax 검색내용 : " + search.value);
 		}else if (search.value == ""){
 			alert("검색할 내용을 입력하세요 ^^;;;;;;");
 		}else{

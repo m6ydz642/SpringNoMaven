@@ -64,7 +64,8 @@ public class BoardController {
 	Paging count = new Paging();
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
-	int countnum = 0;
+	int countnum = 5; // boardmapper.xml에서 이미 초기 조회시 limit 0,5로 고정이
+	// 되어있기 때문에 또 0으로 하면 중복으로 더보기가 되서 5로 고정
 	/*********************************************************/
 	public ModelAndView AnyRedirect(String url) {
 		// 주소 안보이게 하는 리다이렉트 함수
@@ -509,19 +510,22 @@ return "honme";
 				) 
 			throws Exception {
 		System.out.println("게시글 더보기 호출");
-		
-		Map map = new HashMap();
-		 
-		// numberOfRequests = numberOfRequests *5;
+
+		int numberOfRequests = 5; // 무조건 limit 에서 ?, 5 로 고정
+		// 5페이지만 고정
 	
-		int numberOfRequests = 5;
-	
-		
+		countnum += 5; // ajax로 컨트롤러 호출 될때마다 5씩증가임
+		// 전역변수라서 쌉가능, /board를 새로고침하거나 다른페이지에 
+		// 갔다가 다시 보드로 오면 새로고침을 할 수 밖에 없기 때문에
+		// /board 컨트롤러에서 0으로 초기화를 시켜버렸음
 		System.out.println("카운트 넘버 : " + countnum);
-		  List list = boardmapper.getContentMorelist(countnum, numberOfRequests);
-		  System.out.println("sql limit : " + countnum + ", " + numberOfRequests);
-		  countnum += 5;
-			System.out.println("더보기에 들어간 list 갯수 : " + list.size());
+		System.out.println("sql limit : " + countnum + ", " + numberOfRequests);
+		
+		List list = boardmapper.getContentMorelist(countnum, numberOfRequests);
+		
+		
+		
+		System.out.println("더보기에 들어간 list 갯수 : " + list.size());
 		org.json.JSONObject obj = new org.json.JSONObject();
 		obj.put("morelist", list);
 		obj.put("countnum", countnum);

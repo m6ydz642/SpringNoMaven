@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import project.rasp.model.Board;
+import project.rasp.model.Paging;
 
 public class Boardimpl implements BoardMapper{
 
@@ -92,6 +93,12 @@ public class Boardimpl implements BoardMapper{
 		map.put("search", search);
 		System.out.println("SearchContentList값 : " + map);
 		return sqlsession.selectOne("project.rasp.mapper.BoardMapper.SearchContentList", map);
+	}
+
+	@Override
+	public List<Board> getContentMorelist(int count, int numberOfRequests) throws Exception {
+		 numberOfRequests = numberOfRequests*5;
+		return sqlsession.selectOne("project.rasp.mapper.BoardMapper.getContentMorelist", numberOfRequests);
 	}
 
 

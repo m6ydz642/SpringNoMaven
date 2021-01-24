@@ -34,17 +34,24 @@
 	  	  <!-- 글수정시 작성자 검증 -->
 	   <select id="UpdateValidationContent" parameterType="map" resultType="boolean">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
-	   select * from board where userid =  #{userid} and board_id = #{board_id};
+	   select * from board where userid =  #{userid} and board_id = #{board_id}
 	  </select>
 	  
-	   <select id="Content" resultType="Board" parameterType="int">
+	   <select id="Content" resultType="Board" parameterType="int" >
 	   <!-- 글작성 -->
 	  select * from board where board_id = #{board_id}
 	    </select>
 	  
+	  <!-- 그냥 /board로 접속했을때-->
 	   <select id="getContentlist" resultType="Board">
 	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
 	   select * from board order by board.board_id desc limit 0,5
+	  </select>
+	  
+	  <!-- 더보기 버튼 이후 페이징 처리 -->
+	   <select id="getContentMorelist" resultType="Board" parameterType="int"> <!-- 게시글이라서 반환타입은 board -->
+	   <!-- id값은 usermapper에서 지정한 인터페이스 타입임 -->
+	   select * from board order by board.board_id desc limit #{count},#{numberOfRequests}
 	  </select>
 	  
 

@@ -9,11 +9,15 @@ import org.apache.ibatis.annotations.Param;
 import project.rasp.model.Board;
 import project.rasp.model.User;
 import project.rasp.model.Comment;
+import project.rasp.model.Paging;
 
 public interface BoardMapper {// 이게 사실 서비스나 마찬가지임
 	// 인터페이스에서 구현한 후 BoardImpl에서 리턴으로 객체 생성하던지 리턴만 하던지함
 
-  public List<Board> getContentlist(Board board) throws Exception; // 일단은 테스트로 글번호만 가져와보기
+  public List<Board> getContentlist(Board board) throws Exception; // 보드리스트
+  public List<Board> getContentMorelist(@Param("count") int count, @Param("numberOfRequests") int numberOfRequests) throws Exception; // 게시글 더보기
+  // mapper에 인자 2개 넘기려면 @Param 사용함
+  
   public Board Content(int board_id); // 보드
   public List<Comment> Comment(int board_num); // 댓글
   public void WriteContent(Map map); // 맵으로 글쓴 내용 가져감

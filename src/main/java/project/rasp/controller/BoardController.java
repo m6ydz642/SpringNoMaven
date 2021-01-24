@@ -42,6 +42,7 @@ import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
+import project.rasp.model.Paging;
 import project.rasp.model.User;
 
 /**
@@ -59,6 +60,8 @@ public class BoardController {
 
 	UserMapper usermapper;
 	private Comment comment;
+	
+	private Paging paging;
 	
 	private Customfunction customfunction = new Customfunction(); 
 	// Customfunction customfunction; // 클래스에서 빈 주입 해놓음
@@ -520,14 +523,21 @@ return "honme";
 			produces = "application/text; charset=utf8") // value = "search", required = false
 	// RequestMapping안에 produces = "application/text; charset=utf8")넣을시 인코딩 같이
 	@ResponseBody
-	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response ) 
+	public String   MoreList(Model model, HttpServletRequest request ,HttpServletResponse response
+			) 
 			throws Exception {
 		System.out.println("게시글 더보기 호출");
 		
 		Map map = new HashMap();
-		List jsonlist = new ArrayList();
-		  List list = boardmapper.getContentlist(board);
-
+		 
+		// numberOfRequests = numberOfRequests *5;
+		int count = 5;
+		int numberOfRequests = 0;
+		numberOfRequests = 0;
+		  List list = boardmapper.getContentMorelist(count, numberOfRequests);
+		  System.out.println("numberOfRequests : " + numberOfRequests);
+		  
+			System.out.println("더보기에 들어간 list 갯수 : " + list.size());
 		org.json.JSONObject obj = new org.json.JSONObject();
 		obj.put("morelist", list);
 		System.out.println("더보기 버튼 ajax json : " + obj.toString());

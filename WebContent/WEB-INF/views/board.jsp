@@ -37,7 +37,7 @@ function fn_contentView(board_id){
 
 
 function searchBoard() {
-
+	
 
 	$.ajax({
 	url : "/search",
@@ -59,6 +59,7 @@ function searchBoard() {
 	
 			 $('.table td').remove(); // 와 시발 이거땜에 존나 삽질함 ㅋㅋㅋㅋㅋ
 			 $('#morebutton').remove();
+			 $('#notag').remove();
 			 
 		for (var i = 0; i <obj.searchlist.length; i++) {  
 		console.log("board_id : " + obj.searchlist[i]["board_id"]); // 글번호
@@ -99,6 +100,9 @@ function searchBoard() {
 			alert("검색할 내용을 입력하세요 ^^;;;;;;");
 		}else{
 			 $('.table td').remove();
+			 $('#morebutton').remove();
+			 $('#notag').remove();
+			 
 			console.log("검색결과 null");
 			 alert(search.value + " 에 대한 검색결과가 없습니다! ");
 			
@@ -168,7 +172,14 @@ function morelist() {
 		console.log("ajax 태그 추가 성공");
 
 	
-		} 
+		}else if (obj.morelist.length <= 0) {
+			var notag="";
+			 $('#morebutton').remove();
+			// notag += '<font color="red' + '">' + '더 이상 조회할 데이터가 없습니다' + '</font>'
+			 $("#notag").append('더 이상 조회할 데이터가 없습니다');
+			 alert('더 이상 조회할 데이터가 없습니다');
+		}
+		 
 		
 	}, error: function (e) {
 		console.log("더보기 오류발생!!!!!!! : " + e.value);
@@ -243,6 +254,7 @@ function morelist() {
                 <center>
         <!-- 글 10개? 정도 이상 되야 더보기 버튼 나타나는 걸로 if문 처리하기 (검색결과도 동일하게 limit를 걸던지 -->
 			<input id="morebutton" class="btn btn-secondary btn-sm" type="submit" value="더보기" onclick="morelist();"/> <br>
+           	<font id="notag" color="red"></font>
            </center>
 <!-- ---------------------------------------------------------------- -->		
            

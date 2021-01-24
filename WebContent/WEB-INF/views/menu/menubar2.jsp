@@ -83,22 +83,7 @@ function searchFun() {
         <a class="nav-link" href="/board">Board</a>
 
       </li>
-      
-      <c:if test="${loginid eq null}"> 
-        <li class="nav-item">
 
-        <a class="nav-link" href="/login">Login</a>
-
-      </li>
-      </c:if>
-      
-       <c:if test="${loginid ne null}"> 
-        <li class="nav-item">
-
-        <a class="nav-link" href="/logout">Logout</a>
-	
-  	    </li>
-		</c:if>
 		
 		
       <li class="nav-item">
@@ -126,10 +111,28 @@ function searchFun() {
 <c:if test="${loginid ne null}"> 
           
      	 <li class="nav-item">
-				 <a class="nav-link">${loginid} 님 환영안합니다 ^^</a> 
+				 <a class="nav-link">${loginid} 님 반갑습니다</a> 
   		</li> 
 </c:if>
-    </ul>
+
+
+      
+      <c:if test="${loginid eq null}"> 
+        <li class="nav-item">
+
+        <a class="nav-link" href="/login">Login</a>
+
+      </li>
+      </c:if>
+      
+       <c:if test="${loginid ne null}"> 
+        <li class="nav-item">
+
+        <a class="nav-link" href="/logout">Logout</a>
+	
+  	    </li>
+		</c:if>
+		    </ul>
 
  <!--   <form   class="form-inline my-2 my-md-0" onsubmit="searchFun();" > 
 

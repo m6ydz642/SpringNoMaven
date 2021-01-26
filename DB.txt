@@ -41,3 +41,10 @@ insert into customer (userid, userpassword, username, join_date) values ('test',
 	INSERT INTO BOARD (username, subject, content, write_date )
 	VALUES ('test',  #{subject}, #{content}, now() )
 ------------------------------------------------------------------------
+유저 등급 추가
+
+select * from customer;
+// 컬럼 추가, 삭제
+// alter table customer drop auth;
+// alter table customer add auth varchar(10) default 'USER';
+

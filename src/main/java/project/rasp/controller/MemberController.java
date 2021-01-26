@@ -100,7 +100,7 @@ public class MemberController {
 				// jsp에 이미 좀 키값 사용해놓은게 좀 많음 ㅋㅋ 
 				
 				session.setAttribute("loginid", user.getUserid()); // 로그인 아이디 등록
-				
+				session.setAttribute("logintest", result); // 로그인 정보 전체 등록
 				System.out.println("something 값 : " + result.getUsername());				
  				session.setAttribute("logininfoname", result.getUsername());
 

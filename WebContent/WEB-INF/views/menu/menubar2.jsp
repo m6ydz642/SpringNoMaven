@@ -113,6 +113,10 @@ function searchFun() {
      	 <li class="nav-item">
 				 <a class="nav-link">${loginid} 님 반갑습니다</a> 
   		</li> 
+  		
+  			 <li class="nav-item">
+				 <a class="nav-link">유저등급 : ${logintest.auth} </a> 
+  		</li> 
 </c:if>
 
 

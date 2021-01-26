@@ -1,11 +1,6 @@
 package project.rasp.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Repository;
 
 
 
@@ -17,11 +12,19 @@ public class User {
 	private String userpassword ;
 	private String username;
 	private String[] write_date;
+	private String auth;
+	
 	
 	
 	
 
 
+	public String getAuth() {
+		return auth;
+	}
+	public void setAuth(String auth) {
+		this.auth = auth;
+	}
 	public String[] getWrite_date() {
 		return write_date;
 	}

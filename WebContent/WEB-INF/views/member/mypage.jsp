@@ -40,8 +40,8 @@
                         <input type="text" class="form-control" id="inputName" value="${logininfoname }">
                     </div>
                     <div class="form-group">
-                        <label for="InputEmail">이메일 주소</label>
-                        <input type="email" class="form-control" id="InputEmail" placeholder="이메일 주소를 입력해주세요">
+                        <label for="InputEmail">등급</label>
+                        <input type="email" class="form-control" id="InputEmail" value="${logintest.auth}">
                     </div>
                     <div class="form-group">
                         <label for="inputPassword">비밀번호</label>

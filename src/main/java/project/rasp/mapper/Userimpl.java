@@ -26,6 +26,7 @@ public class Userimpl implements UserMapper {
 		String lock = null;
 		name = sqlsession.selectOne("project.rasp.mapper.UserMapper.UserLoginCheck", user);
 		System.out.println("sql UserMapper 세션 로그인 체크 내용 : " + name);
+
 		return name;
 
 	}

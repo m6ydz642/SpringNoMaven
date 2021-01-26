@@ -101,6 +101,9 @@ public class MemberController {
 				
 				session.setAttribute("loginid", user.getUserid()); // 로그인 아이디 등록
 				
+				System.out.println("something 값 : " + result.getUsername());				
+ 				session.setAttribute("logininfoname", result.getUsername());
+
 				System.out.println("로그인 세션등록 성공");
 				System.out.println("세션 값 : " + session.getAttribute("logininfo"));
 				
@@ -159,6 +162,23 @@ public class MemberController {
 		session.invalidate(); // 세션 제거
 				
 		return "redirect:board"; // login.jsp로 이동
+
+	}
+	
+	
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public String MyPage(HttpServletRequest request, HttpServletResponse response, HttpSession session, User user) throws IOException {
+		System.out.println("로그인 호출");
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+
+		// 일단 로그인 여부 확인안함 
+		//String value = (String) session.getAttribute("logininfo"); 
+		// System.out.println("value 값 : " + value);
+	
+				
+		return "member/mypage"; // login.jsp로 이동
 
 	}
 	

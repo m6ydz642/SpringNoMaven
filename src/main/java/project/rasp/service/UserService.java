@@ -17,6 +17,6 @@ public interface UserService {
 	 * int id);
 	 */
 	
-	public boolean UserLoginCheck(User user, HttpSession session);
+	public User UserLoginCheck(User user, HttpSession session);
 
 }

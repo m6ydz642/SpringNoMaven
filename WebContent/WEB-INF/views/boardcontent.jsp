@@ -21,7 +21,7 @@
 <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
 </head>
 
@@ -72,6 +72,28 @@
 	alert("준비중입니다 언제할지는 몰라요 안할수도 있습니다.");
 }
 
+ function commentmodify(userid) {
+	
+	console.log("댓글수정 값 : " + userid);
+	alert(userid + "번 댓글 수정 호출 ");
+	var tag ="";
+	// ajax영역 미리 해놓을거
+	$("#commentarea").remove(); // 이미 작성되어 있는 댓글
+	
+	tag += '<textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">ㅇㅇ수정칸임' + ' </textarea>'
+	tag += '<button class="btn btn-primary">댓글수정하기</button>';
+	
+	$("#modifycommentarea").append(tag);
+	
+// 	<!-- <textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px;  -->
+// 		<!-- width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;"> -->
+// 		<!-- ㅇㅇ  -->
+// 		<!-- 여기다 댓글 수정 칸 추가할거임 -->
+// 		<!-- 	</textarea> -->
+
+}
+ 
+ 
 </script>
 <body>
 <div class="container">
@@ -130,7 +152,7 @@
 	<a class="btn btn-primary" onclick ="fn_contentModify(<c:out value="${boardcontent_num.board_id}"/>)">글수정</a>
 	<a class="btn btn-danger" onclick="fn_contentDelete(<c:out value="${boardcontent_num.board_id}"/>)">글삭제</a>
 	</c:if>
-	<a class="btn btn-info" href="/board">글목록</a>
+	<a class="btn btn-info" href="javascript:window.history.back();">글목록</a>
 <br>
 <br>
 
@@ -145,11 +167,19 @@
 
 	<c:forEach var="comment" items="${comment}">
 <div class="container">	
-	<p>
+	<p id="modifycommentarea">
+<!-- <textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px;  -->
+<!--  width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">  -->
+<!-- ㅇㅇ  -->
+<!-- 여기다 댓글 수정 칸 추가할거임 -->
+<!-- 	</textarea> -->
+
 	<!-- 프로필 사진 -->
 		<img alt="Profile" src="../../image/profile.png" width="50px" height="50px" align="left">
 		 댓글번호: ${comment.comment_number } <br>
-		 작성자: <b>${comment.userid }</b> <font color="gray" size="1.5">(${comment.comment_date[0]})</font> <br>
+		 작성자: <b>${comment.userid }</b> <font color="gray" size="1.5">(${comment.comment_date[0]})</font>
+		 <a href="javascript:void(0);" class="comment-edit-btn" onclick="commentmodify(${comment.comment_number})">수정</a>
+		 <a href="#" class="comment-edit-btn">삭제</a>		
 				<c:if test="${comment.comment_content eq ''}">
 					<font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font>
 					<br>
@@ -157,7 +187,7 @@
 
 				<c:if test="${comment.comment_content ne ''}">
 						<br>
-					<p style="text-indent:0em;">${comment.comment_content }
+					<p id="commentarea" style="text-indent:0em;">${comment.comment_content }
 						
 					</p>
 
@@ -186,11 +216,12 @@
 			<!--
     <label for="comment">작성자:</label>
  <textarea class="form-control" rows="1" id="comment" style="margin: 0px 388px 0px 0px; width: 111px; height: 31px;"></textarea>-->
-			
 		
 <div class="container">
 			<tr>
+
  <c:if test="${logininfo.userid ne null}">
+ 
 				<td><b>작성자 : </b> <br>
 				<b>&nbsp;${logininfo.userid}</b></td>
 				<input name="comment_userid" value="<c:out value="${logininfo.userid}"/>" readonly="readonly" hidden="">
@@ -204,7 +235,7 @@
 		<input name ="board_id" value ="<c:out value="${boardcontent_num.board_id}"/>" readonly="readonly" hidden="">
 		<!-- <br> ↑↑ 조만간 hidden으로 숨길꺼임  <br><br> -->
 		<!-- name값에 글번호 옮겨서 board_id=?해서 값 쓸용도 -->
-		
+		 
 		<button type="submit" class="btn btn-primary" name="comment_board_id"
 		onclick="fn_contentView(<c:out value="${boardcontent_num.board_id}"/>)">댓글 작성</button>
 </c:if>

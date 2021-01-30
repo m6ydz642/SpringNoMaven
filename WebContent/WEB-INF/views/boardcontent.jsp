@@ -60,6 +60,9 @@
 		}
 	}
  
+ 
+ 
+ 
  function fn_contentModify(board_id){
 
 		var url = "${pageContext.request.contextPath}/boardmodify"; // 글 수정으로 이동
@@ -148,7 +151,7 @@ var content = $('#testarea').val();
  /*********************************************************************/
  // 댓글삭제
  
- function commentdelete(comment_number, board_id) {
+ function commentdeletecomplete(comment_number, board_id) {
 		
 		console.log("댓글삭제요청 댓글번호 : " + comment_number);
 		console.log("댓글삭제요청 글번호 : " + board_id);
@@ -179,9 +182,20 @@ var content = $('#testarea').val();
 		});  
 	var tag ="";
 
-						
-	
+	}
 
+ /*********************************************************************/
+ function commentdelete(comment_number, board_id) {
+
+		var result = confirm("댓글을 삭제하시겠어요?");
+		// 삭제 확인 여부
+		if(result){
+		    alert("댓글이 삭제되었습니다");
+		    commentdeletecomplete(comment_number, board_id);
+		}else{
+		    alert("댓글삭제가 취소되었습니다");
+		return false;
+		}
 	}
  
 </script>
@@ -279,7 +293,7 @@ var content = $('#testarea').val();
 		<c:if test="${sessionScope.loginid eq comment.userid  && comment.delete eq 'N'}"> 
 		<!-- 본인글만 댓글삭제, 댓글수정 나오게, 삭제된 댓글이 아닌 글만 -->
 		 <a href="#testarea" class="comment-edit-btn" onclick="commentmodify(${comment.comment_number}, ${comment.board_id })">수정</a>
-		 <a href="#comment" class="comment-edit-btn" onclick="commentdelete(${comment.comment_number}, ${comment.board_id })">삭제</a>	
+		 <a href="#" class="comment-edit-btn" onclick="commentdelete(${comment.comment_number}, ${comment.board_id })">삭제</a>	
 		 <br>	
 		 </c:if>
 				<c:if test="${comment.comment_content eq ''}">

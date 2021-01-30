@@ -48,3 +48,7 @@ select * from customer;
 // alter table customer drop auth;
 // alter table customer add auth varchar(10) default 'USER';
 
+
+/********************************/
+alter table comment add delete varchar(2) default 'N'; // 댓글 삭제 여부 
+

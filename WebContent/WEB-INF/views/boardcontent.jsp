@@ -26,6 +26,9 @@
 </head>
 
 <script type="text/javascript">
+
+
+
  function fn_contentView(board_id){
 
 	var url = "${pageContext.request.contextPath}/boardcontent";
@@ -71,19 +74,65 @@
  function ready() {
 	alert("준비중입니다 언제할지는 몰라요 안할수도 있습니다.");
 }
+ 
+ function commentmodifytest (comment_number) { // 댓글 수정하기 완료 호출함수
 
- function commentmodify(userid) {
+	 console.log("ajax 댓글 수정 전달 글 번호 : " + $('#board_id').val()); // 필요한것도 아니고 안되서 안씀
+	 console.log("ajax 요청 전달받은 댓글내용 : " + $('#testarea').val() );
+ 	console.log("ajax 전달받은 comment_number : " + comment_number);
+ 	var testarea = $('#testarea').val(); 
+	  $.ajax({
+	 		url : "/commentedit",
+	 		
+	 		type : "post", 
+	 		// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
+
+	 		data : { 'comment_number' : comment_number , 'testarea' : testarea},
+	 		 async: true,
+	 		success : function (data, textStatus){
+	 			alert("댓글을 수정하였습니다");
+	 			console.log(data);
+	 			$('.comment-edit-btn').focus();
+	 			window.location.reload(); // 태그 다시 추가하기 귀찮아서 그냥 새로고침으로 ^^ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+	 			document.location.reload(true);// 스크롤 유지
+	 			
+	 			}, error: function (e) {
+			console.log("댓글 오류발생!!!!!!! : " + e.value);
+			alert("댓글수정 ajax 오류발생 ");
+		}
+		
+	});  
 	
-	console.log("댓글수정 값 : " + userid);
-	alert(userid + "번 댓글 수정 호출 ");
-	var tag ="";
-	// ajax영역 미리 해놓을거
-	$("#commentarea").remove(); // 이미 작성되어 있는 댓글
+ }
+ 
+
+ function commentmodify(comment_number, board_id) {
 	
-	tag += '<textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">ㅇㅇ수정칸임' + ' </textarea>'
-	tag += '<button class="btn btn-primary">댓글수정하기</button>';
+	console.log("댓글수정 번호 번호 : " + comment_number + "수정요청 글번호 : " + board_id);
+	// alert("댓글수정 번호 번호 : " + comment_number + "수정요청 글번호 : " + board_id);
 	
-	$("#modifycommentarea").append(tag);
+
+			var tag ="";
+
+					
+// $("#commentarea").remove(); // 기존에 작성되어 있는 댓글
+$("#commentmodifybuttonarea").remove(); // 기존 댓글작성 버튼이랑 input태그를 삭제함
+//  tag += '<textarea name=testarea id=testarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">' + ' </textarea>'
+tag += '<div class="container">'
+tag += '<p id="commentmodifybuttonarea">'
+ tag += '<textarea class="form-control"  rows="5"  name=testarea id=testarea  style="margin: 0px 835px 0px 0px; width: 660px; height: 121px  ">' + ' </textarea>'
+ 
+// tag += '<button type="submit" class="btn btn-primary" onclick="commentmodifytest(' + comment_number + '); "> ' + '댓글수정하기' + '</button>'
+tag += '<button type="submit" class="btn btn-success" onclick="commentmodifytest(' + comment_number + '); "> ' + '댓글수정하기' + '</button>'
+tag += '</p>'
+// $("#commentarea").append(tag);
+tag += '</div>'
+$("#newcommentarea").append(tag); // input부분에 버튼으로 대체
+		
+var content = $('#testarea').val();
+			
+ 
+
 	
 // 	<!-- <textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px;  -->
 // 		<!-- width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;"> -->
@@ -93,6 +142,47 @@
 
 }
  
+ 
+ 
+ 
+ /*********************************************************************/
+ // 댓글삭제
+ 
+ function commentdelete(comment_number, board_id) {
+		
+		console.log("댓글삭제요청 댓글번호 : " + comment_number);
+		console.log("댓글삭제요청 글번호 : " + board_id);
+		
+		  $.ajax({
+		 		url : "/commentdelete",
+		 		
+		 		type : "post", 
+		 		// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
+
+		 		data : { comment_number: comment_number},
+		 		 async: true,
+		 		success : function (data, textStatus){
+		 			
+		 		alert("댓글이 삭제되었습니다");
+		 			
+		 		
+		 			console.log(data);
+		
+		 			window.location.reload(); // 태그 다시 추가하기 귀찮아서 그냥 새로고침으로 ^^ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+		 			document.location.reload(true);// 스크롤 유지
+		 			
+		 			}, error: function (e) {
+				console.log("댓글삭제 오류발생!!!!!!! : " + e.value);
+				alert("댓글삭제 ajax 오류발생 ");
+			}
+			
+		});  
+	var tag ="";
+
+						
+	
+
+	}
  
 </script>
 <body>
@@ -105,7 +195,7 @@
 				<th>제목 : <c:out value="${boardcontent.subject}" /></th>
 				<th></th>
 				<th></th>
-				<th>글번호 : ${boardcontent.board_id}</th>
+				<th id="board_id">글번호 : ${boardcontent.board_id}</th>
 				<th></th>
 
 			</tr>
@@ -149,8 +239,15 @@
 <div class="container">
 	 <c:if test="${logininfo.userid ne null}">
 	<a class="btn btn-success" href="/boardwrite">글쓰기</a>
+	</c:if> <!-- 유저전용 -->
+	
+	<c:if test="${sessionScope.loginid eq boardcontent.userid }"> 
+	<!-- 본인글만 삭제, 수정 나오게, 세션이랑 DB userid랑 비교 -->
+	
 	<a class="btn btn-primary" onclick ="fn_contentModify(<c:out value="${boardcontent_num.board_id}"/>)">글수정</a>
 	<a class="btn btn-danger" onclick="fn_contentDelete(<c:out value="${boardcontent_num.board_id}"/>)">글삭제</a>
+	
+	
 	</c:if>
 	<a class="btn btn-info" href="javascript:window.history.back();">글목록</a>
 <br>
@@ -164,28 +261,40 @@
 	</c:if>
 	
 </div>
-
-	<c:forEach var="comment" items="${comment}">
-<div class="container">	
-	<p id="modifycommentarea">
+	<p id="commentmodifyarea">
 <!-- <textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px;  -->
 <!--  width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">  -->
 <!-- ㅇㅇ  -->
 <!-- 여기다 댓글 수정 칸 추가할거임 -->
 <!-- 	</textarea> -->
 
+	<c:forEach var="comment" items="${comment}">
+	<div class="container" id="comment_test">	
+
+
 	<!-- 프로필 사진 -->
 		<img alt="Profile" src="../../image/profile.png" width="50px" height="50px" align="left">
-		 댓글번호: ${comment.comment_number } <br>
+		<p id=""> 댓글번호: ${comment.comment_number } <br></p>
 		 작성자: <b>${comment.userid }</b> <font color="gray" size="1.5">(${comment.comment_date[0]})</font>
-		 <a href="javascript:void(0);" class="comment-edit-btn" onclick="commentmodify(${comment.comment_number})">수정</a>
-		 <a href="#" class="comment-edit-btn">삭제</a>		
+		<c:if test="${sessionScope.loginid eq comment.userid  && comment.delete eq 'N'}"> 
+		<!-- 본인글만 댓글삭제, 댓글수정 나오게, 삭제된 댓글이 아닌 글만 -->
+		 <a href="#testarea" class="comment-edit-btn" onclick="commentmodify(${comment.comment_number}, ${comment.board_id })">수정</a>
+		 <a href="#comment" class="comment-edit-btn" onclick="commentdelete(${comment.comment_number}, ${comment.board_id })">삭제</a>	
+		 <br>	
+		 </c:if>
 				<c:if test="${comment.comment_content eq ''}">
 					<font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font>
 					<br>
 				</c:if>
 
-				<c:if test="${comment.comment_content ne ''}">
+				 <c:if test="${comment.delete eq 'Y'}">
+				<br>
+					<font color="orange"><b>삭제된 댓글입니다</b></font>
+					<br>
+				</c:if> 
+
+
+				<c:if test="${comment.comment_content ne '' && comment.delete eq 'N'}">
 						<br>
 					<p id="commentarea" style="text-indent:0em;">${comment.comment_content }
 						
@@ -229,15 +338,23 @@
 
 			<br>
 			<br> <label for="comment">댓글 내용:</label>
-			<textarea class="form-control" rows="5" id="comment" name="commentcontent"
+	 <p id="commentmodifybuttonarea"> <!-- 자바스크립트 태그 교체 땜시 바꿈 -->
+			<textarea class="form-control" rows="5" id="comment" name="commentcontent" id="commentcontent"
 				style="margin: 0px 835px 0px 0px; width: 660px; height: 121px;"></textarea>
 	
-		<input name ="board_id" value ="<c:out value="${boardcontent_num.board_id}"/>" readonly="readonly" hidden="">
+		<input name ="board_id" value ="<c:out value="${boardcontent_num.board_id}"/>" readonly="readonly" hidden="" id="boardid">
 		<!-- <br> ↑↑ 조만간 hidden으로 숨길꺼임  <br><br> -->
 		<!-- name값에 글번호 옮겨서 board_id=?해서 값 쓸용도 -->
-		 
-		<button type="submit" class="btn btn-primary" name="comment_board_id"
+			 
+		
+		<button type="submit" class="btn btn-primary" name="comment_board_id" id="commentwrite_button"
 		onclick="fn_contentView(<c:out value="${boardcontent_num.board_id}"/>)">댓글 작성</button>
+		
+		</p>
+		
+		<p id="newcommentarea">
+		
+		</p>
 </c:if>
 		
 		<c:if test="${logininfo.userid eq null}">

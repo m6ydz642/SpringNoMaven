@@ -101,5 +101,21 @@ public class Boardimpl implements BoardMapper{
 		return sqlsession.selectOne("project.rasp.mapper.BoardMapper.getContentMorelist", numberOfRequests);
 	}
 
+	@Override
+	public int CommentUpdate(Map map) {
+		int result = sqlsession.update("project.rasp.mapper.CommentUpdate", map);
+		System.out.println("댓글 수정 결과 : " + result);
+		// 사실 이거 서비스 연결안해놔서 안되는데 왜했지 ㅋㅋ
+		return result;
+	}
+
+
+
+	@Override
+	public int CommentDelete(Map map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

@@ -63,6 +63,24 @@
 	 where board_id = #{board_id} order by comment.comment_number desc 
 	    </select>
 
+	<!-- 댓글 수정 -->
+	<update id="CommentUpdate" parameterType="map">
+		<!-- 댓글 조회 -->
+		update comment 
+		set comment_content = #{comment_content}
+		where comment_number = #{comment_number} and userid = #{userid};
+
+	</update>
+	
+	<!-- 댓글 삭제 (삭제 안하고 조회에서 제외처리하는 방식)-->
+	<update id="CommentDelete" parameterType="map">
+		<!-- 댓글 조회 -->
+		update comment 
+		set delete = 'Y' 
+		where comment_number = #{comment_number} and userid = #{userid};
+
+	</update>
+	    
 
  <insert id="WriteContent" parameterType="map"> 
  <!--   keyProperty="id" -->

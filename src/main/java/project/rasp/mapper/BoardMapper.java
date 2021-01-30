@@ -23,7 +23,9 @@ public interface BoardMapper {// 이게 사실 서비스나 마찬가지임
   public void WriteContent(Map map); // 맵으로 글쓴 내용 가져감
   									 // 객체로 안됨 ㅠ 
   										
-  public void WriteComment(Map map); // 댓글
+  public void WriteComment(Map map); // 댓글 작성
+  public int CommentUpdate(Map map); // 댓글 수정
+  public int CommentDelete(Map map); // 댓글 삭제
   public void DeleteContent(int board_id); // 글삭제, int로 들고가서 board_id만 mapper에서 사용
   public void UpdateContent(Map map); // 맵으로 수정한 내용 가져감
   public boolean UpdateValidationContent(Map map); // 글 수정 검증 

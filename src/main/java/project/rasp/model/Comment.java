@@ -11,11 +11,19 @@ public class Comment {
 	private String username;
 	private String comment_content;
 	private String[] comment_date;
+	private String delete; // 삭제여부
+	
 	
 	
 	
 
 
+	public String getDelete() {
+		return delete;
+	}
+	public void setDelete(String delete) {
+		this.delete = delete;
+	}
 	public String[] getComment_date() {
 		return comment_date;
 	}

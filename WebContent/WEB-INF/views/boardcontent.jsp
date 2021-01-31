@@ -157,6 +157,11 @@ tag += '</p>'
  tag += '</div>'
 $("#newcommentarea").append(tag); // input부분에 버튼으로 대체
 		
+		/******************************************************/
+		// $("#commentmodifybuttonarea *").remove(); // 기존 댓글작성 버튼이랑 input태그를 삭제함
+		// 이렇게 해서 지운다음 마지막에 $("#commentmodifybuttonarea").append(tag); 해서도 가능함
+		// * <---를 늦게 알아서 영역을 새로만들었었음 
+		
 var content = $('#testarea').val();
 		 		}, error: function (e) {
 						console.log("댓글 오류발생!!!!!!! : " + e.value);

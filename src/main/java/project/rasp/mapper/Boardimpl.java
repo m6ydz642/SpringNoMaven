@@ -117,5 +117,11 @@ public class Boardimpl implements BoardMapper{
 		return 0;
 	}
 
+	@Override
+	public project.rasp.model.Comment CommentEditSelect(Map map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

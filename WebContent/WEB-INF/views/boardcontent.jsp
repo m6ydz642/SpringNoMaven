@@ -6,7 +6,6 @@
 <html>
 <head>
  <jsp:include page="menu/menubar2.jsp" />
- 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><c:out value="${boardcontent.subject}" /></title>
 
@@ -78,14 +77,15 @@
 	alert("준비중입니다 언제할지는 몰라요 안할수도 있습니다.");
 }
  
- function commentmodifytest (comment_number) { // 댓글 수정하기 완료 호출함수
+ function commentmodifycomplete (comment_number) { // 댓글 수정하기 완료 호출함수
 
 	 console.log("ajax 댓글 수정 전달 글 번호 : " + $('#board_id').val()); // 필요한것도 아니고 안되서 안씀
 	 console.log("ajax 요청 전달받은 댓글내용 : " + $('#testarea').val() );
  	console.log("ajax 전달받은 comment_number : " + comment_number);
+ 	
  	var testarea = $('#testarea').val(); 
 	  $.ajax({
-	 		url : "/commentedit",
+	 		url : "/commenteditcomplete",
 	 		
 	 		type : "post", 
 	 		// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
@@ -108,40 +108,63 @@
 	
  }
  
-
- function commentmodify(comment_number, board_id) {
-	
+ 
+ function commentmodify(comment_number, board_id) { // 그냥 수정버튼으로 수정 이전 작업 요청
+	 											   // 결과 select해서 보여주면 됨
+	// 댓글 수정
 	console.log("댓글수정 번호 번호 : " + comment_number + "수정요청 글번호 : " + board_id);
+	// var comment_content = $('#commentarea').val(); // 기존 글
+ 	// alert ('수정할 댓글 내용 ' + comment_content);
 	// alert("댓글수정 번호 번호 : " + comment_number + "수정요청 글번호 : " + board_id);
-	
+	// $("#newcommentarea").remove();
+
 
 			var tag ="";
 
-					
-// $("#commentarea").remove(); // 기존에 작성되어 있는 댓글
+			 $.ajax({
+			 		url : "/commentedit", // select할 주소
+			 		
+			 		type : "post", 
+			 		// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
+
+			 	//	data : { 'comment_number' : comment_number , 'comment_content' : comment_content},
+		 		data : { comment_number : comment_number },
+			 		 async: false, // 동기로 처리하게되면 버튼을 눌러 request 요청을 날렸을 때 response 요청이 올 때까지
+			 		// 다른 request 요청은 받지 않게 되어 중복호출을 방지한다. 
+					// 근데 이거 안먹힌다 ㅡ.ㅡㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+					// 밑에  $("#newcommentarea *").remove(); 로 해결함
+			 		
+			 		success : function (data, textStatus){	
+			 		   
+console.log ("댓글 수정 data : " + data);
+var obj = JSON.parse(data);
+
+console.log ("댓글내용 : " + obj.comment_content); //객체 타입이라 이렇게 들고와야 됨
+// alert ("댓글 가져온 내용 : " + obj.comment_content)
+
 $("#commentmodifybuttonarea").remove(); // 기존 댓글작성 버튼이랑 input태그를 삭제함
+ $("#newcommentarea *").remove(); // 댓글 수정 버튼을 눌렸을 것을 대비해서 기존 태그를 전체 삭제하는게 아니라 
+ 									// newcommentarea내부의 요소만 삭제한다 #newcommentarea로 할경우 계속 전체를 삭제해서 제대로 추가 안됨
 //  tag += '<textarea name=testarea id=testarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px; width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;">' + ' </textarea>'
-tag += '<div class="container">'
-tag += '<p id="commentmodifybuttonarea">'
- tag += '<textarea class="form-control"  rows="5"  name=testarea id=testarea  style="margin: 0px 835px 0px 0px; width: 660px; height: 121px  ">' + ' </textarea>'
+ tag += '<div class="container">'
+tag += '<p id="newcommentarea">'
+tag += '<textarea class="form-control"  rows="5"  name=testarea id=testarea  style="margin: 0px 835px 0px 0px; width: 660px; height: 121px  ">' + obj.comment_content + ' </textarea>'
  
 // tag += '<button type="submit" class="btn btn-primary" onclick="commentmodifytest(' + comment_number + '); "> ' + '댓글수정하기' + '</button>'
-tag += '<button type="submit" class="btn btn-success" onclick="commentmodifytest(' + comment_number + '); "> ' + '댓글수정하기' + '</button>'
+tag += '<button type="button" class="btn btn-success" onclick="commentmodifycomplete(' + comment_number + '); "> ' + '댓글수정하기' + '</button>'
 tag += '</p>'
 // $("#commentarea").append(tag);
-tag += '</div>'
+ tag += '</div>'
 $("#newcommentarea").append(tag); // input부분에 버튼으로 대체
 		
 var content = $('#testarea').val();
-			
- 
+		 		}, error: function (e) {
+						console.log("댓글 오류발생!!!!!!! : " + e.value);
+						alert("댓글수정 ajax 오류발생 ");
+					}
+					
+				});  
 
-	
-// 	<!-- <textarea style="border-bottom-width: 0px; border-right-width: 0px; border-left-width: 0px; padding-left: 0px;  -->
-// 		<!-- width: 430.967px; margin-top: 0px; margin-bottom: 0px; height: 92px;"> -->
-// 		<!-- ㅇㅇ  -->
-// 		<!-- 여기다 댓글 수정 칸 추가할거임 -->
-// 		<!-- 	</textarea> -->
 
 }
  
@@ -190,8 +213,8 @@ var content = $('#testarea').val();
 		var result = confirm("댓글을 삭제하시겠어요?");
 		// 삭제 확인 여부
 		if(result){
-		    alert("댓글이 삭제되었습니다");
-		    commentdeletecomplete(comment_number, board_id);
+		 //   alert("댓글이 삭제되었습니다");
+		    commentdeletecomplete(comment_number, board_id); // 삭제 함수 호출
 		}else{
 		    alert("댓글삭제가 취소되었습니다");
 		return false;
@@ -270,7 +293,7 @@ var content = $('#testarea').val();
 <hr size="3">
 
 	<c:if test="${commentvalue eq '[]'}">
- 		<font color="gray" size="5">댓글이 없습니다!</font> <br>
+ 		<font color="gray" size="5">ⓘ 댓글이 없습니다!</font> <br>
  		<hr size="3">
 	</c:if>
 	
@@ -297,13 +320,13 @@ var content = $('#testarea').val();
 		 <br>	
 		 </c:if>
 				<c:if test="${comment.comment_content eq ''}">
-					<font color="red"><b>내용 : 사용자가 null을 입력하였습니다</b></font>
+					<font color="red"><b>내용 : ⓘ 사용자가 null을 입력하였습니다</b></font>
 					<br>
 				</c:if>
 
 				 <c:if test="${comment.delete eq 'Y'}">
 				<br>
-					<font color="orange"><b>삭제된 댓글입니다</b></font>
+					<font color="orange"><b>ⓘ 삭제된 댓글입니다</b></font>
 					<br>
 				</c:if> 
 
@@ -321,7 +344,6 @@ var content = $('#testarea').val();
 	
 
   
-<!-- <div style="text-align:right"> 글자 오른쪽 정렬 -->
 
 </div>
 <div class="container">	
@@ -333,7 +355,7 @@ var content = $('#testarea').val();
 	</div>
 	<br>
 	
-	<form action="/commentwrite" method="post">
+	<form action="/commentwrite" method="post" id="commentwriteform">
 		<div class="form-group">
 		
 			<!--

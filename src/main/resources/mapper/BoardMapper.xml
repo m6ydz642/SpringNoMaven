@@ -112,5 +112,13 @@
 	where board_id = #{board_id}; 
 	</update>
 	
+	<select id="CommentEditSelect" resultType="Comment" parameterType="map">
+	   <!-- 댓글 수정요청시 inputbox에 가져오는 용도 -->
+	 select * from comment 
+	 where  comment_number = #{comment_number} and userid = #{userid}
+	 order by comment.comment_number desc 
+	    </select>
+	    
+	
   </mapper>
 

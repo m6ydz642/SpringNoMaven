@@ -1,6 +1,7 @@
 package project.rasp.model;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 
 public class Comment {
@@ -67,6 +68,14 @@ public class Comment {
 	public void setComment_content(String comment_content) {
 		this.comment_content = comment_content;
 	}
+	@Override
+	public String toString() {
+		return "Comment [board_id=" + board_id + ", comment_number=" + comment_number + ", userid=" + userid
+				+ ", username=" + username + ", comment_content=" + comment_content + ", comment_date="
+				+ Arrays.toString(comment_date) + ", delete=" + delete + "]";
+	}
+	
+	
 	
 	
 	

@@ -537,10 +537,59 @@ return "popup";
 	}
 	
 	/**************************************************************************************/
-	// 댓글 수정, 삭제 컨트롤러, if문으로 처리해서 버튼 둘중에 한개로 그냥 작업함
+	// 댓글 수정 요청시 기존 댓글 select해서 보여주기
 	@ResponseBody
-	@RequestMapping(value = "/commentedit", method = RequestMethod.POST) // post로 바꿔야 됨
-	public String Comment_Edit(HttpServletRequest request, HttpSession session, 
+	@RequestMapping(value = "/commentedit", method = RequestMethod.POST, produces = "application/text; charset=utf8") // post로 바꿔야 됨
+	public String Comment_EditRequest(HttpServletRequest request, HttpSession session, 
+			@RequestParam int comment_number, Comment comment) {
+		System.out.println("댓글수정 컨트롤러 호출");
+
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
+
+
+		// int comment_number = Integer.parseInt(request.getParameter("comment_number")); // 댓글번호
+		// int board_id = Integer.parseInt(request.getParameter("board_id")); // 보드 번호
+		// String testarea = request.getParameter("testarea"); // 글 수정 내용
+		 String userid = (String) session.getAttribute("loginid"); // 세션 로그인
+		 
+		// System.out.println("댓글수정 - 내용 : " + testarea);
+		 System.out.println("댓글 수정요청 댓글번호 : " + comment_number);
+		// System.out.println("댓글 수정요청 글번호 : " + board_id);
+		 System.out.println("요청자 아이디 : " + userid); // 이제 DB에 있는 사용자 아이디랑 비교해서 나가면 될듯
+		 
+		 
+		 Map map = new HashMap();
+		 org.json.JSONObject info = new org.json.JSONObject();
+		 map.put("userid", userid); // 세션에 요청중인 사용자 아이디
+		 map.put("comment_number", comment_number); // 댓글 번호
+	//	 map.put("comment_content", comment.getComment_content()); // 댓글 내용
+		 
+		// map.put("comment_content", testarea); // 댓글 작성 내용
+	//	 map.put("board_id", board_id); // 보드번호
+		comment = boardmapper.CommentEditSelect(map); // map으로 업데이트 쿼리까지 전달
+		 // if문으로 0일경우 본인거ㄱ 아니라는 메시지 출력해야 됨
+			
+		info.put("comment_number", comment_number);
+		info.put("comment_content", comment.getComment_content());
+		// info.put("commentmodify", map);
+
+
+		System.out.println("댓글수정전 조회 요청  쿼리 결과 : " + comment.toString());
+
+
+		System.out.println("댓글수정전 조회 map에 담긴 내용 : " + map);
+		System.out.println("댓글수정전 조회 담긴 내용 : " + info.toString());
+		return info.toString();
+
+
+	}
+	
+	/**************************************************************************************/
+	// 댓글 수정, 삭제 컨트롤러, if문으로 처리해서 버튼 둘중에 한개로 그냥 작업함 이라고 해놨는데 
+	// ajax때문에 걸려서 그냥 나눔 ㅋ
+	@ResponseBody
+	@RequestMapping(value = "/commenteditcomplete", method = RequestMethod.POST) // post로 바꿔야 됨
+	public String Comment_EditComplete(HttpServletRequest request, HttpSession session, 
 			@RequestParam int comment_number, @RequestParam String testarea) {
 		System.out.println("댓글수정 컨트롤러 호출");
 

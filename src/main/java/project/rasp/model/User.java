@@ -1,6 +1,7 @@
 package project.rasp.model;
 
 import java.text.ParseException;
+import java.util.Arrays;
 
 
 
@@ -69,8 +70,10 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [customer_id=" + customer_id + ", userid=" + userid + ", userpassword=" + userpassword
-				+ ", username=" + username + "]";
+				+ ", username=" + username + ", write_date=" + Arrays.toString(write_date) + ", auth=" + auth + "]";
 	}
+	
+
 
 	
 	

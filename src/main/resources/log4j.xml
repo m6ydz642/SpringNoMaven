@@ -11,12 +11,12 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="project.rasp.oo">
+	<logger name="project.rasp.*">
 		<level value="info" />
 	</logger>
 	
 	 <logger name="project.rasp.controller">
-        <level value="info" />
+        <level value="debug" />
     </logger>
 
 	

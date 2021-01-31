@@ -34,8 +34,8 @@
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	    <beans:property name="driverClassName" value="org.h2.Driver"/>
 	    <beans:property name="url" value="jdbc:h2:tcp://localhost/~/test"/>
-	    <beans:property name="username" value="joon"/>
-	    <beans:property name="password" value="1234"/>
+	    <beans:property name="username" value="sa"/>
+	    <beans:property name="password" value=""/>
     </beans:bean>  
 	
 
@@ -83,6 +83,10 @@
  	
 	<beans:bean id="userimpl" class="project.rasp.mapper.Userimpl" >
  </beans:bean>
+ 
+ 	<beans:bean id="adminimpl" class="project.rasp.mapper.Adminimpl" >
+ </beans:bean>
+ 
  
  <!-- <beans:bean id="UserServiceimpl" class="project.rasp.service.UserServiceimpl"/> -->
  

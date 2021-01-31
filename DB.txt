@@ -52,3 +52,25 @@ select * from customer;
 /********************************/
 alter table comment add delete varchar(2) default 'N'; // 댓글 삭제 여부 
 
+// 유저 등급 테이블 (회원가입시 같이 insert되야 됨)
+select * from customer;create table authlist (
+authlist_no int auto_increment, 
+userid varchar(20),
+auth varchar(10) default 'USER'
+);
+
+// 유저 등급 조인 (authlist테이블에도 userid같이 들어가있어야 함 )(회원가입시)
+select c.customer_id, c.userid, c.username, a.auth
+from customer c, authlist a
+where c.userid = a.userid;
+
+// 아직 회원가입이랑 insert부분 같이 안되어있으므로 일단 수동 등록 
+insert into authlist (userid) values ('user')
+insert into authlist (userid) values ('test')
+insert into authlist (userid) values ('1234')
+
+insert into customer (userid, userpassword) values ('user','user');
+insert into customer (userid, userpassword) values ('user','test');
+insert into customer (userid, userpassword) values ('user','1234');
+
+

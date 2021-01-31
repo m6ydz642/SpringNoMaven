@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE mapper
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="project.rasp.mapper.AdminMapper">
+	  
+	<!-- 전체 유저 조회 -->
+	<select id="userlistadmin" resultType="User" >
+	<!-- 유저랑 등급이랑 같이 조인해서 봄 -->
+	select c.customer_id, c.userid, c.username, a.auth
+from customer c, authlist a
+where c.userid = a.userid;
+
+	    </select>
+	    
+	
+  </mapper>
+

@@ -1,14 +1,12 @@
 package project.rasp.service;
 import java.util.List;
-
-import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import project.rasp.mapper.Adminimpl;
-import project.rasp.mapper.Userimpl;
 import project.rasp.model.User;
 
 @Service
@@ -22,6 +20,13 @@ public class AdminServiceimpl implements AdminService {
 		List list = adminimpl.userlistadmin();
 		System.out.println("AdminServiceimpl.userlistadmin 결과 " + list);
 		return list;
+	}
+
+	@Override
+	public int adminauthchange(Map map) {
+		int result = adminimpl.adminauthchange(map);
+		System.out.println("AdminServiceimpl.adminauthchange 결과 " + result);
+		return result;
 	}
 
 	

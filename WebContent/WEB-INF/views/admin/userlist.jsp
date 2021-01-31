@@ -216,36 +216,49 @@ function Enter_Check(){
    }
 }
 
-/*************************************************************************/
-function getCookie(name) { 
-	var cookie = document.cookie; 
-	if (document.cookie != "") { 
-		var cookie_array = cookie.split("; "); 
-		for ( var index in cookie_array) { 
-			var cookie_name = cookie_array[index].split("=");
-			if (cookie_name[0] == "popupYN") { return cookie_name[1]; 
-			} 
-			} 
-		} return ; 
-		}
-
 	 /*************************************************************************/
-	 function openPopup(url) { 
-		 var cookieCheck = getCookie("popupYN"); 
-		 if (cookieCheck != "N") {
-			 window.open(url, '', 'width=450,height=750,left=0,top=0') 
-		 }
-		}
-	 /*************************************************************************/
-	 function authchange(customer_id){
-		 alert("select box 받은 customer_id 내용 : " + customer_id)
+	 function adminauthchange(customer_id, userid){
+		
+	//      alert("select box 받은 userid 내용 : " + userid);
+	//	alert("select box 받은 customer_id 내용 : " + customer_id);
 	var changebutton = $("#authlist" + customer_id + " option:selected").val();
 		 // id값에 같이 customer_id 붙여서 몇번 고객꺼에서 호출했는지 호출함
-		 
+		 var tag = "";
+		   $.ajax({
+		 		url : "/admin/adminauthchange",
+		 		
+		 		type : "post", 
+		 		// dataType : "json", // list로 하려면 json이거 빼야됨 ㅅㅂ 계속 오류남 ㅋㅋㅋㅋㅋ
+
+		 		data : { 'userid' : userid, 'changebutton' : changebutton},
+		 		 async: true,
+		 		success : function (data, textStatus){ 
+		 			
+		 		alert("유저권한이 변경 되었습니다");
+		 		 var obj = JSON.parse(data);
+		 		
+		 		 
+		 		var authstatus = obj.authstatus["auth"]
+		 			// authstatus -> 컨트롤러에서 넣은값
+		 		console.log(obj.authstatus["auth"]);
+				
+		 		$(".authstatus" + customer_id).text(changebutton);
+		 		
+		 	
+		 		// $(".authstatus " + customer_id).append(tag);
+		 //		window.location.reload(); // 태그 다시 추가하기 귀찮아서 그냥 새로고침으로 ^^ ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+	 		//	document.location.reload(true);// 스크롤 유지
+	 			
+	 		}, error: function (e) {
+			console.log("어드민권한수정  오류발생!!!!!!! : " + e.value);
+			alert("어드민 권한수정 오류발생 ");
+		}
+		
+	}); 
 			      alert("버튼 내용: " + changebutton);
 			 }
 	 /*************************************************************************/
-	 
+
 </script>
        <body>
        <!-- <body onload="javascript:openPopup('popup')"> -->
@@ -255,11 +268,11 @@ function getCookie(name) {
         <thead>
         <tr>
            
-            <th style="padding-left: 6px; ">순차번호</th>
+            <th style="padding-left: 6px; ">체크</th>
+                <th>유저번호</th>
                 <th>유저아이디</th>
-                <th>유저이름</th>
                 <th>유저등급</th>
-                <th>등급수정</th>
+                <th >등급상태</th>
                <th><button>선택변경</button> 	
            <!--     		<select name="authlist" id="authlist">
 						<option value="USER">USER</option>
@@ -287,18 +300,18 @@ function getCookie(name) {
 					<td class=""><c:out value="${item.customer_id}" /></td>
 					<td class=""><c:out value="${item.userid}" /></td>
 					<td class="" ><c:out value="${item.username}" /></td>
-					<td class="" ><c:out value="${item.auth}" /></td>
+					<td class="authstatus${item.customer_id}" ><c:out value="${item.auth}" /></td>
 					<td class="authlist">
 					
-					<select name="authlist" id="authlist${item.customer_id}">
+					<select name="authlist" id="authlist${item.customer_id}" class="authlist${item.userid}">
 						<option value="USER">USER</option>
 						<option value="ADMIN">ADMIN</option>
 						<option value="MANAGER">MANAGER</option>
 						<option value="SUPERUSER">SUPERUSER</option>
 					</select>
 					</td>
-					<td><button onclick="authchange(${item.customer_id});">변경하기</button></td>
-				
+					<td><button onclick="adminauthchange(${item.customer_id}, '${item.userid }' );">변경하기</button></td>
+																		<!--어이가 없네 onclick 문자 인자로 ''없으면 못받네 ㅡㅡ;;  -->
 					<%-- <td class="board_write_date" ><c:out value="${item.write_date[0]}" /></td> --%>
 					<!--  split으로 잘라서 온거라 배열 형태로 들어가있음 ㅋㅋ 
 					그래서 0번부터가 날짜고 1번은 시간 2번은 모르겠다 한공백당 한종류씩 떨어짐 -->

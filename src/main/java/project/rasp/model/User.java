@@ -13,13 +13,20 @@ public class User {
 	private String userpassword ;
 	private String username;
 	private String[] write_date;
-	private String auth;
+	private String auth; // 탈퇴 여부
+	private String active; // 탈퇴여부
 	
 	
 	
 	
 
 
+	public String getActive() {
+		return active;
+	}
+	public void setActive(String active) {
+		this.active = active;
+	}
 	public String getAuth() {
 		return auth;
 	}

@@ -13,6 +13,10 @@ where c.userid = a.userid;
 
 	    </select>
 	    
+	<update id="adminauthchange" parameterType="map"  >
+		update authlist set auth = #{auth}
+	where userid = #{userid};
+	</update>
 	
   </mapper>
 

@@ -7,7 +7,8 @@ CREATE TABLE customer(
    userid VARCHAR(50) unique,
    userpassword varchar(50) not null,
    username VARCHAR(50) , 
-   join_date timestamp
+   join_date timestamp,
+   active varchar(10) default 'N' // 탈퇴여부
 );
 
 create table board (
@@ -26,7 +27,8 @@ comment_number int AUTO_increment, /*댓글 번호 */
 userid VARCHAR(50) not null,
 username varchar(50),
 comment_content varchar(1000) not null,
-comment_date timestamp
+comment_date timestamp,
+delete varchar(10) default 'N'; // 삭제여부
 );
 
 alter table comment add FOREIGN KEY(board_id) REFERENCES board ( board_id ) ON delete CASCADE;
@@ -46,14 +48,19 @@ insert into customer (userid, userpassword, username, join_date) values ('test',
 select * from customer;
 // 컬럼 추가, 삭제
 // alter table customer drop auth;
-// alter table customer add auth varchar(10) default 'USER';
+// alter table customer add auth varchar(10) default 'USER'; // 유저권한
+
+// alter table customer add active varchar(10) default 'N'; // 탈퇴여부 
+// alter table comment add delete varchar(10) default 'N'; // 삭제여부 
 
 
 /********************************/
 alter table comment add delete varchar(2) default 'N'; // 댓글 삭제 여부 
 
 // 유저 등급 테이블 (회원가입시 같이 insert되야 됨)
-select * from customer;create table authlist (
+select * from customer;
+
+create table authlist (
 authlist_no int auto_increment, 
 userid varchar(20),
 auth varchar(10) default 'USER'
@@ -69,8 +76,8 @@ insert into authlist (userid) values ('user')
 insert into authlist (userid) values ('test')
 insert into authlist (userid) values ('1234')
 
-insert into customer (userid, userpassword) values ('user','user');
-insert into customer (userid, userpassword) values ('user','test');
 insert into customer (userid, userpassword) values ('user','1234');
+insert into customer (userid, userpassword) values ('test','1234');
+insert into customer (userid, userpassword) values ('test123','1234');
 
 

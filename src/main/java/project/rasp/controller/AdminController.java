@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import project.rasp.model.Board;
 import project.rasp.service.AdminService;
 
 
@@ -31,6 +34,7 @@ public class AdminController{
 		@Autowired
 		 private AdminService uadminService;
 	
+		Board board_id = new Board(); // 보드값 가리기를 위해 숨겨서 전달할 전역 객체
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	@RequestMapping(value = "/admin/userlist", method = RequestMethod.GET)
@@ -80,8 +84,44 @@ public class AdminController{
 		
 		return obj.toString();
 	}
-
 	
+	@RequestMapping(value = "/admin/adminboardmodify", method = RequestMethod.GET)
+	public ModelAndView adminboardmodifywrite(Model model, @RequestParam int board_id) { 
+		
+		this.board_id.setBoard_id(board_id);
+		RedirectView rv = new RedirectView("/admin/adminboardmodifywrite");
+		rv.setExposeModelAttributes(false); // 주소 안보이게s
+
+		return new ModelAndView(rv);
+	}
+	
+	/**************************************************************/
+
+	@RequestMapping(value = "/admin/adminboardmodifywrite", method = RequestMethod.GET)
+	public String adminboardmodify(Model model, Board board) { 
+		int board_id = this.board_id.getBoard_id();
+		 System.out.println("어드민 수 board_id : " + board_id );
+		 board  = uadminService.adminboardmodify(board_id);
+		 model.addAttribute("adminboardmodifylist", board);
+		 System.out.println("어드민 글수정 페이지 호출  리스트 : " + board_id);
+		System.out.println("어드민 글수정 페이지 호출 유저리스트 조회 : " + board_id);
+		System.out.println("수정할 글내용 : " + board);
+		
+		
+		return "/admin/adminboardmodifywrite";
+	}
+	
+	/**************************************************************/
+
+	@RequestMapping(value = "/admin/adminboardlist", method = RequestMethod.GET)
+	public String adminboardlist(Model model, Board board) { 
+	
+		 List list = uadminService.adminboardlist(board);
+		 model.addAttribute("adminboardlist", list);
+		 System.out.println("어드민 글조회 페이지 호출  리스트 : " + list);
+		System.out.println("어드민 글조회 페이지 호출 유저글리스트 조회");
+		return "/admin/adminboard";
+	}
 	
 }
 

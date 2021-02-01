@@ -13,14 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.binding.BindingException;
-import org.h2.util.json.JSONObject;
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -213,22 +210,6 @@ public class BoardController {
 	}
 
 	/*********************************************************/
-
-	@RequestMapping(value = "/wow", method = RequestMethod.GET) // post로 바꿔야 됨
-	public String wow(HttpServletRequest request) {
-		System.out.println("wow  페이지 호출");
-		logger.debug("와우로거 테스트");
-		String Modify_Number_Write = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
-		logger.info("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 와우로거");
-		System.out.println("wow 페이지할 글 번호 : " + Modify_Number_Write);
-		// 조만간 세션 검사해서 아이디 확인여부 넣어야 됨
-		// board_id값 받아야 됨
-		AnyRedirect("wowow"); // AnyRedirect에서 wowow로 보냈으면 주소창 숨김전환후
-		// return으로 wowow.jsp를 찾아감
-		return "wowow"; // 해당 jsp로 이동
-
-	}
-
 	/**
 	 * @throws IOException *******************************************************/
 	@RequestMapping(value = "/boardmodifywrite", method = RequestMethod.GET) // post로 바꿔야 됨

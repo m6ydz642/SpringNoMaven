@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import project.rasp.model.Board;
 import project.rasp.model.User;
 
 public class Adminimpl implements AdminMapper{
@@ -26,6 +27,21 @@ public class Adminimpl implements AdminMapper{
 		int result = sqlsession.update("project.rasp.mapper.AdminMapper.adminauthchange", map);
 		return result;
 	}
+
+	public List adminboardlist(Board board) {
+		System.out.println("Adminimpl adminboardlist ");
+		List result = sqlsession.selectList("project.rasp.mapper.AdminMapper.adminboardlist", board);
+		return result;
+	}
+
+	public Board adminboardmodify(int board_id) {
+		System.out.println("Adminimpl adminusermodify ");
+		Board result = sqlsession.selectOne("project.rasp.mapper.AdminMapper.adminboardmodify", board_id);
+		return result;
+	}
+
+
+
 	
 	
 

@@ -247,6 +247,19 @@ function getCookie(name) {
 			// alert("글수정 함수 호출 글번호 : " + board_id);
 			
 		}
+	
+	function fn_contentdelete(board_id){
+
+		// var url = "${pageContext.request.contextPath}/admin/adminboardmodify"; // 글 수정으로 이동
+			// 컨트롤러에서 리다이렉트로 글 한번 가려주는 함수로 보냄
+			// adminboardmodify 이쪽으로
+	//	url = url + "?board_id="+board_id;
+	//	 location.href = url;
+		
+		alert("글삭제 함수 호출 글번호 : " + board_id);
+		
+	}
+	
 	 
 </script>
        <body>
@@ -288,6 +301,9 @@ function getCookie(name) {
 					
 					<td><button onclick="event.cancelBubble = true; fn_contentModify(${item.board_id});" 
 	>어드민수정</button></td>
+	
+<td><button onclick="event.cancelBubble = true; fn_contentdelete(${item.board_id});">삭제</button></td>
+	
 			</div>
 				</tr>
 			

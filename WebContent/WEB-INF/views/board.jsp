@@ -266,7 +266,9 @@ function getCookie(name) {
 	
 					<td class="board_id"><c:out value="${item.board_id}" /></td>
 	     			<td class="board_subject" ><c:out value="${item.subject}" /></td>
-					<td class="board_userid" ><c:out value="${item.userid}" /></td>
+					<td class="board_userid" ><c:out value="${item.userid}" />
+				<img alt="권한사진" src="icon/admin.svg">
+					</td>
 					<td class="board_write_date" ><c:out value="${item.write_date[0]}" /></td>
 					<!--  split으로 잘라서 온거라 배열 형태로 들어가있음 ㅋㅋ 
 					그래서 0번부터가 날짜고 1번은 시간 2번은 모르겠다 한공백당 한종류씩 떨어짐 -->

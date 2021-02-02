@@ -36,7 +36,7 @@ import project.rasp.model.Paging;
  * Handles requests for the application home page.
  */
 @Controller
-public class BoardController {
+public class BoardController implements project.rasp.controller.Controller{
 
 	 @Autowired
 	BoardMapper boardmapper;
@@ -61,6 +61,7 @@ public class BoardController {
 	// 아마 스프링은 원래 Service 만들어서 return해야 됨
 	// 객체로 만들어도 상관은 없지만 스프링은 그걸 써서
 
+	
 	Paging count = new Paging();
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -85,7 +86,7 @@ public class BoardController {
 
 	/*********************************************************/
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
-	public String list(Model model) throws Exception {
+	public String getBoardlist(Model model) throws Exception {
 		logger.info("게시판 호출");
 		countnum = 0; // 카운트를 전역 변수로 했기 때문에 
 		// 새로고침을 해도 값 초기화가 안됨 그래서 여기서 지워버림 ^^;;
@@ -100,7 +101,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boardwrite", method = RequestMethod.GET)
-	public String BoardWrite(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws IOException {
+	public String witeBoard(HttpServletRequest request, HttpSession session, HttpServletResponse response) throws IOException {
 		System.out.println("게시판 글작성 호출");
 
 	
@@ -115,7 +116,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boarddelete", method = RequestMethod.GET)
-	public String BoardDelete(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws IOException {
+	public String deleteBoard(HttpServletRequest request, HttpServletResponse response, HttpSession session, Model model) throws IOException {
 		System.out.println("게시판 글삭제 호출");
 		String Delete_Number = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -183,7 +184,7 @@ public class BoardController {
 	 */
 
 	@RequestMapping(value = "/boardmodify", method = RequestMethod.GET)
-	public ModelAndView BoardModify(HttpServletRequest request) {
+	public ModelAndView getmodifyBoard(HttpServletRequest request) {
 		// ModelAndView방식 쓰려고 형태 바꿈
 		System.out.println("게시판 수정 호출");
 		String Modify_Number = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
@@ -213,7 +214,7 @@ public class BoardController {
 	/**
 	 * @throws IOException *******************************************************/
 	@RequestMapping(value = "/boardmodifywrite", method = RequestMethod.GET) // post로 바꿔야 됨
-	public String BoardModifyWrite(HttpServletRequest request, Model model, HttpSession session, HttpServletResponse response) throws IOException {
+	public String modifywriteBoard(HttpServletRequest request, Model model, HttpSession session, HttpServletResponse response) throws IOException {
 		System.out.println("게시판 수정할 페이지 호출");
 		// String Modify_Number_Write = request.getParameter("board_id"); // content에
 		// input태그에 name값을 계속씀
@@ -267,7 +268,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boardmodifywritecomplete", method = RequestMethod.POST) // post로 바꿔야 됨
-	public String BoardModifyWriteComplete(HttpServletRequest request, HttpSession session) {
+	public String completemodifyBoard(HttpServletRequest request, HttpSession session) {
 		System.out.println("게시판 수정후 글작성 호출");
 		String Modify_Number_Write = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
@@ -296,7 +297,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/boardcontent", method = RequestMethod.GET)
-	public String boardcontent(HttpServletRequest request, Model model) throws Exception {
+	public String getBoardContent_getCommentContent(HttpServletRequest request, Model model) throws Exception {
 
 		int board_num = Integer.parseInt(request.getParameter("board_id"));
 
@@ -337,7 +338,7 @@ public class BoardController {
 
 	
 	@RequestMapping(value = "/writecomplete", method = RequestMethod.POST)
-	public String writecomplete(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+	public String completewriteBoard(HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
 		System.out.println("게시글 작성 완료 호출");
 		request.setCharacterEncoding("UTF-8");
@@ -389,7 +390,7 @@ public class BoardController {
 	}
 
 	@RequestMapping(value = "/commentwrite", method = RequestMethod.POST)
-	public String commentwrite(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
+	public String writeComment(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
 		System.out.println("댓글 작성 호출");
 		int board_num = Integer.parseInt(request.getParameter("board_id"));
 		System.out.println("댓글쓰기 board_num번호 : " + board_num);
@@ -521,7 +522,7 @@ return "popup";
 	// 댓글 수정 요청시 기존 댓글 select해서 보여주기
 	@ResponseBody
 	@RequestMapping(value = "/commentedit", method = RequestMethod.POST, produces = "application/text; charset=utf8") // post로 바꿔야 됨
-	public String Comment_EditRequest(HttpServletRequest request, HttpSession session, 
+	public String getCommentEdit(HttpServletRequest request, HttpSession session, 
 			@RequestParam int comment_number, Comment comment) {
 		System.out.println("댓글수정 컨트롤러 호출");
 
@@ -531,8 +532,8 @@ return "popup";
 		// int comment_number = Integer.parseInt(request.getParameter("comment_number")); // 댓글번호
 		// int board_id = Integer.parseInt(request.getParameter("board_id")); // 보드 번호
 		// String testarea = request.getParameter("testarea"); // 글 수정 내용
-		 String userid = (String) session.getAttribute("loginid"); // 세션 로그인
-		 
+		String userid = (String) session.getAttribute("loginid"); // 세션 로그인
+		// String userid = checkUserid();
 		// System.out.println("댓글수정 - 내용 : " + testarea);
 		 System.out.println("댓글 수정요청 댓글번호 : " + comment_number);
 		// System.out.println("댓글 수정요청 글번호 : " + board_id);
@@ -570,7 +571,7 @@ return "popup";
 	// ajax때문에 걸려서 그냥 나눔 ㅋ
 	@ResponseBody
 	@RequestMapping(value = "/commenteditcomplete", method = RequestMethod.POST) // post로 바꿔야 됨
-	public String Comment_EditComplete(HttpServletRequest request, HttpSession session, 
+	public String completeEditComment(HttpServletRequest request, HttpSession session, 
 			@RequestParam int comment_number, @RequestParam String testarea) {
 		System.out.println("댓글수정 컨트롤러 호출");
 
@@ -619,7 +620,7 @@ return "popup";
 	// 댓글 수정, 삭제 컨트롤러, if문으로 처리해서 버튼 둘중에 한개로 그냥 작업함
 		@ResponseBody
 		@RequestMapping(value = "/commentdelete", method = RequestMethod.POST) // post로 바꿔야 됨
-		public String Comment_Delete(HttpServletRequest request, HttpSession session, 
+		public String deleteComment(HttpServletRequest request, HttpSession session, 
 				@RequestParam int comment_number) {
 			System.out.println("댓글삭자ㅔ컨트롤러 호출");
 
@@ -656,5 +657,17 @@ return "popup";
 
 
 		}
+
+//	@Override
+//	public String checkUserid() {
+//		String userid = (String) session.getAttribute("loginid"); // 세션 로그인
+//		System.out.println("BoardController : 로그인호출 함수  " + userid);
+//		if (userid.equals(null)) {
+//			System.out.println("BoardController : 로그인호출 함수 NULL -> " + userid);
+//		}
+//		return userid;
+//	}
+
+	
 		
 }

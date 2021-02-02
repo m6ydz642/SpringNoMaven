@@ -258,6 +258,25 @@ function Enter_Check(){
 			      alert("버튼 내용: " + changebutton);
 			 }
 	 /*************************************************************************/
+	 
+	 function Check(form)
+
+   {
+        //'확인' 버튼을 클릭했을 때 실행되는 메서드
+        var msg = "";
+
+ 
+
+        if (form.cb1.checked)
+             msg += form.cb1.value + "\n";
+        if (form.cb2.checked)
+             msg += form.cb2.value + "\n";
+        if (form.cb3.checked)
+             msg += form.cb3.value + "\n";
+
+        alert(msg);
+   }
+	 
 
 </script>
        <body>

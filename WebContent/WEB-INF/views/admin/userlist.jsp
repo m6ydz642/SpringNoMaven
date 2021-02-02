@@ -259,25 +259,34 @@ function Enter_Check(){
 			 }
 	 /*************************************************************************/
 	 
-	 function Check(form)
+	 function Check()
 
    {
         //'확인' 버튼을 클릭했을 때 실행되는 메서드
-        var msg = "";
-
- 
-
-        if (form.cb1.checked)
-             msg += form.cb1.value + "\n";
-        if (form.cb2.checked)
-             msg += form.cb2.value + "\n";
-        if (form.cb3.checked)
-             msg += form.cb3.value + "\n";
+        var msg =  $('input[name=cb]:checked').val();
+        var length =  $('input[name=cb]:checked').length;
+        var arr = new Array();
+        for (i=0; i<length; i++)
+        $('input[name=cb]:checked').each(function(){
+    	    if(this.value == arr[i]){
+    	    this.checked = true;
+    	    console.log("배여내용 : " + array[i]);
+    	    }
+    	  });
+        
+        console.log(length);
+        
+       
 
         alert(msg);
    }
-	 
-
+// 	 $(document).ready(function () {
+// 	        $('#cb').click(function () {
+// 	        	  var check = $('input:checkbox[id="cb"]').is(':checked');
+// 	              alert(check);
+	              
+// 	        }
+// 	 }
 </script>
        <body>
        <!-- <body onload="javascript:openPopup('popup')"> -->
@@ -286,7 +295,7 @@ function Enter_Check(){
     <table class="table table-hover">
         <thead>
         <tr>
-           
+           <button onclick="Check(); ">클릭</button> 
             <th style="padding-left: 6px; ">체크</th>
                 <th>유저번호</th>
                 <th>유저아이디</th>
@@ -315,7 +324,10 @@ function Enter_Check(){
 		
 		
 	<%-- <tr id="board" style="cursor:pointer;" onclick="fn_contentView(<c:out value="${item.board_id}"/>)"> --%> 
-				 	<td><input type="checkbox" name="authcheckbox"/></td>
+<!-- 				 	 <form name="form1"> -->
+				 	 	<td>
+				 	 		<input type="checkbox" id="cb" name="cb" value="${item.userid}"/>check
+				 	 	</td>
 					<td class=""><c:out value="${item.customer_id}" /></td>
 					<td class=""><c:out value="${item.userid}" /></td>
 					<td class="" ><c:out value="${item.username}" /></td>

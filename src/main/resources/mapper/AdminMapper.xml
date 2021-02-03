@@ -32,7 +32,11 @@ where c.userid = a.userid;
 
 	    </select>
 	    
-	
+	<select id="addBoard" resultType="string"  >
+	<!-- 유저랑 등급이랑 같이 조인해서 봄 -->
+	select column_name from virutal_table;
+
+	    </select>
 	
   </mapper>
 

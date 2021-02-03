@@ -94,12 +94,12 @@
 
 			</li>
 
+		<c:forEach var="virutal_name" items="${virutal_name }">
 
-
-			<li class="nav-item"><a class="nav-link disabled" href="#">Disabled</a>
+			<li class="nav-item"><a class="nav-link" href="/admin/${virutal_name}">${virutal_name}</a>
 
 			</li>
-
+</c:forEach>
 			<li class="nav-item dropdown"><a
 				class="nav-link dropdown-toggle" href="#" id="dropdown03"
 				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>

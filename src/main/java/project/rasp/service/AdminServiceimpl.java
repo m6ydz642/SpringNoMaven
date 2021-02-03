@@ -44,6 +44,13 @@ public class AdminServiceimpl implements AdminService {
 		return result;
 	}
 
+	@Override
+	public List addBoard() {
+		List result = adminimpl.addBoard();
+		System.out.println("AdminServiceimpl.addBoard 결과 " + result);
+		return result;
+	}
+
 	
 
 

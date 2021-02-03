@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,17 +36,25 @@ public class AdminController{
 		@Qualifier("adminServiceimpl")
 		@Autowired
 		 private AdminService uadminService;
-	
+		Model testmodel;
 		Board board_id = new Board(); // 보드값 가리기를 위해 숨겨서 전달할 전역 객체
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	@RequestMapping(value = "/admin/userlist", method = RequestMethod.GET)
-	public String adminpage(Model model) { 
+	public String adminpage(Model model, HttpServletRequest request, HttpSession session) { 
 		// 현재 접속자 유저 확인하려고 객체에 넣어돔
 		// 아직은 확인작업 안함
-
+		
+		// 가상테이블 받아오기
+		String test = (String) request.getAttribute("virutal_name");
+		System.out.println("개체 전달테스트 : " + test);
 		 logger.info("어드민 유저 페이지 호출"); // logger ㅅㅂ 안됨
 		 logger.debug("테스트");
+		 List testmapping = uadminService.addBoard();
+		 session.setAttribute("virutal_name", testmapping); //게시판제목전용)
+		// session.setAttribute("virutal_name", testmapping);
+		 // 글에 들어갔을때 전용 string만들기
+		 System.out.println("testmapping : " + testmapping);
 		 List list = uadminService.userlistadmin();
 		 model.addAttribute("adminuserlist", list);
 		 System.out.println("어드민 유저페이지 호출  리스트 : " + list);
@@ -122,6 +133,42 @@ public class AdminController{
 		System.out.println("어드민 글조회 페이지 호출 유저글리스트 조회");
 		return "/admin/adminboard";
 	}
+	
+	/**************************************************************/
+
+	@RequestMapping(value = "/admin/addboard", method = RequestMethod.GET)
+	public String addBoard(Model model, Board board) { 
+	
+		 
+		System.out.println("어드민 게시판 생성페이지 접근");
+		return "/admin/addboard";
+	}
+
+	/**************************************************************/
+
+	@RequestMapping(value = "/admin/addBoardComplete", method = RequestMethod.POST)
+	public String addBoardComplete(Model model, @RequestParam String virutal_name, 
+			 @RequestParam String virutal_auth, HttpServletRequest request, HttpSession session) { 
+		System.out.println("가상테이블 이름 : " + virutal_name);
+		System.out.println("가상테이블 권한 : " + virutal_auth);
+	
+		System.out.println("어드민 게시판 생성완료");
+//		return "redirect:/board?curPage=1";
+		return "redirect:/admin/userlist";
+	}
+	
+	@RequestMapping(value = "/admin/{virutal_name}", method = RequestMethod.GET)
+	public String test(Model model, HttpSession session,
+		 HttpServletRequest request) { 
+
+		System.out.println("가상 게시판 접근 완료");
+		System.out.println("게시판 : ");
+//		return "redirect:/board?curPage=1";
+		List url = (List) session.getAttribute("virutal_name");
+		System.out.println("접근 url주소 : " + url);
+		return "/admin/virutal";
+	}
+	
 	
 }
 

@@ -16,4 +16,5 @@ public interface AdminService {
 	// 어드민이 별도 로그인으로 받는게 아니기에
 	public List adminboardlist(Board board);
 	public Board adminboardmodify(int board_id);
+	public List addBoard();
 }

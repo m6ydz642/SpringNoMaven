@@ -40,6 +40,12 @@ public class Adminimpl implements AdminMapper{
 		return result;
 	}
 
+	public List addBoard() {
+		System.out.println("Adminimpl addBoard ");
+		List result = sqlsession.selectList("project.rasp.mapper.AdminMapper.addBoard");
+		return result;
+	}
+
 
 
 	

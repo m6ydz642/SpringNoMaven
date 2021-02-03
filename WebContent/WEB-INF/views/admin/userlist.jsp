@@ -319,7 +319,8 @@ function Enter_Check(){
 
 
  <!-- ---------------------------------------------------------------- -->
-			
+			<!-- 모델테스트 -->
+		 전역 모델 테스트 : ${virutal_name}
 			<c:forEach var="item" items="${adminuserlist}">
 		
 		

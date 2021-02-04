@@ -18,7 +18,7 @@ public interface Controller {
 	// public String checkUserid();  // 매개변수때문에 잠시 보류 
 	/*****************************************************************/
 	// 보드 CRUD
-	public String getBoardlist(Model model) throws Exception; // 게시글 리스트 조회
+	public String getBoardlist(Model model,HttpSession session) throws Exception; // 게시글 리스트 조회
 	public String witeBoard(HttpServletRequest request, 
 			HttpSession session, HttpServletResponse response) 
 					throws IOException; // 보드게시글 작성
@@ -44,5 +44,4 @@ public interface Controller {
 			@RequestParam int comment_number, @RequestParam String testarea); // 댓글수정완료
 	public String deleteComment(HttpServletRequest request, HttpSession session, 
 			@RequestParam int comment_number); // 댓글삭제
-	
 }

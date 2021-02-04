@@ -1,8 +1,6 @@
 package project.rasp.model;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,10 +14,17 @@ public class Board { //. 게시판 리스트
 	private int view_count;
 	private String[] write_date;
 	
+	private String comumn_name; // virutal_name으로 변경해야 함
 	
 	
 
 
+	public String getComumn_name() {
+		return comumn_name;
+	}
+	public void setComumn_name(String comumn_name) {
+		this.comumn_name = comumn_name;
+	}
 	public String[] getWrite_date() {
 		return write_date;
 	}

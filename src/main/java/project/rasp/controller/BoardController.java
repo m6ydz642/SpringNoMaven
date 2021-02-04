@@ -36,7 +36,7 @@ import project.rasp.model.Paging;
  * Handles requests for the application home page.
  */
 @Controller
-public class BoardController implements project.rasp.controller.Controller{
+public class BoardController{
 
 	 @Autowired
 	BoardMapper boardmapper;
@@ -84,9 +84,16 @@ public class BoardController implements project.rasp.controller.Controller{
 
 	}
 
+	public void viewVirutal_board(HttpServletRequest request) {
+		 List testmapping = boardmapper.addBoard(); // 가상테이블 select
+		// session.setAttribute("virutal_name", testmapping); //게시판제목전용)
+		 request.setAttribute("virutal_name", testmapping);
+	}
+	
+	 
 	/*********************************************************/
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
-	public String getBoardlist(Model model) throws Exception {
+	public String getBoardlist(Model model, HttpSession session, HttpServletRequest  request) throws Exception {
 		logger.info("게시판 호출");
 		countnum = 0; // 카운트를 전역 변수로 했기 때문에 
 		// 새로고침을 해도 값 초기화가 안됨 그래서 여기서 지워버림 ^^;;
@@ -94,7 +101,12 @@ public class BoardController implements project.rasp.controller.Controller{
 		list = boardmapper.getContentlist(board);
 		model.addAttribute("contentlist", list); // 값 넣음
 		System.out.println("들어간 list 갯수 : " + list.size());
-	
+		 List testmapping = boardmapper.addBoard(); // 가상테이블 select
+		// session.setAttribute("virutal_name", testmapping); //게시판제목전용)
+		 request.setAttribute("virutal_name", testmapping);
+		// session.setAttribute("virutal_name", testmapping);
+		 // 글에 들어갔을때 전용 string만들기
+		 System.out.println("testmapping : " + testmapping);
 		
 		
 		return "board"; // board.jsp로 이동
@@ -667,7 +679,93 @@ return "popup";
 //		}
 //		return userid;
 //	}
+		
+		
+		
+		@RequestMapping(value = "/virutal", method = RequestMethod.GET)
+		public String test2(Model model, HttpSession session,
+			 HttpServletRequest request, @RequestParam String virutal_name) { 
 
+			System.out.println("가상 게시판2 접근 완료");
+			System.out.println("게시판2 : " + virutal_name);
+//			List url = (List) session.getAttribute("virutal_name");
+//			System.out.println("접근 url주소 리스트 : " + url);
+			System.out.println("접근 url 파라메터: " + virutal_name);
+//			System.out.println("valueof : " + virutal_name.valueOf(url));
+			List list = boardmapper.getVirutalBoard(virutal_name);
+//			if (list.size() == 0) {
+			System.out.println("list size : " + list.size());
+			System.out.println("가상게시판 리스트  virutal_name : " + list);
+			
+			System.out.println("존재하지 않는 페이지 감지 : " );
+//			return "redirect:/board?curPage=1"; // 여기 다른 함수 호출해서 alert띄울거임
+//			}
+			viewVirutal_board(request); // 가상테이블 호출
+			model.addAttribute("virutal_board", list);
+			return "virutal";
+		}
+		
+		@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET)
+		public String writeVirutalBoardWrite(Model model, HttpSession session,
+			 HttpServletRequest request) { 
+
+		System.out.println("가상 게시판  글쓰기  접근 완료");
+
+		
+			return "virutalboardwrite"; // 가상전용 게시판으로 바꿔야 됨
+		}
+		
+		@RequestMapping(value = "/vrutalboardwritecomplete", method = RequestMethod.POST)
+		public String completeVirutalWrite(@RequestParam String virutal_name, HttpSession session, HttpServletRequest request, HttpServletResponse response,
+				Model model) throws Exception {
+			System.out.println("게시글 작성 완료 호출");
+			request.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html; charset=UTF-8");
+			boardmapper.insertVirutalBoard(virutal_name);
+			// String writer = (String) session.getAttribute("writer");
+			// String writer =  (String) session.getAttribute("logininfo"); // 로그인 정보 확인
+			
+			String subject = request.getParameter("subject");
+
+			String content = request.getParameter("content");
+
+			 String writer = request.getParameter("writer");
+			System.out.println("작성자 파라메터로 한번 받아와 봄 : " + writer);
+			// 글수정
+			Map map = new HashMap();
+			map.put("userid", writer.trim()); // 공백제거 아...짱나네 ㅋㅋㅋㅋㅋㅋㅋㅋ
+			map.put("subject", subject);
+			map.put("content", content);
+			boardmapper.WriteContent(map);
+
+			System.out.println("--------------------------------------");
+			System.out.println("게시글 작성자 : " + writer);
+			System.out.println("글제목 : " + subject);
+			System.out.println("내용 : " + content);
+			System.out.println("--------------------------------------");
+
+			PrintWriter out = response.getWriter();
+
+			
+			  if (writer == null) { // 로그인 안한 사용자가 접근시
+			  
+			  out.println("<script language='javascript'> ");
+			  out.println("alert('로그인부터 하세요 ^^;');"); //
+			  out.println("location.href=login;"); out.println("</script>"); out.flush();
+			  response.flushBuffer();
+			  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
+			  request.getRemoteAddr());
+			  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
+			 
+			 return "login"; // alert후 로그인창으로 보내버릴거임
+			  }
+
+			// System.out.println("글쓰기 옵션 " + boardmapper.WriteContent(board));
+			// 이거 띄웠는데 계속 500 error뜨고 있었네 ㅡㅡ;
+
+			return "redirect:board"; // 리다이렉트 처리
+
+		}
 	
 		
 }

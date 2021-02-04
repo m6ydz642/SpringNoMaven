@@ -95,8 +95,8 @@
 			</li>
 
 		<c:forEach var="virutal_name" items="${virutal_name }">
-
-			<li class="nav-item"><a class="nav-link" href="/admin/${virutal_name}">${virutal_name}</a>
+	
+			<li class="nav-item"><a class="nav-link" href="/virutal?virutal_name=${virutal_name}">${virutal_name}</a>
 
 			</li>
 </c:forEach>

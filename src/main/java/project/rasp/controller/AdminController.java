@@ -50,11 +50,7 @@ public class AdminController{
 		System.out.println("개체 전달테스트 : " + test);
 		 logger.info("어드민 유저 페이지 호출"); // logger ㅅㅂ 안됨
 		 logger.debug("테스트");
-		 List testmapping = uadminService.addBoard();
-		 session.setAttribute("virutal_name", testmapping); //게시판제목전용)
-		// session.setAttribute("virutal_name", testmapping);
-		 // 글에 들어갔을때 전용 string만들기
-		 System.out.println("testmapping : " + testmapping);
+
 		 List list = uadminService.userlistadmin();
 		 model.addAttribute("adminuserlist", list);
 		 System.out.println("어드민 유저페이지 호출  리스트 : " + list);
@@ -157,17 +153,19 @@ public class AdminController{
 		return "redirect:/admin/userlist";
 	}
 	
-	@RequestMapping(value = "/admin/{virutal_name}", method = RequestMethod.GET)
-	public String test(Model model, HttpSession session,
-		 HttpServletRequest request) { 
-
-		System.out.println("가상 게시판 접근 완료");
-		System.out.println("게시판 : ");
-//		return "redirect:/board?curPage=1";
-		List url = (List) session.getAttribute("virutal_name");
-		System.out.println("접근 url주소 : " + url);
-		return "/admin/virutal";
-	}
+//	@RequestMapping(value = "/admin/virutal?={virutal_name}", method = RequestMethod.GET)
+//	public String test(Model model, HttpSession session,
+//		 HttpServletRequest request, @RequestParam String urltest) { 
+//
+//		System.out.println("가상 게시판 접근 완료");
+//		// System.out.println("게시판 : " + virutal_name);
+////		return "redirect:/board?curPage=1";
+//		List url = (List) session.getAttribute("virutal_name");
+//		System.out.println("접근 url주소1 : " + url);
+//		System.out.println("접근 url주소1-2 : " + urltest);
+//		return "admin/virutal?virutal_name="+url;
+//	}
+	
 	
 	
 }

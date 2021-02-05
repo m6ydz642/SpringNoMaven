@@ -701,7 +701,7 @@ return "popup";
 			model.addAttribute("virutal_board", list ); // virutal.jsp로 갈경우 다시 모델에 넣음
 			
 
-			return "virutal";
+			return "/virutal/virutalboard"; //jsp페이지
 		}
 		
 		@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET)

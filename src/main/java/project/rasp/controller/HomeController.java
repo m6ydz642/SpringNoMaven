@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -27,9 +28,14 @@ import project.rasp.model.User;
 @Controller
 public class HomeController {
 	
-	// @Autowired
+
 	UserMapper userMapper;
+	@Autowired
+	BoardMapper boardmapper;
 	
+	 @Autowired
+	    private ServletContext application; 
+	 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -45,6 +51,11 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
+		/*******************************************************/
+		// 가상게시판 메뉴 다시 생성 (주소 직접접근할 경우 대비)
+		 List testmapping = boardmapper.addBoard(); // 가상테이블 selects
+		application.setAttribute("num4", testmapping); // 주소로 직접적으로 접근할 경우 다시 application에 넣음
+		/*******************************************************/
 		return "home";
 	}
 

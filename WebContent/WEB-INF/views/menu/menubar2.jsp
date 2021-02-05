@@ -93,10 +93,11 @@
 			<li class="nav-item"><a class="nav-link" href="/board">Board</a>
 
 			</li>
-
-		<c:forEach var="virutal_name" items="${virutal_name }">
+<%-- 	애플리케이션 값 : <%=application.getAttribute("num4") %> --%>
+		<c:forEach var="virutal_name" items="${applicationScope.num4 }">
+<%-- 		num 4 : ${applicationScope.num4} application스코프로 받아옴  --%>
 	
-			<li class="nav-item"><a class="nav-link" href="/virutal?virutal_name=${virutal_name}">${virutal_name}</a>
+			<li class="nav-item"><a class="nav-link" href="/virutal?virutal_name=${virutal_name.column_name}">${virutal_name.column_name}</a>
 
 			</li>
 </c:forEach>
@@ -109,7 +110,7 @@
 					<a class="dropdown-item" href="#">Action</a> <a
 						class="dropdown-item" href="#">Another action</a> <a
 						class="dropdown-item" href="#">Something else here</a>
-
+	
 
 				</div></li>
 

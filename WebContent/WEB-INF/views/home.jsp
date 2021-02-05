@@ -17,10 +17,11 @@
 <body>
 <div class="container">
 <h1>
-	Hello world!  
+	임시로 상단에 Board버튼을 클릭시 전역으로 가상메뉴 읽어오게 설정하였습니다
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+<br><br>
+<P>임시로 상단에 Board버튼을 클릭시 전역으로 가상메뉴 읽어오게 설정하였습니다 <br>
+나중에 home메뉴와 주소 직접접근시 메뉴 읽어오게 설정할 예정입니다  </P>
 
 </div>
 </body>

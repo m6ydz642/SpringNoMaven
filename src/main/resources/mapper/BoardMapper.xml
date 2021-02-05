@@ -128,7 +128,7 @@
 where v.column_name = b.column_name and b.column_name = #{column_name};
 	    </select>
 	    
-	<select id="addBoard" resultType="string"  >
+	<select id="addBoard" resultType="VirutalBoard"  >
 	<!-- 유저랑 등급이랑 같이 조인해서 봄, 어드민 매퍼에서 복사해홈 어드민꺼 필요없음 -->
 	select column_name from virutal_table;
 

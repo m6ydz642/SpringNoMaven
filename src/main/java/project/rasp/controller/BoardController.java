@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -61,7 +62,11 @@ public class BoardController{
 	// 아마 스프링은 원래 Service 만들어서 return해야 됨
 	// 객체로 만들어도 상관은 없지만 스프링은 그걸 써서
 
-	
+    @Autowired
+    private ServletContext application; 
+
+
+
 	Paging count = new Paging();
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 
@@ -102,13 +107,12 @@ public class BoardController{
 		model.addAttribute("contentlist", list); // 값 넣음
 		System.out.println("들어간 list 갯수 : " + list.size());
 		 List testmapping = boardmapper.addBoard(); // 가상테이블 select
-		// session.setAttribute("virutal_name", testmapping); //게시판제목전용)
-		 request.setAttribute("virutal_name", testmapping);
-		// session.setAttribute("virutal_name", testmapping);
-		 // 글에 들어갔을때 전용 string만들기
+
+
 		 System.out.println("testmapping : " + testmapping);
-		
-		
+//	
+	
+		 application.setAttribute("num4", testmapping); //num4를 application으로 넣어다님
 		return "board"; // board.jsp로 이동
 	}
 
@@ -670,16 +674,6 @@ return "popup";
 
 		}
 
-//	@Override
-//	public String checkUserid() {
-//		String userid = (String) session.getAttribute("loginid"); // 세션 로그인
-//		System.out.println("BoardController : 로그인호출 함수  " + userid);
-//		if (userid.equals(null)) {
-//			System.out.println("BoardController : 로그인호출 함수 NULL -> " + userid);
-//		}
-//		return userid;
-//	}
-		
 		
 		
 		@RequestMapping(value = "/virutal", method = RequestMethod.GET)
@@ -688,20 +682,19 @@ return "popup";
 
 			System.out.println("가상 게시판2 접근 완료");
 			System.out.println("게시판2 : " + virutal_name);
-//			List url = (List) session.getAttribute("virutal_name");
-//			System.out.println("접근 url주소 리스트 : " + url);
 			System.out.println("접근 url 파라메터: " + virutal_name);
-//			System.out.println("valueof : " + virutal_name.valueOf(url));
-			List list = boardmapper.getVirutalBoard(virutal_name);
-//			if (list.size() == 0) {
-			System.out.println("list size : " + list.size());
-			System.out.println("가상게시판 리스트  virutal_name : " + list);
 			
-			System.out.println("존재하지 않는 페이지 감지 : " );
-//			return "redirect:/board?curPage=1"; // 여기 다른 함수 호출해서 alert띄울거임
-//			}
-			viewVirutal_board(request); // 가상테이블 호출
-			model.addAttribute("virutal_board", list);
+			List<Board> list = boardmapper.getVirutalBoard(virutal_name); // 가상게시글의 정보를 받아옴
+			
+			System.out.println("가상게시판 리스트  virutal_name : " + list);
+			/*******************************************************/
+			// 가상게시판 메뉴 다시 생성 (주소 직접접근할 경우 대비)
+			 List testmapping = boardmapper.addBoard(); // 가상테이블 selects
+			application.setAttribute("num4", testmapping); // 주소로 직접적으로 접근할 경우 다시 application에 넣음
+			/*******************************************************/
+			model.addAttribute("virutal_board", list ); // virutal.jsp로 갈경우 다시 모델에 넣음
+			
+
 			return "virutal";
 		}
 		
@@ -712,7 +705,7 @@ return "popup";
 		System.out.println("가상 게시판  글쓰기  접근 완료");
 
 		
-			return "virutalboardwrite"; // 가상전용 게시판으로 바꿔야 됨
+			return "boardwrite"; // 가상전용 게시판으로 바꿔야 됨 
 		}
 		
 		@RequestMapping(value = "/vrutalboardwritecomplete", method = RequestMethod.POST)

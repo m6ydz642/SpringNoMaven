@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>로그인 페이지</title>
+<title>게시판 임시 생성페이지</title>
 </head>
  <jsp:include page="../menu/menubar2.jsp" />
     
@@ -39,7 +39,13 @@
     <div class="form-group">
 
      <input type="text" class="form-control" placeholder="게시판이름" name="virutal_name" maxlength="20">
-     <input type="text" class="form-control" placeholder="권한이름" name="virutal_auth" maxlength="20">
+     <select name="virutal_auth">
+     	<option value="USER">USER</option>
+     	<option value="ADMIN">ADMIN</option>
+     	<option value="SUPERUSER">SUPERUSER</option>
+     	<option value="MANAGER">MANAGER</option>
+     	
+     </select>
 	<!-- select box로 수정해야 함 -->
     </div>
 

@@ -88,8 +88,9 @@ virutal_auth varchar(10) // 테이블 권한 (여기서 관리함)
 );
 alter table board add virutal_name varchar(100) ;  
 
-insert into board (userid, subject, content, COLUMN_NAME) values ('1234', '가상테이블', '가상테이블 내용', ‘가상테이블’);
-insert into virutal_table (virutal_no,column_name, auth)values(2,'가상테이블', 'ADMIN');
+
+insert into board (userid, subject, content, virutal_name) values ('1234', '가상테이블', '가상테이블 내용', '가상테이블');
+insert into virutal_table (virutal_no,virutal_name, virutal_auth)values(2,'가상테이블', 'ADMIN');
 
 select b.board_id, v.virutal_name, b.subject, b.content from virutal_table v left join board b
 on  v.virutal_name = b.virutal_name where b.board_id = 219 ;

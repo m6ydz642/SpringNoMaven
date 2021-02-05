@@ -37,6 +37,13 @@ where c.userid = a.userid;
 	select column_name from virutal_table;
 
 	    </select>
+	   
+	   <insert id="addBoardComplete" parameterType="VirutalBoard">
+insert into virutal_table (virutal_name, virutal_auth) values 
+(#{virutal_name}, #{virutal_auth})	   
+	   </insert> 
+	    
+	    
 	
   </mapper>
 

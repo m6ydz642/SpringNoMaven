@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import project.rasp.model.Board;
+import project.rasp.model.VirutalBoard;
 import project.rasp.service.AdminService;
 
 
@@ -144,28 +145,17 @@ public class AdminController{
 
 	@RequestMapping(value = "/admin/addBoardComplete", method = RequestMethod.POST)
 	public String addBoardComplete(Model model, @RequestParam String virutal_name, 
-			 @RequestParam String virutal_auth, HttpServletRequest request, HttpSession session) { 
+			 @RequestParam String virutal_auth, HttpServletRequest request, HttpSession session,
+			 VirutalBoard virutalboard) { 
 		System.out.println("가상테이블 이름 : " + virutal_name);
 		System.out.println("가상테이블 권한 : " + virutal_auth);
-	
+		System.out.println("가상테이블 객체내용 : " + virutalboard.getVirutal_name());
+		System.out.println("가상테이블 객체내용 : " + virutalboard.getVirutal_auth());
+		uadminService.addBoardComplete(virutalboard);
 		System.out.println("어드민 게시판 생성완료");
-//		return "redirect:/board?curPage=1";
-		return "redirect:/admin/userlist";
+		return "redirect:/admin/addboard";
 	}
-	
-//	@RequestMapping(value = "/admin/virutal?={virutal_name}", method = RequestMethod.GET)
-//	public String test(Model model, HttpSession session,
-//		 HttpServletRequest request, @RequestParam String urltest) { 
-//
-//		System.out.println("가상 게시판 접근 완료");
-//		// System.out.println("게시판 : " + virutal_name);
-////		return "redirect:/board?curPage=1";
-//		List url = (List) session.getAttribute("virutal_name");
-//		System.out.println("접근 url주소1 : " + url);
-//		System.out.println("접근 url주소1-2 : " + urltest);
-//		return "admin/virutal?virutal_name="+url;
-//	}
-	
+
 	
 	
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import project.rasp.model.Board;
 import project.rasp.model.User;
+import project.rasp.model.VirutalBoard;
 
 
 
@@ -16,5 +17,6 @@ public interface AdminService {
 	// 어드민이 별도 로그인으로 받는게 아니기에
 	public List adminboardlist(Board board);
 	public Board adminboardmodify(int board_id);
-	public List addBoard();
+	public List addBoard(); // 게시판 생성리스트 조회 (header에 띄울용도임)
+	public int addBoardComplete(VirutalBoard virutalboard); // 가상게시판 어드민페이지에서 생성
 }

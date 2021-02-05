@@ -32,6 +32,7 @@ import project.rasp.mapper.UserMapper;
 import project.rasp.model.Board;
 import project.rasp.model.Comment;
 import project.rasp.model.Paging;
+import project.rasp.model.VirutalBoard;
 
 /**
  * Handles requests for the application home page.
@@ -61,6 +62,8 @@ public class BoardController{
 
 	// 아마 스프링은 원래 Service 만들어서 return해야 됨
 	// 객체로 만들어도 상관은 없지만 스프링은 그걸 써서
+	
+	VirutalBoard virutal_name = new VirutalBoard(); // 전역으로 이름 가지고 다니게 선언
 
     @Autowired
     private ServletContext application; 
@@ -182,22 +185,6 @@ public class BoardController{
 		return "redirect:board";
 
 	}
-
-	/*
-	 * @RequestMapping(value = "/boardmodify", method = RequestMethod.GET) public
-	 * ModelAndView BoardModify(HttpServletRequest request) { // ModelAndView방식 쓰려고
-	 * 형태 바꿈 System.out.println("게시판 수정 호출"); String Modify_Number =
-	 * request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
-	 * System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
-	 * System.out.println("글수정 호출 글 번호 : " + Modify_Number); // 조만간 세션 검사해서 아이디 확인여부
-	 * 넣어야 됨 // board_id값 받아야 됨 // return "boardmodifywrite"; // 글 작성페이지로 이동하기
-	 * 
-	 * RedirectView rv = new RedirectView("/boardmodifywrite");
-	 * rv.setExposeModelAttributes(false); // 주소 안보이게
-	 * 
-	 * return new ModelAndView(rv); // 이거 문제가 String타입이 아니라서 .jsp를 알아서 못찾음... //
-	 * web.xml설정 건드리던지 다른 함수로 다시 보내서 // String으로 반환을 시키던지 해야됨 일단은 ↓ 밑에 매핑으로 보냄 }
-	 */
 
 	@RequestMapping(value = "/boardmodify", method = RequestMethod.GET)
 	public ModelAndView getmodifyBoard(HttpServletRequest request) {
@@ -675,15 +662,34 @@ return "popup";
 		}
 
 		
-		
 		@RequestMapping(value = "/virutal", method = RequestMethod.GET)
-		public String test2(Model model, HttpSession session,
-			 HttpServletRequest request, @RequestParam String virutal_name) { 
-
-			System.out.println("가상 게시판2 접근 완료");
-			System.out.println("게시판2 : " + virutal_name);
-			System.out.println("접근 url 파라메터: " + virutal_name);
+		public ModelAndView getVirutalBoard(HttpServletRequest request, @RequestParam String virutal_name) {
+			// ModelAndView방식 쓰려고 형태 바꿈
+			System.out.println("가상 게시판 수정 호출");
 			
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
+			System.out.println("가상 게시판 호출 이름 : " + virutal_name);
+
+			// redirect밑에 주소 안보이게 하려고 false로 해놔서 안나옴
+			RedirectView rv = new RedirectView("/virutalboard?"+virutal_name);
+			rv.setExposeModelAttributes(false); // 주소 안보이게
+			this.virutal_name.setVirutal_name(virutal_name);// 세터로 파라미터 인자 전달
+			
+			System.out.println("setter로 입력된 virutal_name : " + this.virutal_name.getVirutal_name());
+			return new ModelAndView(rv);
+			// 이거 문제가 String타입이 아니라서 .jsp를 알아서 못찾음...
+			// web.xml설정 건드리던지 다른 함수로 다시 보내서
+			// String으로 반환을 시키던지 해야됨 일단은 ↓ 밑에 매핑으로 보냄
+		}
+
+		@RequestMapping(value = "/virutalboard", method = RequestMethod.GET)
+		public String test2(Model model, HttpSession session,
+			 HttpServletRequest request) { 
+			String virutal_name = this.virutal_name.getVirutal_name();
+			System.out.println("가상 게시판 접근 완료");
+			System.out.println("게시판 : " + virutal_name);
+			System.out.println("접근 url 파라메터: " + virutal_name);
+	
 			List<Board> list = boardmapper.getVirutalBoard(virutal_name); // 가상게시글의 정보를 받아옴
 			
 			System.out.println("가상게시판 리스트  virutal_name : " + list);

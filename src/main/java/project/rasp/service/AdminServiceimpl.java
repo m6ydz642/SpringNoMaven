@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import project.rasp.mapper.Adminimpl;
 import project.rasp.model.Board;
 import project.rasp.model.User;
+import project.rasp.model.VirutalBoard;
 
 @Service
 public class AdminServiceimpl implements AdminService {
@@ -48,6 +49,13 @@ public class AdminServiceimpl implements AdminService {
 	public List addBoard() {
 		List result = adminimpl.addBoard();
 		System.out.println("AdminServiceimpl.addBoard 결과 " + result);
+		return result;
+	}
+
+	@Override
+	public int addBoardComplete(VirutalBoard virutalboard) { // 게시판 생성시작
+		int result = adminimpl.addBoardComplete(virutalboard);
+		System.out.println("AdminServiceimpl.addBoardComplete 결과 " + result);
 		return result;
 	}
 

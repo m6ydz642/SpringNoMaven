@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import project.rasp.model.Board;
 import project.rasp.model.User;
+import project.rasp.model.VirutalBoard;
 
 public class Adminimpl implements AdminMapper{
 
@@ -43,6 +44,11 @@ public class Adminimpl implements AdminMapper{
 	public List addBoard() {
 		System.out.println("Adminimpl addBoard ");
 		List result = sqlsession.selectList("project.rasp.mapper.AdminMapper.addBoard");
+		return result;
+	}
+
+	public int addBoardComplete(VirutalBoard virutalboard) {
+		int result = sqlsession.insert("project.rasp.mapper.AdminMapper.addBoardComplete", virutalboard);
 		return result;
 	}
 

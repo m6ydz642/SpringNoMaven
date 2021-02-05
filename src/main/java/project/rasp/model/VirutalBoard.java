@@ -2,25 +2,28 @@ package project.rasp.model;
 
 public class VirutalBoard {
 	int virutal_no;
-	String column_name;
-	String auth;
+	String virutal_name;
+	String virutal_auth;
+	
+	
+	public String getVirutal_name() {
+		return virutal_name;
+	}
+	public void setVirutal_name(String virutal_name) {
+		this.virutal_name = virutal_name;
+	}
 	public int getVirutal_no() {
 		return virutal_no;
 	}
 	public void setVirutal_no(int virutal_no) {
 		this.virutal_no = virutal_no;
 	}
-	public String getColumn_name() {
-		return column_name;
+	public String getVirutal_auth() {
+		return virutal_auth;
 	}
-	public void setColumn_name(String column_name) {
-		this.column_name = column_name;
+	public void setVirutal_auth(String virutal_auth) {
+		this.virutal_auth = virutal_auth;
 	}
-	public String getAuth() {
-		return auth;
-	}
-	public void setAuth(String auth) {
-		this.auth = auth;
-	}
-	
+
+
 }

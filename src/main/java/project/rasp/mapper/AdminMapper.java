@@ -5,6 +5,7 @@ import java.util.Map;
 
 import project.rasp.model.Board;
 import project.rasp.model.User;
+import project.rasp.model.VirutalBoard;
 
 
 
@@ -16,4 +17,5 @@ public interface AdminMapper {
 
 	public List adminboardlist(Board board); // 어드민이 유저들글 전체조회
 	public Board adminboardmodify(int board_id); 
+	public int addBoardComplete(VirutalBoard virutalboard); // 가상게시판 생성완료
 }

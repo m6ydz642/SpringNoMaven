@@ -197,61 +197,45 @@ if (!result.equals(null)) {
 checkVirutalBoardAuth(virutal_name, session, request, response);
 }
 		 
-		return "boardwrite"; // 가상전용 게시판으로 바꿔야 됨 
+		return "virutal/virutalboardwrite";
 	}
 	
 	
 	
-	@RequestMapping(value = "/vrutalboardwritecomplete", method = RequestMethod.POST)
+	@RequestMapping(value = "/virutalboardwritecomplete", method = RequestMethod.POST)
 	public String completeVirutalWrite(@RequestParam String virutal_name, HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
 		System.out.println("가상 게시판 글작성 완료 호출");
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8");
-		virutalService.insertVirutalBoard(virutal_name);
-		// String writer = (String) session.getAttribute("writer");
-		// String writer =  (String) session.getAttribute("logininfo"); // 로그인 정보 확인
 		
 		String subject = request.getParameter("subject");
 
 		String content = request.getParameter("content");
 
 		 String writer = request.getParameter("writer");
-		System.out.println("작성자 파라메터로 한번 받아와 봄 : " + writer);
-		// 글수정
+		 
+		 //위에 메소드 인자에 @RequestParam이랑 getParameter랑 동일함 
+		 // virutal_name은 virutalboardwrite에 input태그에 name값으로 hidden해서 가져옴
+		 
+		System.out.println("가상게시판 작성자 파라메터로 한번 받아와 봄 : " + writer);
+
 		Map map = new HashMap();
-		map.put("userid", writer.trim()); // 공백제거 아...짱나네 ㅋㅋㅋㅋㅋㅋㅋㅋ
+		map.put("userid", writer.trim()); // 공백제거
 		map.put("subject", subject);
 		map.put("content", content);
-	//	virualmapper.WriteContent(map);
-		// 아직 게시글 작성 쿼리 안함
+		map.put("virutal_name", virutal_name);
+		
+		virutalService.insertVirutalBoard(map);
 		
 		System.out.println("--------------------------------------");
-		System.out.println("게시글 작성자 : " + writer);
-		System.out.println("글제목 : " + subject);
-		System.out.println("내용 : " + content);
+		System.out.println("가상게시판 게시글 작성자 : " + writer);
+		System.out.println("가상 게시판 글제목 : " + subject);
+		System.out.println("가상 게시판 내용 : " + content);
+		System.out.println("가상 게시판 이름 : " + virutal_name); 
 		System.out.println("--------------------------------------");
 
-		PrintWriter out = response.getWriter();
+	
 
-		
-		  if (writer == null) { // 로그인 안한 사용자가 접근시
-		  
-		  out.println("<script language='javascript'> ");
-		  out.println("alert('로그인부터 하세요 ^^;');"); //
-		  out.println("location.href=login;"); out.println("</script>"); out.flush();
-		  response.flushBuffer();
-		  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-		  request.getRemoteAddr());
-		  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
-		 
-		 return "login"; // alert후 로그인창으로 보내버릴거임
-		  }
-
-		// System.out.println("글쓰기 옵션 " + boardmapper.WriteContent(board));
-		// 이거 띄웠는데 계속 500 error뜨고 있었네 ㅡㅡ;
-
-		return "redirect:board"; // 리다이렉트 처리
+		return "redirect:/virutal?virutal_name="+virutal_name; // 쓰던 가상게시판으로 리다이렉트 처리
 
 	}
 }

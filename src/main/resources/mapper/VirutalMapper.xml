@@ -7,9 +7,10 @@
 
 	<select id="getVirutalBoard" resultType="Board" parameterType="string">
 	<!-- 가상게시판 게시글 전체조회 -->
-	select  b.board_id, v.virutal_name, b.subject, b.content, v.virutal_auth, b.write_date, b.view_count 
-	from virutal_table v , board b
-where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name};
+select  b.board_id, b.userid, v.virutal_name, b.subject, b.content, v.virutal_auth, b.write_date, b.view_count, a.auth
+from virutal_table v , board b right join authlist a
+on b.userid = a.userid
+where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name} order by b.board_id desc;
 	    </select>
 	    
 	<select id="addBoardHeader" resultType="VirutalBoard"  >
@@ -19,8 +20,8 @@ where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name};
 	    </select>
 	
 	     <insert id="insertVirutalBoard" parameterType="map"> <!-- 가상보드 게시글 작성 -->	
-	INSERT INTO board (board_id, userid, comment_content , comment_date )
-	VALUES ( #{board_id}, #{userid},  #{comment_content}, now() )
+	INSERT INTO board (userid, subject, content ,virutal_name, write_date )
+	VALUES ( #{userid},  #{subject}, #{content}, #{virutal_name} ,  now() )
 	    </insert>
 	    
 	    	<select id="virutal_available" resultType="string"  parameterType="string" >

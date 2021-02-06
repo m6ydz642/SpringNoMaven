@@ -302,7 +302,7 @@ function getCookie(name) {
            
           <c:if test="${logininfo.userid ne null}">
           <!-- logininfo = 로그인 할때 들어간 세션값임  -->
-                 <a class="btn btn-success" href="/virutalboardwrite">글쓰기</a>
+                 <a class="btn btn-success" href="/virutalboardwrite?virutal_name=${param.virutal_name}">회원글쓰기</a>
           </c:if>
           
           <div id="testdiv">

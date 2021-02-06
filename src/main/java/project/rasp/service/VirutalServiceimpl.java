@@ -28,8 +28,9 @@ public class VirutalServiceimpl implements VirutalService {
 	}
 
 	@Override
-	public void insertVirutalBoard(String virutal_name) {
-		System.out.println("VirutalServiceimpl.insertVirutalBoard");
+	public void insertVirutalBoard(Map map) {
+		virutalimpl.insertVirutalBoard(map); 
+		System.out.println("VirutalServiceimpl.insertVirutalBoard 호출");
 		
 	}
 

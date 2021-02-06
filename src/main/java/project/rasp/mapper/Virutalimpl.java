@@ -34,9 +34,9 @@ public class Virutalimpl implements VirutalMapper{
 	}
 
 	@Override
-	public void insertVirutalBoard(String virutal_name) {
-		int result = sqlsession.insert("project.rasp.mapper.VirutalMapper.insertVirutalBoard", virutal_name);
-		System.out.println("project.rasp.mapper.VirutalMapper - insertVirutalBoard result : " + virutal_name);
+	public void insertVirutalBoard(Map map) {
+		int result = sqlsession.insert("project.rasp.mapper.VirutalMapper.insertVirutalBoard", map);
+		System.out.println("project.rasp.mapper.VirutalMapper - insertVirutalBoard result : " + map);
 	}
 
 	@Override

@@ -166,7 +166,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		}
 	
 	
-	public void ErrorMessage(HttpSession session, HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
+	public void ErrorMessage(HttpServletRequest request, HttpServletResponse response, String message) throws IOException {
 		// 메시지 파라미터로 전달함
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");

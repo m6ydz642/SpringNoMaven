@@ -176,7 +176,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		
 
 		  out.println("<script language='javascript'> ");
-		  out.println("alert(' " + message + " ');"); //
+		  out.println("alert('" + message + "');"); //
 		  // out.println("location.href=login;");
 		  out.println("history.back();");
 		  out.println("</script>"); 

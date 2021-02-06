@@ -20,6 +20,7 @@ public interface VirutalService {
 	  													   // 유저정보는 좀 있다가
 	  public List addBoardHeader(); // 가상게시판 헤더영역에 자동추가
 	  public String virutal_available(String virutal_name); // 가상게시판 존재여부
-	  public String checkVirutalBoardAuth(Map map);
+	  public String checkVirutalBoardAuth(Map map); // 가상게시판 접근가능 여부
+	  public String statusVirutalBoardAuth(String virutal_name); // 가상게시판 설정되어있는 권한확인
 
 }

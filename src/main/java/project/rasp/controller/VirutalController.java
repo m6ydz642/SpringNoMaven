@@ -70,6 +70,7 @@ public class VirutalController {
 		System.out.println("checkVirutal_Available : 가상게시판 유효성 검사 결과 : " + virutal_available);
 		System.out.println("checkVirutal_Available : 가상 게시판  체크완료");
 		} catch (NullPointerException e) {
+			
 			System.out.println("virutalboardwrite.checkVirutal_Available 게시판 접근 null감지 : " + e);
 			custommessage.checkVirutalBoard(session, request, response); // null pointer 	예외처리 오류메시지 alert
 		}
@@ -84,27 +85,45 @@ public class VirutalController {
 		 
 		 String user_auth = null;
 		 String checkUserAuth = null;
+		 String auth_message = null;
+		 String checkBoardAuth = null;
+		 
 		 Map map = new HashMap(); 
 		 
 		try {
 			user_auth = (String) session.getAttribute("loginauth"); // 유저의 현재 권한상태 세션에서 가져옴 
-			System.out.println("가상게시판 유저현재 권한상태 : " + user_auth);
+			System.out.println("가상게시판 접근하는 현재유저 권한상태 : " + user_auth);
 			map.put("user_auth", user_auth);
 			map.put("virutal_name", virutal_name);
-			checkUserAuth = virutalService.checkVirutalBoardAuth(map); 
+			checkUserAuth = virutalService.checkVirutalBoardAuth(map); // 접근하는 유저가 게시판에 권한이 있는지 검사 
+			checkBoardAuth = virutalService.statusVirutalBoardAuth(virutal_name); 
+			// 접근하는 유저가 접근하려는 게시판이
+			// 무슨권한이 있는지를 안내해주기 위해 반환
+			
+			 System.out.println("checkBoardAuth : " + checkBoardAuth);
+			 
+			if (checkBoardAuth.equals("ADMIN")) auth_message = "관리자";
+			if (checkBoardAuth.equals("MANAGER")) auth_message = "운영자";
+			if (checkBoardAuth.equals("USER")) auth_message = "유저";
+			if (checkBoardAuth.equals("SUPERUSER")) auth_message = "슈퍼유저";
+			
+			System.out.println("checkUserAuth : " + checkUserAuth);
+			
 			// 게시판이 유저권한이랑 맞는지 확인
 			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
 			
 			if (checkUserAuth.equals(null)) {
-				System.out.println("virutalboardwrite 게시판 권한 없음 감지 : " + checkUserAuth);
+				System.out.println("게시판 권한 없음 감지 : " + checkUserAuth);
 			}
+
 			// String virutal_auth = virutalService.virutal_available(user_auth);
 		
 		System.out.println("checkVirutal_Available : 가상게시판 권한 검사 결과 : " + checkUserAuth);
 		System.out.println("checkVirutal_Available : 가상 게시판 권한 체크완료");
 		} catch (NullPointerException e) {
-			System.out.println("virutalboardwrite.checkVirutal_Available 게시판 접근 null감지 : " + e);
-			String message = "죄송합니다 귀하는 접근하실 수 없는 권한입니다";
+			System.out.println("virutalboardwrite.checkVirutalBoardAuth 게시판 접근 null감지 : " + e);
+
+			String message = "죄송합니다 귀하는 접근하실 수 없는 권한입니다 \\n"+ auth_message + "이상 권한이 필요합니다 ";
 			custommessage.ErrorMessage(session, request, response, message); // null pointer 	예외처리 오류메시지 alert
 		}
 		return checkUserAuth;
@@ -126,12 +145,14 @@ public class VirutalController {
 		System.out.println("가상게시판 리스트  virutal_name : " + list);
 		/*******************************************************/
 		// 가상게시판 메뉴 다시 생성 (주소 직접접근할 경우 대비)
-		 List testmapping = virutalService.addBoardHeader(); // 가상테이블 selects
+		List testmapping = virutalService.addBoardHeader(); // 가상테이블 selects
 		application.setAttribute("num4", testmapping); // 주소로 직접적으로 접근할 경우 다시 application에 넣음
 		/*******************************************************/
 		model.addAttribute("virutal_board", list ); // virutal.jsp로 갈경우 다시 모델에 넣음
 		
-		String result = checkVirutalBoard_Available(virutal_name, session, request, response);  // 게시판 존재여부
+		String result = null; 
+		result = checkVirutalBoard_Available(virutal_name, session, request, response);  // 게시판 존재여부
+		System.out.println("ttttttttttttttt : " + result);
 		if (!result.equals(null)) { // 게시판이 null이 아니고 권한만 없는거면 check함수 수행함 
 									// 이렇게 안하면 권한도 없고 게시판이 없는 게시판일때 오류가 2개 같이뜸
 		checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 

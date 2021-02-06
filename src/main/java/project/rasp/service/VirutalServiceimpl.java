@@ -53,4 +53,11 @@ public class VirutalServiceimpl implements VirutalService {
 		System.out.println("VirutalServiceimpl.checkVirutalBoardAuth : " + result);
 		return result;
 	}
+
+	@Override
+	public String statusVirutalBoardAuth(String virutal_name) {
+		String result = virutalimpl.statusVirutalBoardAuth(virutal_name);
+		System.out.println("VirutalServiceimpl.statusVirutalBoardAuth : " + result);
+		return result;
+	}
 }

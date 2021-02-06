@@ -36,19 +36,25 @@ public class Virutalimpl implements VirutalMapper{
 	@Override
 	public void insertVirutalBoard(String virutal_name) {
 		int result = sqlsession.insert("project.rasp.mapper.VirutalMapper.insertVirutalBoard", virutal_name);
-		System.out.println("insertVirutalBoard result : " + virutal_name);
+		System.out.println("project.rasp.mapper.VirutalMapper - insertVirutalBoard result : " + virutal_name);
 	}
 
 	@Override
 	public String virutal_available(String virutal_name) {
 		String result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.virutal_available", virutal_name);
-		System.out.println("virutal_available result : " + virutal_name);
+		System.out.println("project.rasp.mapper.VirutalMapper - virutal_available result : " + virutal_name);
 		return result;
 	}
 
 	public String checkVirutalBoardAuth(Map map) {
 		String result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.checkVirutalBoardAuth", map);
-		System.out.println("checkVirutalBoardAuth result : " + map);
+		System.out.println("project.rasp.mapper.VirutalMapper - checkVirutalBoardAuth result : " + map);
+		return result;
+	}
+
+	public String statusVirutalBoardAuth(String virutal_name) {
+		String result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.statusVirutalBoardAuth", virutal_name);
+		System.out.println("project.rasp.mapper.VirutalMapper - statusVirutalBoardAuth result : " + virutal_name);
 		return result;
 	}
 

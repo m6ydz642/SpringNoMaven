@@ -57,14 +57,25 @@ public class VirutalController {
 
 	@RequestMapping(value = "/virutal", method = RequestMethod.GET)
 	public String virutal(Model model, HttpSession session,
-		 HttpServletRequest request, @RequestParam String virutal_name) { 
+		 HttpServletRequest request, HttpServletResponse response, @RequestParam String virutal_name) throws IOException { 
 		// String virutal_name = this.virutal_name.getVirutal_name();
 		
 		System.out.println("가상 게시판 접근 완료");
 		System.out.println("게시판 : " + virutal_name);
 		System.out.println("접근 url 파라메터: " + virutal_name);
 
-		List<Board> list = virutalService.getVirutalBoard(virutal_name); // 가상게시글의 정보를 받아옴
+		try {
+
+			String virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
+			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
+		System.out.println("가상게시판 유효성 검사 결과 : " + virutal_available);
+		System.out.println("가상 게시판  접근 완료");
+		if (virutal_available.equals(null)) {
+			System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
+		}
+		
+		
+	    List<Board> list = virutalService.getVirutalBoard(virutal_name); // 가상게시글의 정보를 받아옴
 		
 		System.out.println("가상게시판 리스트  virutal_name : " + list);
 		/*******************************************************/
@@ -73,6 +84,12 @@ public class VirutalController {
 		application.setAttribute("num4", testmapping); // 주소로 직접적으로 접근할 경우 다시 application에 넣음
 		/*******************************************************/
 		model.addAttribute("virutal_board", list ); // virutal.jsp로 갈경우 다시 모델에 넣음
+		
+		} catch (NullPointerException e) {
+			System.out.println("virutalboardwrite 게시판 접근 null감지 : " + e);
+			custommessage.checkVirutalBoard(session, request, response); // null pointer 예외처리 오류메시지 alert
+		}
+	
 		
 
 		return "/virutal/virutalboard"; //jsp페이지
@@ -106,10 +123,6 @@ public class VirutalController {
 	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
 		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
 
-	
-		
-	
-
 		try {
 
 			String virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
@@ -119,10 +132,9 @@ public class VirutalController {
 		if (virutal_available.equals(null)) {
 			System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
 		}
-		} catch (Exception e) {
-			System.out.println("게시판 접근 null감지 : " + e);
-			custommessage.checkVirutalBoard(session, request, response); // 예외처리 오류메시지 alert
-			e.printStackTrace();
+		} catch (NullPointerException e) {
+			System.out.println("virutalboardwrite 게시판 접근 null감지 : " + e);
+			custommessage.checkVirutalBoard(session, request, response); // null pointer 예외처리 오류메시지 alert
 		}
 
 		 

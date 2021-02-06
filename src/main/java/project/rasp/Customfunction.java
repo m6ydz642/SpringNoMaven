@@ -36,7 +36,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		  out.println("<script language='javascript'> ");
 		  out.println("alert('로그인부터 하세요 ^^;');"); //
 		  // out.println("location.href=login;");
-		  out.println("history.back();");
+		//  out.println("history.back();"); // 뒤로가기 하니까 로그인창으로 안가서 바꿈
 		  out.println("</script>"); 
 		  out.flush();
 		  response.flushBuffer();
@@ -144,9 +144,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 	
 	
 	public void checkVirutalBoard(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// 로그인 실패 전용 함수 호출 
-		
-		/*아이디 체크에 대한 if문 사용이 계속 중복되는거 같아 하나 만듦 */
+		// 가상게시판 존재여부
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=UTF-8");
 

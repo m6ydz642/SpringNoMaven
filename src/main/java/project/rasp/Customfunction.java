@@ -139,4 +139,31 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		
 		return "login";
 	}
+	
+	
+	
+	
+	public void checkVirutalBoard(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// 로그인 실패 전용 함수 호출 
+		
+		/*아이디 체크에 대한 if문 사용이 계속 중복되는거 같아 하나 만듦 */
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
+
+		PrintWriter out = response.getWriter();
+
+		
+
+		  out.println("<script language='javascript'> ");
+		  out.println("alert('존재하지 않는 게시판입니다 ^^;');"); //
+		  // out.println("location.href=login;");
+		  out.println("history.back();");
+		  out.println("</script>"); 
+		  out.flush();
+		  response.flushBuffer();
+		  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
+		  request.getRemoteAddr());
+		  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
+	
+		}
 }

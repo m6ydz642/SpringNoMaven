@@ -17,19 +17,19 @@ public class Virutalimpl implements VirutalMapper{
 
 
 	public List addBoardHeader() {
-		System.out.println("Adminimpl addBoard ");
+		System.out.println("Virutalimpl addBoardHeader ");
 		List result = sqlsession.selectList("project.rasp.mapper.VirutalMapper.addBoardHeader");
 		return result;
 	}
 
-	public int addBoardComplete(VirutalBoard virutalboard) {
-		int result = sqlsession.insert("project.rasp.mapper.VirutalMapper.addBoardComplete", virutalboard);
-		return result;
-	}
+//	public int addBoardComplete(VirutalBoard virutalboard) {
+//		int result = sqlsession.insert("project.rasp.mapper.VirutalMapper.addBoardComplete", virutalboard);
+//		return result;
+//	}
 
 	@Override
 	public List<Board> getVirutalBoard(String virutal_name) { // 보드의 정보를 가져옴
-		List result = sqlsession.selectList("project.rasp.mapper.VirutalMapper.addBoardComplete", virutal_name);
+		List result = sqlsession.selectList("project.rasp.mapper.VirutalMapper.getVirutalBoard", virutal_name);
 		return result;
 	}
 
@@ -40,8 +40,8 @@ public class Virutalimpl implements VirutalMapper{
 	}
 
 	@Override
-	public int virutal_available(String virutal_name) {
-		int result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.virutal_available", virutal_name);
+	public String virutal_available(String virutal_name) {
+		String result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.virutal_available", virutal_name);
 		System.out.println("virutal_available result : " + virutal_name);
 		return result;
 	}

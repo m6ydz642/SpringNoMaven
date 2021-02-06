@@ -40,8 +40,8 @@ public class VirutalServiceimpl implements VirutalService {
 	}
 
 	@Override
-	public int virutal_available(String virutal_name) {
-		int result = virutalimpl.virutal_available(virutal_name);
+	public String virutal_available(String virutal_name) {
+		String result = virutalimpl.virutal_available(virutal_name);
 		System.out.println("virutalimpl.virutal_available : " + result);
 		return result;
 	}

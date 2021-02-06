@@ -1,5 +1,6 @@
 package project.rasp.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
@@ -11,15 +12,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import project.rasp.Customfunction;
 import project.rasp.mapper.VirutalMapper;
 import project.rasp.model.Board;
 import project.rasp.service.VirutalService;
 
+@Controller
 public class VirutalController {
 
 	@Autowired
@@ -27,6 +31,8 @@ public class VirutalController {
 	
 	 @Autowired
 	    private ServletContext application; 
+	 
+	 Customfunction custommessage = new Customfunction();
 //	@RequestMapping(value = "/virutal", method = RequestMethod.GET)
 //	public ModelAndView getVirutalBoard(HttpServletRequest request, @RequestParam String virutal_name) {
 //		// ModelAndView방식 쓰려고 형태 바꿈
@@ -71,7 +77,8 @@ public class VirutalController {
 
 		return "/virutal/virutalboard"; //jsp페이지
 	}
-	/*********************************************************************************/
+	/**
+	 * @throws IOException *******************************************************************************/
 	
 	
 //	@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET)
@@ -96,17 +103,29 @@ public class VirutalController {
 	
 	
 	@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET)
-	public String virutalboardwrite(Model model, HttpSession session,
-		 HttpServletRequest request, @RequestParam String virutal_name) { 
+	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
+		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
 
-	int virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
-	System.out.println("가상게시판 유효성 검사 결과 : " + virutal_available);
-	System.out.println("가상 게시판  글쓰기  접근 완료");
-	if (virutal_available != 0) {
+	
+		
+	
 
+		try {
 
-	// System.out.println("get 가상 게시판 글쓰기 : " + this.virutal_name.getVirutal_name());
-		 }
+			String virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
+			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
+		System.out.println("가상게시판 유효성 검사 결과 : " + virutal_available);
+		System.out.println("가상 게시판  글쓰기  접근 완료");
+		if (virutal_available.equals(null)) {
+			System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
+		}
+		} catch (Exception e) {
+			System.out.println("게시판 접근 null감지 : " + e);
+			custommessage.checkVirutalBoard(session, request, response); // 예외처리 오류메시지 alert
+			e.printStackTrace();
+		}
+
+		 
 		return "boardwrite"; // 가상전용 게시판으로 바꿔야 됨 
 	}
 	

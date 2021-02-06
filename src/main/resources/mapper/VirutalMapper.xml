@@ -25,7 +25,7 @@ where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name};
 	    
 	    	<select id="virutal_available" resultType="string"  parameterType="string" >
 	<!-- 가상 게시판 유효성 검사 (존재하는 게시판인지)-->
-	select virutal_name from virutal_table where virutal_name = #{virutal_name};
+	select virutal_name from virutal_table where virutal_name = #{virutal_name}
 
 	    </select>
 	 

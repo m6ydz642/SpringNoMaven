@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+  <!DOCTYPE mapper
+          PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="project.rasp.mapper.VirutalMapper">
+	  
+
+	<select id="getVirutalBoard" resultType="Board" parameterType="string">
+	<!-- 가상게시판 게시글 전체조회 -->
+	select  b.board_id, v.virutal_name, b.subject, b.content, v.virutal_auth, b.write_date, b.view_count 
+	from virutal_table v , board b
+where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name};
+	    </select>
+	    
+	<select id="addBoardHeader" resultType="VirutalBoard"  >
+	<!-- 접속시 헤더에 자동으로 가상게시판 추가할 함수-->
+	select virutal_name from virutal_table;
+
+	    </select>
+	
+	     <insert id="insertVirutalBoard" parameterType="map"> <!-- 가상보드 게시글 작성 -->	
+	INSERT INTO board (board_id, userid, comment_content , comment_date )
+	VALUES ( #{board_id}, #{userid},  #{comment_content}, now() )
+	    </insert>
+	    
+	    	<select id="virutal_available" resultType="string"  parameterType="string" >
+	<!-- 가상 게시판 유효성 검사 (존재하는 게시판인지)-->
+	select virutal_name from virutal_table where virutal_name = #{virutal_name};
+
+	    </select>
+	 
+	    	    
+	    
+	
+  </mapper>
+

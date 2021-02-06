@@ -11,16 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import project.rasp.mapper.AdminMapper;
 import project.rasp.mapper.BoardMapper;
 import project.rasp.mapper.UserMapper;
+import project.rasp.mapper.VirutalMapper;
 import project.rasp.model.Board;
 import project.rasp.model.User;
+import project.rasp.service.VirutalService;
 
 /**
  * Handles requests for the application home page.
@@ -28,18 +32,14 @@ import project.rasp.model.User;
 @Controller
 public class HomeController {
 	
-
-	UserMapper userMapper;
 	@Autowired
-	BoardMapper boardmapper;
+	VirutalService virutalservice;
 	
 	 @Autowired
 	    private ServletContext application; 
-	 
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -53,7 +53,7 @@ public class HomeController {
 		
 		/*******************************************************/
 		// 가상게시판 메뉴 다시 생성 (주소 직접접근할 경우 대비)
-		 List testmapping = boardmapper.addBoard(); // 가상테이블 selects
+		 List testmapping = virutalservice.addBoardHeader(); // 가상테이블 selects
 		application.setAttribute("num4", testmapping); // 주소로 직접적으로 접근할 경우 다시 application에 넣음
 		/*******************************************************/
 		return "home";

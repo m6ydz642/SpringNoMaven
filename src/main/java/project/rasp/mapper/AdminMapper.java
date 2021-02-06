@@ -16,6 +16,7 @@ public interface AdminMapper {
 											// 어드민이 별도 로그인으로 받는게 아니기에
 
 	public List adminboardlist(Board board); // 어드민이 유저들글 전체조회
-	public Board adminboardmodify(int board_id); 
+	public Board adminboardmodify(int board_id); // 어드민이 유저글 강제수정
+	
 	public int addBoardComplete(VirutalBoard virutalboard); // 가상게시판 생성완료
 }

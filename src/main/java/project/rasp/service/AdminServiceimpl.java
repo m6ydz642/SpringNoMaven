@@ -45,12 +45,13 @@ public class AdminServiceimpl implements AdminService {
 		return result;
 	}
 
-	@Override
-	public List addBoard() {
-		List result = adminimpl.addBoard();
-		System.out.println("AdminServiceimpl.addBoard 결과 " + result);
-		return result;
-	}
+//	@Override
+//	public List addBoard() {
+//		List result = adminimpl.addBoard();
+//		System.out.println("AdminServiceimpl.addBoard 결과 " + result);
+//		return result;
+//	}
+	// 유저페이지에서 addboardheader로 바꿈
 
 	@Override
 	public int addBoardComplete(VirutalBoard virutalboard) { // 게시판 생성시작

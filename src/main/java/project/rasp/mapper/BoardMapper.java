@@ -33,8 +33,5 @@ public interface BoardMapper {// 이게 사실 서비스나 마찬가지임
   public int CommentCount(int board_id); // 댓글 개수 카운트, 할랬는데 일단 보류
   public List<Board> BackUpData(Board board); // 게시글 백업구문 생성 소스
   public List<Board> SearchContentList(@Param ("search")String search) throws Exception; // 검색결과 리스트
-  public List<Board> getVirutalBoard(String virutal_name); // 가상게시판 게시글 로드
-  public void insertVirutalBoard(String virutal_name); // 가상게시판 글쓰기
-public List addBoard();
-  
+
 }

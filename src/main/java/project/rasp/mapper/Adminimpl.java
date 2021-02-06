@@ -40,12 +40,12 @@ public class Adminimpl implements AdminMapper{
 		Board result = sqlsession.selectOne("project.rasp.mapper.AdminMapper.adminboardmodify", board_id);
 		return result;
 	}
-
-	public List addBoard() {
-		System.out.println("Adminimpl addBoard ");
-		List result = sqlsession.selectList("project.rasp.mapper.AdminMapper.addBoard");
-		return result;
-	}
+//
+//	public List addBoard() {
+//		System.out.println("Adminimpl addBoard ");
+//		List result = sqlsession.selectList("project.rasp.mapper.AdminMapper.addBoard");
+//		return result;
+//	}
 
 	public int addBoardComplete(VirutalBoard virutalboard) {
 		int result = sqlsession.insert("project.rasp.mapper.AdminMapper.addBoardComplete", virutalboard);

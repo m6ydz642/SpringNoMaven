@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import project.rasp.mapper.Userimpl;
+import project.rasp.mapper.Virutalimpl;
 import project.rasp.model.User;
 
 @Service
@@ -33,5 +34,8 @@ public class UserServiceimpl implements UserService {
 		
 		return result;
 	}
+
+	
+
 
 }

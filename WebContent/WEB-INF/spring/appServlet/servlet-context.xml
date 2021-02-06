@@ -87,7 +87,8 @@
  	<beans:bean id="adminimpl" class="project.rasp.mapper.Adminimpl" >
  </beans:bean>
  
- 
+  	<beans:bean id="virutalimpl" class="project.rasp.mapper.Virutalimpl" >
+ </beans:bean>
  <!-- <beans:bean id="UserServiceimpl" class="project.rasp.service.UserServiceimpl"/> -->
  
 <!-- 	<context:component-scan base-package="project.rasp.controller"></context:component-scan> -->

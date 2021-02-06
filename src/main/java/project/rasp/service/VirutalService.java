@@ -2,8 +2,11 @@ package project.rasp.service;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.annotations.Param;
 
 import project.rasp.model.Board;
 import project.rasp.model.User;
@@ -17,5 +20,6 @@ public interface VirutalService {
 	  													   // 유저정보는 좀 있다가
 	  public List addBoardHeader(); // 가상게시판 헤더영역에 자동추가
 	  public String virutal_available(String virutal_name); // 가상게시판 존재여부
+	  public String checkVirutalBoardAuth(Map map);
 
 }

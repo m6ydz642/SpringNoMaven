@@ -46,6 +46,12 @@ public class Virutalimpl implements VirutalMapper{
 		return result;
 	}
 
+	public String checkVirutalBoardAuth(Map map) {
+		String result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.checkVirutalBoardAuth", map);
+		System.out.println("checkVirutalBoardAuth result : " + map);
+		return result;
+	}
+
 
 
 	

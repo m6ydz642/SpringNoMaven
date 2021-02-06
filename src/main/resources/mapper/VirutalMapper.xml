@@ -29,7 +29,11 @@ where v.virutal_name = b.virutal_name and b.virutal_name = #{virutal_name};
 
 	    </select>
 	 
-	    	    
+	 <select id="checkVirutalBoardAuth" resultType="string"  parameterType="map" >
+	<!-- 가상 게시판 권한 검사 (존재하는 게시판인지)-->
+	
+select * from virutal_table where virutal_auth = #{user_auth} and virutal_name = #{virutal_name};
+	    </select>
 	    
 	
   </mapper>

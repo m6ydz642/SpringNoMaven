@@ -8,6 +8,7 @@ CREATE TABLE customer(
    userpassword varchar(50) not null,
    username VARCHAR(50) , 
    join_date timestamp,
+   auth varchar(10) default 'USER', // 최초가입시 권한
    active varchar(10) default 'N' // 탈퇴여부
 );
 

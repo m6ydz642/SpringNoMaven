@@ -1,5 +1,6 @@
 package project.rasp.service;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,27 +23,34 @@ public class VirutalServiceimpl implements VirutalService {
 	public List<Board> getVirutalBoard(String virutal_name) {
 
 		List result = virutalimpl.getVirutalBoard(virutal_name);
-		System.out.println("virutalimpl.getVirutalBoard : " + result);
+		System.out.println("VirutalServiceimpl.getVirutalBoard : " + result);
 		return result;
 	}
 
 	@Override
 	public void insertVirutalBoard(String virutal_name) {
-		System.out.println("virutalimpl.insertVirutalBoard");
+		System.out.println("VirutalServiceimpl.insertVirutalBoard");
 		
 	}
 
 	@Override
 	public List addBoardHeader() {
 		List result = virutalimpl.addBoardHeader();
-		System.out.println("virutalimpl.addBoardHeader : " + result);
+		System.out.println("VirutalServiceimpl.addBoardHeader : " + result);
 		return result;
 	}
 
 	@Override
 	public String virutal_available(String virutal_name) {
 		String result = virutalimpl.virutal_available(virutal_name);
-		System.out.println("virutalimpl.virutal_available : " + result);
+		System.out.println("VirutalServiceimpl.virutal_available : " + result);
+		return result;
+	}
+
+	@Override
+	public String checkVirutalBoardAuth(Map map) {
+		String result = virutalimpl.checkVirutalBoardAuth(map);
+		System.out.println("VirutalServiceimpl.checkVirutalBoardAuth : " + result);
 		return result;
 	}
 }

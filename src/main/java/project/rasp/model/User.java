@@ -13,7 +13,7 @@ public class User {
 	private String userpassword ;
 	private String username;
 	private String[] write_date;
-	private String auth; // 탈퇴 여부
+	private String auth; // 권한상태
 	private String active; // 탈퇴여부
 	
 	

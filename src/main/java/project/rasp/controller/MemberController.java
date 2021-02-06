@@ -103,7 +103,8 @@ public class MemberController {
 				session.setAttribute("logintest", result); // 로그인 정보 전체 등록
 				System.out.println("something 값 : " + result.getUsername());				
  				session.setAttribute("logininfoname", result.getUsername());
-
+ 				session.setAttribute("loginauth", result.getAuth()); // 계정권한
+ 				
 				System.out.println("로그인 세션등록 성공");
 				System.out.println("세션 값 : " + session.getAttribute("logininfo"));
 				

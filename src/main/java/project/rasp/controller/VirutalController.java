@@ -53,28 +53,74 @@ public class VirutalController {
 //		// String으로 반환을 시키던지 해야됨 일단은 ↓ 밑에 매핑으로 보냄
 //	}
 
+	 public String checkVirutalBoard_Available(String virutal_name, HttpSession session,
+			 HttpServletRequest request, HttpServletResponse response) throws IOException { // 게시판 존재여부 검사함수
+		 String virutal_available = null;
+		
+		try {
 
+			 virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 존재하는 게시판인지 검사
+			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
+			
+			if (virutal_available.equals(null)) {
+				System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
+			}
+			// String virutal_auth = virutalService.virutal_available(user_auth);
+		
+		System.out.println("checkVirutal_Available : 가상게시판 유효성 검사 결과 : " + virutal_available);
+		System.out.println("checkVirutal_Available : 가상 게시판  체크완료");
+		} catch (NullPointerException e) {
+			System.out.println("virutalboardwrite.checkVirutal_Available 게시판 접근 null감지 : " + e);
+			custommessage.checkVirutalBoard(session, request, response); // null pointer 	예외처리 오류메시지 alert
+		}
+		return virutal_available;
+		
+	}
 
+	 
+	 public String checkVirutalBoardAuth(String virutal_name, HttpSession session,
+			 HttpServletRequest request, HttpServletResponse response) throws IOException { 
+		 // 게시판 권한 + 유저현재 권한 검사상태 함수
+		 
+		 String user_auth = null;
+		 String checkUserAuth = null;
+		 Map map = new HashMap(); 
+		 
+		try {
+			user_auth = (String) session.getAttribute("loginauth"); // 유저의 현재 권한상태 세션에서 가져옴 
+			System.out.println("가상게시판 유저현재 권한상태 : " + user_auth);
+			map.put("user_auth", user_auth);
+			map.put("virutal_name", virutal_name);
+			checkUserAuth = virutalService.checkVirutalBoardAuth(map); 
+			// 게시판이 유저권한이랑 맞는지 확인
+			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
+			
+			if (checkUserAuth.equals(null)) {
+				System.out.println("virutalboardwrite 게시판 권한 없음 감지 : " + checkUserAuth);
+			}
+			// String virutal_auth = virutalService.virutal_available(user_auth);
+		
+		System.out.println("checkVirutal_Available : 가상게시판 권한 검사 결과 : " + checkUserAuth);
+		System.out.println("checkVirutal_Available : 가상 게시판 권한 체크완료");
+		} catch (NullPointerException e) {
+			System.out.println("virutalboardwrite.checkVirutal_Available 게시판 접근 null감지 : " + e);
+			String message = "죄송합니다 귀하는 접근하실 수 없는 권한입니다";
+			custommessage.ErrorMessage(session, request, response, message); // null pointer 	예외처리 오류메시지 alert
+		}
+		return checkUserAuth;
+		
+	}
+
+	 
+	 /*******************************************************************************************************/
 	@RequestMapping(value = "/virutal", method = RequestMethod.GET)
 	public String virutal(Model model, HttpSession session,
 		 HttpServletRequest request, HttpServletResponse response, @RequestParam String virutal_name) throws IOException { 
-		// String virutal_name = this.virutal_name.getVirutal_name();
 		
-		System.out.println("가상 게시판 접근 완료");
+		System.out.println("가상 게시판 접근");
 		System.out.println("게시판 : " + virutal_name);
 		System.out.println("접근 url 파라메터: " + virutal_name);
 
-		try {
-
-			String virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
-			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
-		System.out.println("가상게시판 유효성 검사 결과 : " + virutal_available);
-		System.out.println("가상 게시판  접근 완료");
-		if (virutal_available.equals(null)) {
-			System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
-		}
-		
-		
 	    List<Board> list = virutalService.getVirutalBoard(virutal_name); // 가상게시글의 정보를 받아옴
 		
 		System.out.println("가상게시판 리스트  virutal_name : " + list);
@@ -85,14 +131,16 @@ public class VirutalController {
 		/*******************************************************/
 		model.addAttribute("virutal_board", list ); // virutal.jsp로 갈경우 다시 모델에 넣음
 		
-		} catch (NullPointerException e) {
-			System.out.println("virutalboardwrite 게시판 접근 null감지 : " + e);
-			custommessage.checkVirutalBoard(session, request, response); // null pointer 예외처리 오류메시지 alert
+		String result = checkVirutalBoard_Available(virutal_name, session, request, response);  // 게시판 존재여부
+		if (!result.equals(null)) { // 게시판이 null이 아니고 권한만 없는거면 check함수 수행함 
+									// 이렇게 안하면 권한도 없고 게시판이 없는 게시판일때 오류가 2개 같이뜸
+		checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 
 		}
-	
 		
-
-		return "/virutal/virutalboard"; //jsp페이지
+//		checkVirutalBoard_Available(virutal_name, session, request, response); // 게시판 존재여부
+//		checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 
+		
+		return "/virutal/virutalboard"; //jsp 페이지 이동
 	}
 	/**
 	 * @throws IOException *******************************************************************************/
@@ -123,20 +171,10 @@ public class VirutalController {
 	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
 		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
 
-		try {
-
-			String virutal_available = virutalService.virutal_available(virutal_name); // 게시판이 유효한 게시판인지 검사
-			// selectOne이 결과값이 테이블 컬럼내용 그대로 나와서 숫자면 괜찮은데 문자면 오류남
-		System.out.println("가상게시판 유효성 검사 결과 : " + virutal_available);
-		System.out.println("가상 게시판  글쓰기  접근 완료");
-		if (virutal_available.equals(null)) {
-			System.out.println("virutalboardwrite 게시판 존재하지 않음 감지 : " + virutal_available);
-		}
-		} catch (NullPointerException e) {
-			System.out.println("virutalboardwrite 게시판 접근 null감지 : " + e);
-			custommessage.checkVirutalBoard(session, request, response); // null pointer 예외처리 오류메시지 alert
-		}
-
+String result = checkVirutalBoard_Available(virutal_name, session, request, response);
+if (!result.equals(null)) {
+checkVirutalBoardAuth(virutal_name, session, request, response);
+}
 		 
 		return "boardwrite"; // 가상전용 게시판으로 바꿔야 됨 
 	}

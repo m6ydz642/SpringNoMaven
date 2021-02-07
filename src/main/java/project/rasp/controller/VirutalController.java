@@ -1,7 +1,7 @@
 package project.rasp.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import project.rasp.Customfunction;
-import project.rasp.mapper.VirutalMapper;
 import project.rasp.model.Board;
 import project.rasp.service.VirutalService;
 
@@ -216,8 +215,7 @@ public class VirutalController {
 	@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
 		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
-		request.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html; charset=UTF-8");
+
 //String result = checkVirutalBoard_Available(virutal_name, session, request, response);
 //if (!result.equals(null)) {
 //checkVirutalBoardAuth(virutal_name, session, request, response);
@@ -232,11 +230,13 @@ public class VirutalController {
 	@RequestMapping(value = "/virutalboardwritecomplete", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String completeVirutalWrite(@RequestParam String virutal_name, HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
+	
 		
 		String availableBoard = checkVirutalBoard_Available(virutal_name, session, request, response); // 게시판 존재여부
 		boolean checkBoardAuth = checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 
 		
 		System.out.println("가상 게시판 글작성 호출 완료 checkBoardAuth 상태 : " +checkBoardAuth );
+		String encodedParam = URLEncoder.encode(virutal_name, "UTF-8"); // 파라미터 인코딩 해서 내보냄
 		if (availableBoard != null && checkBoardAuth) { // 게시판이 존재하고 유저검사결과가 true라면, 즉 권한이 있다면
 		System.out.println("가상 게시판 글작성 완료 호출");
 		
@@ -245,7 +245,8 @@ public class VirutalController {
 		String content = request.getParameter("content");
 
 		 String writer = request.getParameter("writer");
-		 
+	
+			
 		 //위에 메소드 인자에 @RequestParam이랑 getParameter랑 동일함 
 		 // virutal_name은 virutalboardwrite에 input태그에 name값으로 hidden해서 가져옴
 		 
@@ -265,13 +266,14 @@ public class VirutalController {
 		System.out.println("가상 게시판 내용 : " + content);
 		System.out.println("가상 게시판 이름 : " + virutal_name); 
 		System.out.println("--------------------------------------");
+	
 		}else{
-			return "virutal?virutal_name"+virutal_name; //history back할시 return 리다리엑트 안되서 그냥 존재하는 다른주소로 넣음
+			return "virutal?virutal_name="+encodedParam; //history back할시 return 리다리엑트 안되서 그냥 존재하는 다른주소로 넣음
 			// 아무 값을 넣었더니 jsp를 못찾는 servlet Exception이 발생해서 존재하는 주소로 넣음
 		}
 	
 
-		return "redirect:/virutal?virutal_name="+virutal_name; // 쓰던 가상게시판으로 리다이렉트 처리
+		return "redirect:/virutal?virutal_name="+encodedParam; // 쓰던 가상게시판으로 리다이렉트 처리
 
 	}
 }

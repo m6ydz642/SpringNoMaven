@@ -22,7 +22,7 @@
 <!--<h2> 게시글 작성 페이지 </h2>-->
  
 <div class="container">
-    <form action="/virutalboardwritecomplete" method="post">
+    <form action="/virutalboardwritecomplete" method="post" accept-charset="utf-8">
       <div class="form-group">
         <label for="subject">게시판명 : ${param.virutal_name}</label> <br><br>
         <input name="virutal_name" value="${param.virutal_name }" hidden="" >

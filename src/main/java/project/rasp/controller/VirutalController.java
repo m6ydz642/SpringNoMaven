@@ -155,9 +155,11 @@ public class VirutalController {
 	 
 	 /**
 	 * @throws IOException *****************************************************************************************************/
-	@RequestMapping(value = "/virutal", method = RequestMethod.GET)
+	@RequestMapping(value = "/virutal", method = RequestMethod.GET,produces = "application/text; charset=utf8" )
 	public String virutal(Model model, HttpSession session,
 		 HttpServletRequest request, HttpServletResponse response, @RequestParam String virutal_name) throws IOException { 
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 		
 		System.out.println("가상 게시판 접근");
 		System.out.println("게시판 : " + virutal_name);
@@ -211,10 +213,11 @@ public class VirutalController {
 //	}
 	
 	
-	@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET)
+	@RequestMapping(value = "/virutalboardwrite", method = RequestMethod.GET, produces = "application/text; charset=utf8")
 	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
 		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
-
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html; charset=UTF-8");
 //String result = checkVirutalBoard_Available(virutal_name, session, request, response);
 //if (!result.equals(null)) {
 //checkVirutalBoardAuth(virutal_name, session, request, response);
@@ -226,7 +229,7 @@ public class VirutalController {
 	
 	
 	
-	@RequestMapping(value = "/virutalboardwritecomplete", method = RequestMethod.POST)
+	@RequestMapping(value = "/virutalboardwritecomplete", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String completeVirutalWrite(@RequestParam String virutal_name, HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
 		

@@ -93,7 +93,7 @@ public class VirutalController {
 		 
 		try {
 			user_auth = (String) session.getAttribute("loginauth"); // 유저의 현재 권한상태 세션에서 가져옴 
-			if (user_auth == null) user_auth="null"; // 세션 null처리, 없으면 null pointer 익셉션 생김
+			if (user_auth == null) user_auth="ANONYMOUS"; // 세션 null처리, 없으면 null pointer 익셉션 생김
 			System.out.println("가상게시판 접근하는 현재유저 권한상태 : " + user_auth);
 			
 //			map.put("user_auth", user_auth);
@@ -103,7 +103,8 @@ public class VirutalController {
 			if (user_auth.equals("MANAGER")) user_level = 3;
 			if (user_auth.equals("SUPERUSER")) user_level = 2;
 			if (user_auth.equals("USER")) user_level = 1;
-			if (user_auth.equals("null") ) user_level = 0; // 익명계정
+			if (user_auth.equals("ANONYMOUS") ) user_level = 0; // 익명계정
+			// 익명계정이면 DB상에 그냥 ""로 입력해놓으면 됨 (필드 입력안해서 null되는거 말고)
 			
 			System.out.println("현재 유저레벨 상태 : " + user_level);
 		
@@ -115,13 +116,13 @@ public class VirutalController {
 			if (checkBoardAuth.equals("MANAGER")) check_level = 3;
 			if (checkBoardAuth.equals("SUPERUSER")) check_level = 2;
 			if (checkBoardAuth.equals("USER")) check_level = 1;
-			if (checkBoardAuth.equals("null")) check_level = 0;
+			if (checkBoardAuth.equals("ANONYMOUS")) check_level = 0;
 			
 			if (checkBoardAuth.equals("ADMIN")) auth_message = "관리자";
 			if (checkBoardAuth.equals("MANAGER")) auth_message = "운영자";
 			if (checkBoardAuth.equals("USER")) auth_message = "유저";
 			if (checkBoardAuth.equals("SUPERUSER")) auth_message = "슈퍼유저";
-			if (checkBoardAuth.equals("null")) auth_message = "익명유저";
+			if (checkBoardAuth.equals("ANONYMOUS")) auth_message = "익명유저";
 			
 			System.out.println("현재 나의 권한 : " + user_level);
 			System.out.println("접근하는 게시판 현재 권한 : " + check_level);
@@ -138,7 +139,7 @@ public class VirutalController {
 		System.out.println("checkVirutal_Available : 가상 게시판 권한 체크완료");
 		} catch (NullPointerException e) {
 			System.out.println("virutalboardwrite.checkVirutalBoardAuth 게시판 접근 null감지 : " + e);
-			String message = "게시판에 접근할 수 없습니다";
+			String message = "게시판에 접근할 수 없습니다 \\n오류가 발생하였습니다";
 			custommessage.ErrorMessage(request, response, message); // null pointer 	예외처리 오류메시지 alert
 		}
 		return checkBoardAuth;

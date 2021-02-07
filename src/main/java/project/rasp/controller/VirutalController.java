@@ -209,11 +209,12 @@ public class VirutalController {
 	public String virutalboardwrite(Model model, HttpSession session, HttpServletResponse response,
 		 HttpServletRequest request, @RequestParam String virutal_name) throws IOException { 
 
-String result = checkVirutalBoard_Available(virutal_name, session, request, response);
-if (!result.equals(null)) {
-checkVirutalBoardAuth(virutal_name, session, request, response);
-}
-		 
+//String result = checkVirutalBoard_Available(virutal_name, session, request, response);
+//if (!result.equals(null)) {
+//checkVirutalBoardAuth(virutal_name, session, request, response);
+//}
+		checkVirutalBoard_Available(virutal_name, session, request, response); // 게시판 존재여부
+		checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 
 		return "virutal/virutalboardwrite";
 	}
 	

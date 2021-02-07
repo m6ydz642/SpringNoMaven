@@ -79,7 +79,7 @@ public class VirutalController {
 	}
 
 	 
-	 public String checkVirutalBoardAuth(String virutal_name, HttpSession session,
+	 public Boolean checkVirutalBoardAuth(String virutal_name, HttpSession session,
 			 HttpServletRequest request, HttpServletResponse response) throws IOException { 
 		 // 게시판 권한 + 유저현재 권한 검사상태 함수
 		 
@@ -89,6 +89,7 @@ public class VirutalController {
 		 String checkBoardAuth = null;
 		 int user_level = 0;
 		 int check_level = 0;
+		 boolean status = false;
 		 Map map = new HashMap(); 
 		 
 		try {
@@ -130,8 +131,13 @@ public class VirutalController {
 			System.out.println("유저레벨 감지 : " + user_level);
 			if (user_level < check_level){
 				String message = "귀하는 접근하실 수 없는 권한입니다 \\n"+ auth_message + "이상 권한이 필요합니다 ";
-				
+				status = false;
 				custommessage.ErrorMessage(request, response, message); // null pointer 	예외처리 오류메시지 alert
+			}else{
+				status = true;
+				System.out.println("가상게시판 유저가 접근가능함 status 상태 : " + status);
+			
+				
 			}
 			
 			
@@ -142,7 +148,7 @@ public class VirutalController {
 			String message = "게시판에 접근할 수 없습니다 \\n오류가 발생하였습니다";
 			custommessage.ErrorMessage(request, response, message); // null pointer 	예외처리 오류메시지 alert
 		}
-		return checkBoardAuth;
+		return status;
 		
 	}
 
@@ -223,6 +229,12 @@ public class VirutalController {
 	@RequestMapping(value = "/virutalboardwritecomplete", method = RequestMethod.POST)
 	public String completeVirutalWrite(@RequestParam String virutal_name, HttpSession session, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
+		
+		String availableBoard = checkVirutalBoard_Available(virutal_name, session, request, response); // 게시판 존재여부
+		boolean checkBoardAuth = checkVirutalBoardAuth(virutal_name, session, request, response); // 권한조회 
+		
+		System.out.println("가상 게시판 글작성 호출 완료 checkBoardAuth 상태 : " +checkBoardAuth );
+		if (availableBoard != null && checkBoardAuth) { // 게시판이 존재하고 유저검사결과가 true라면, 즉 권한이 있다면
 		System.out.println("가상 게시판 글작성 완료 호출");
 		
 		String subject = request.getParameter("subject");
@@ -250,7 +262,10 @@ public class VirutalController {
 		System.out.println("가상 게시판 내용 : " + content);
 		System.out.println("가상 게시판 이름 : " + virutal_name); 
 		System.out.println("--------------------------------------");
-
+		}else{
+			return "virutal?virutal_name"+virutal_name; //history back할시 return 리다리엑트 안되서 그냥 존재하는 다른주소로 넣음
+			// 아무 값을 넣었더니 jsp를 못찾는 servlet Exception이 발생해서 존재하는 주소로 넣음
+		}
 	
 
 		return "redirect:/virutal?virutal_name="+virutal_name; // 쓰던 가상게시판으로 리다이렉트 처리

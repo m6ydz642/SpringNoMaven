@@ -93,5 +93,20 @@
  
 <!-- 	<context:component-scan base-package="project.rasp.controller"></context:component-scan> -->
 
+ <!-- 인터셉터 객체 생성 -->
+    <beans:bean id="authenticationInterceptor" class="project.rasp.model.AuthenticationInterceptor">
+    </beans:bean>
+    <!-- Interceptor 설정 -->
+    <interceptors>
+        <interceptor>
+            <mapping path="/virutal**"/>
+            <mapping path="/board/modify"/>
+            <mapping path="/board/delete"/>
+            <beans:ref bean="authenticationInterceptor"/>
+        </interceptor>
+    </interceptors>
+
+
+
     
 </beans:beans>

@@ -276,4 +276,71 @@ public class VirutalController {
 		return "redirect:/virutal?virutal_name="+encodedParam; // 쓰던 가상게시판으로 리다이렉트 처리
 
 	}
+	
+	@RequestMapping(value = "/virutalboardcontent", method = RequestMethod.GET)
+	public String virutalboardcontent(@RequestParam String virutal_name, 
+			HttpServletRequest request, Model model) throws Exception {
+
+		int board_num = Integer.parseInt(request.getParameter("board_id"));
+
+		Board boardDb = virutalService.getVirutalContent(board_num); // 객체타입으로 넣음
+
+		System.out.println("전달 받은 값 : " + boardDb);
+
+		model.addAttribute("boardcontent", boardDb); // 객체로 값 넣음
+		// jstl에서는 불러올때 c:out해서 쓰면 됨
+
+		System.out.println("보드 내용 ");
+		System.out.println("글번호 = " + boardDb.getBoard_id());
+		System.out.println("작성자 = " + boardDb.getUsername());
+		System.out.println("게시글 제목 = " + boardDb.getSubject());
+		System.out.println("게시글 내용 = " + boardDb.getContent());
+		
+		
+		// comment(board_num); // 댓글 호출
+
+//		/*****************************************************/
+//		System.out.println("@@@@@@@@@@@@@@@@@@@@@댓글 리스트 호출@@@@@@@@@@@@@@@@@@@");
+//		// 댓글
+//		System.out.println("전달받은 댓글 board_id번호 " + board_num);
+//		List commentlist = boardmapper.Comment(board_num); // 댓글객체 가져옴
+//		System.out.println("commentmapper : " + boardmapper.Comment(board_num));
+//		System.out.println("댓글 갯수 : " + commentlist.size());
+//		// System.out.println("댓글 번호 : 보류중 : " + comment.getUsername() );
+//		model.addAttribute("comment", commentlist);
+		
+		/*****************************************************/
+		return "/virutal/virutalboardcontent";
+
+	}
+	@RequestMapping(value = "/virutaloarddelete", method = RequestMethod.GET)
+	public String deleteBoard(@RequestParam String virutal_name, 
+			HttpServletRequest request, HttpServletResponse response, 
+			HttpSession session, Model model) throws IOException {
+		
+		System.out.println("가상 게시판 글삭제 호출");
+		String Delete_Number = request.getParameter("board_id"); // content에 input태그에 name값을 계속씀
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@");
+		System.out.println("가상게시판 글삭제 호출 글 번호 : " + Delete_Number);
+		// 조만간 세션 검사해서 아이디 확인여부 넣어야 됨
+		// board_id값 받아야 됨
+		
+		Map map = new HashMap();
+		map.put("board_id", Delete_Number); // 글번호 
+		map.put("userid", session.getAttribute("loginid"));
+		System.out.println("Delete_Number map key (board_num) : " + Delete_Number);
+		System.out.println("Delete_Number map key (loginid) : " + session.getAttribute("loginid"));
+		// 현재 세션에서 존재하는 아이디
+		// 자기 아이디 아닌상태로 수정 요청하면 DB조회시 결과가 달라서 조회 안되게
+		
+			int result = virutalService.deleteVirutalContent(map);
+			System.out.println("글삭제 결과 : " + result);
+			System.out.println("글삭제후 전달받은 파라미터 : " + virutal_name);
+			String encodedParam = URLEncoder.encode(virutal_name, "UTF-8"); // 파라미터 인코딩 해서 내보냄
+			System.out.println("파라미터 인코딩 내용 : " + encodedParam);
+		return "redirect:virutal?virutal_name=" + encodedParam;
+		// return "redirect:/virutal?virtalboard&virutal_name=" + encodedParam;
+		// 위에 주석해놓은 리턴문 안되더니 되네 ㅡ.ㅡ?
+
+	}
 }

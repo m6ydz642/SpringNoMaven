@@ -41,6 +41,15 @@ select * from virutal_table where virutal_auth = #{user_auth} and virutal_name =
 select virutal_auth from virutal_table where virutal_name = #{virutal_name};
 	    </select>
 	    
+<delete id="deleteVirutalContent" parameterType="map" >
+		delete from board where board_id = #{board_id}
+	</delete>
+	
+		 <select id="getVirutalContent" resultType="Board"  parameterType="int" >
+	<!-- 가상게시판 설정되어있는 권한확인 -->
+select * from board where board_id = #{board_id};
+	    </select>
+	    
 	    
 	
   </mapper>

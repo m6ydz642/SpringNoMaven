@@ -2,16 +2,12 @@ package project.rasp.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import project.rasp.mapper.Userimpl;
 import project.rasp.mapper.Virutalimpl;
 import project.rasp.model.Board;
-import project.rasp.model.User;
 
 @Service
 public class VirutalServiceimpl implements VirutalService {
@@ -59,6 +55,19 @@ public class VirutalServiceimpl implements VirutalService {
 	public String statusVirutalBoardAuth(String virutal_name) {
 		String result = virutalimpl.statusVirutalBoardAuth(virutal_name);
 		System.out.println("VirutalServiceimpl.statusVirutalBoardAuth : " + result);
+		return result;
+	}
+
+	@Override
+	public int deleteVirutalContent(Map map) {
+		int result = virutalimpl.deleteVirutalContent(map);
+		System.out.println("VirutalServiceimpl.deleteVirutalContent : " + result);
+		return result;
+	}
+
+	@Override
+	public Board getVirutalContent(int board_num) {
+	Board result = virutalimpl.getVirutalContent(board_num);
 		return result;
 	}
 }

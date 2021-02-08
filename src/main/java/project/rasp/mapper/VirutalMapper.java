@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import project.rasp.model.Board;
-import project.rasp.model.User;
-import project.rasp.model.VirutalBoard;
 
 
 
@@ -17,4 +15,6 @@ public interface VirutalMapper {
 	  public String virutal_available(String virutal_name); // 가상게시판 존재여부
 	  public String checkVirutalBoardAuth(Map map); // 가상게시판 접근가능 여부
 	  public String statusVirutalBoardAuth(String virutal_name); // 가상게시판 설정되어있는 권한확인
+	  public int deleteVirutalContent(Map map); // 가상게시판 글삭제
+	  public Board getVirutalContent(int board_num) ; // 가상게시판 글조회
 }

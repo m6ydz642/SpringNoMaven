@@ -26,9 +26,11 @@
 <script type="text/javascript">
 function fn_contentView(board_id){
 
-	var url = "${pageContext.request.contextPath}/boardcontent";
-
-	url = url + "?board_id="+board_id;
+	var url = "${pageContext.request.contextPath}/virutalboardcontent";
+	var virutal_name = window.location.search;
+	
+	
+	url = url + virutal_name + "&board_id="+board_id;
 	
 	location.href = url;
 	// alert("함수 호출 글번호 : " + board_id);

@@ -7,8 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import project.rasp.model.Board;
-import project.rasp.model.User;
-import project.rasp.model.VirutalBoard;
 
 public class Virutalimpl implements VirutalMapper{
 
@@ -57,6 +55,20 @@ public class Virutalimpl implements VirutalMapper{
 		System.out.println("project.rasp.mapper.VirutalMapper - statusVirutalBoardAuth result : " + virutal_name);
 		return result;
 	}
+
+	public int deleteVirutalContent(Map map) {
+		// int result = sqlsession.delete("project.rasp.mapper.VirutalMapper.deleteVirutalContent", map);
+		System.out.println("project.rasp.mapper.VirutalMapper - deleteVirutalContent result : " + map);
+		int result=1234; // 아직 삭제 안함 일단 검증확인만
+		return result;
+	}
+
+	public Board getVirutalContent(int board_num) {
+		System.out.println("가상게시판 게시글 조회 임플리먼트 : " + board_num);
+		Board result = sqlsession.selectOne("project.rasp.mapper.VirutalMapper.getVirutalContent", board_num);
+		return result;
+	}
+	
 
 
 

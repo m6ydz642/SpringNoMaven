@@ -104,4 +104,3 @@ where v.virutal_name = b.virutal_name;
 select * from comment where board_id = 219; // 가상테이블 댓글 조회 (board_id가 같이 되어있어서 그냥 됨) 
 
 *********************************************************************/
-

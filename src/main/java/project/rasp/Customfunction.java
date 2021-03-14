@@ -2,21 +2,12 @@ package project.rasp;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
-import project.rasp.model.User;
 
 // @Repository
 public class Customfunction { // 사용자 지정 함수 클래스
@@ -29,77 +20,6 @@ public class Customfunction { // 사용자 지정 함수 클래스
 	 */
 	HttpServletRequest request;
 	HttpServletResponse response;
-	
-	public void MessageList(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, String message) throws IOException { 
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-
-				System.out.println("MessageList호출됨 : ");
-				System.out.println("MessageList호출됨 메시지내용 : " + message);
-				
-					  out.println("<script language='javascript'> ");
-					 out.println("alert('"+ message + "') ;"); //
-					 //out.println("history.back();");
-					 out.println("window.close();");
-					  out.println("</script>"); 
-					  out.flush();
-					  response.flushBuffer();
-					  
-					  System.out.println("!!!!!!!!!!!!!!! 일반 메시지 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : " + message);
-						  
-			}
-	
-	
-	public void MessageList2(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, String message) throws IOException { 
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-
-				System.out.println("MessageList호출됨 : ");
-				System.out.println("MessageList호출됨 메시지내용 : " + message);
-				
-					  out.println("<script language='javascript'> ");
-					 out.println("alert('"+ message + "') ;"); //
-					  out.println("</script>"); 
-					  out.flush();
-					  response.flushBuffer();
-					  
-					  System.out.println("!!!!!!!!!!!!!!! 일반 메시지 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : " + message);
-						  
-			}
-	
-	
-	public void ErrorMessageList(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, String message) throws IOException { 
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-
-				System.out.println("ErrorMessageList호출됨 : ");
-				System.out.println("ErrorMessageList호출됨 메시지내용 : " + message);
-				
-					  out.println("<script language='javascript'> ");
-					 out.println("alert('"+ message + "') ;"); //
-					//  out.println("history.back();");
-					  out.println("</script>"); 
-					 out.flush();
-					 // response.flushBuffer();
-					  
-					  System.out.println("!!!!!!!!!!!!!!! 오류메시지 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : " + message);
-						  
-			}
 	
 	public String MemberCheck(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 로그인 실패 전용 함수 호출 
@@ -116,7 +36,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		  out.println("<script language='javascript'> ");
 		  out.println("alert('로그인부터 하세요 ^^;');"); //
 		  // out.println("location.href=login;");
-		  out.println("history.back();");
+		//  out.println("history.back();"); // 뒤로가기 하니까 로그인창으로 안가서 바꿈
 		  out.println("</script>"); 
 		  out.flush();
 		  response.flushBuffer();
@@ -175,7 +95,7 @@ public class Customfunction { // 사용자 지정 함수 클래스
 				System.out.println("loginstatus : " + check);
 				if (check == false) { // 널이면 if문 false처리
 					  out.println("<script language='javascript'> ");
-					  out.println("alert('잘못된 접근입니다');"); //
+					  out.println("alert('으~~~딜 남의 글을 손대려고 ^^;');"); //
 					  // out.println("location.href=login;");
 					  out.println("history.back();");
 					  out.println("</script>"); 
@@ -190,292 +110,38 @@ public class Customfunction { // 사용자 지정 함수 클래스
 				
 				return false;
 			}
-	/**********************************************************/
-	public boolean ErrorMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				// 삭제, 수정에서 사용할 예정
 	
+	public String PasswordCheck(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// 로그인 실패 전용 함수 호출 
 		
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('잘못된 접근입니다;');"); //
-					  // out.println("location.href=login;");
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
-					  return false;
-				
-				
-		
-			}
-	
-	
-	/**********************************************************/
-	public boolean PasswordErrorMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, boolean check) throws Exception{ // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				// 삭제, 수정에서 사용할 예정
-				System.out.println("Customerfunction.PasswordErrorMessage : " + check);
-		
-				if (check == false) {
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('패스워드가 잘못되었습니다') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 패스워드 오류");
-					 
-				}
-				return false;
-			}
-
-	
-	public int PasswordErrorMessageINT(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, int check) throws Exception{ // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				// 삭제, 수정에서 사용할 예정
-				System.out.println("Customerfunction.PasswordErrorMessage : " + check);
-		
-				if (check == 0) {
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('패스워드가 잘못되었습니다') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 패스워드 오류");
-					 
-				}
-				return 0;
-			}
-
-	
-	/**********************************************************/
-	public boolean PasswordErrorMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				// 삭제, 수정에서 사용할 예정
-				System.out.println("Customerfunction.PasswordErrorMessage : ");
-		
-			
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('패스워드가 잘못되었습니다') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 패스워드 오류");
-					
-				
-				return false;
-			}
-	
-	
-	public boolean ConnectionError(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				
-				// 삭제, 수정에서 사용할 예정
-				System.out.println("Customerfunction.PasswordErrorMessage : ");
-		
-			
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('허가 되지 않은 아이피 입니다 접근이 불가합니다') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 어드민 페이지 접속유청");
-					
-				
-				return false;
-			}
-	
-	
-	
-	/**********************************************************/
-	public boolean JoinErrorMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-
-				System.out.println("Customerfunction.JoinErrorMessage : ");
-		
-			
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('회원가입에서 오류가 발생하였습니다 \\n아이디가 중복이거나 다른문제입니다 \\n입력하신 정보를 다시 확인하여 주세요') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 회원가입 실패");
-					
-				
-				return false;
-			}
-	
-	
-	
-	/**********************************************************/
-	public String UserIdCheckError(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws Exception{ // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-
-				String IdCheckResult = "중복";
-				System.out.println("Customerfunction.UserIdCheck : " + IdCheckResult);
-
-				return IdCheckResult;
-			}
-
-	
-	public String JoinMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response, User user) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				String User = user.getUserid();
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-
-				System.out.println("Customerfunction.JoinSuccessMessages : ");
-		
-			
-					  out.println("<script language='javascript'> ");
-					 out.println("alert(' "+ user.getUserid() + "님 반갑습니다 ^^;;;; ') ;"); //
-					//  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  response.flushBuffer();
-					  
-					  System.out.println("!!!!!!!!!!!!!!! 회원가입 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 회원가입");
-						return User;	  
-			}
-
-	
-	public void MemberDeleteMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 회원 삭제 메세지
-			
+		/*아이디 체크에 대한 if문 사용이 계속 중복되는거 같아 하나 만듦 */
 		request.setCharacterEncoding("UTF-8");
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				System.out.println("Customerfunction.MemberDeleteMessage : ");
-		
-			
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('성공적으로 탈퇴되었습니다 안녕히가세요ㅠ') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 회원탈퇴 처리 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 회원탈퇴 성공");
-					  
-			
-	}
+		response.setContentType("text/html; charset=UTF-8");
 
-	
-	public void MemberModifySussessMessage(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 회원 수정 메세지
-			
-		request.setCharacterEncoding("UTF-8");
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				System.out.println("Customerfunction.MemberModifySussessMessage : ");
+		PrintWriter out = response.getWriter();
+		Object check = session.getAttribute("logininfo");
+		System.out.println("member check 변수 : " + check);
 		
-			
-					  out.println("<script language='javascript'> ");
-					  out.println("alert('회원정보가 성공적으로 수정되었습니다') ;"); //
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 수정 처리 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 회원수정 성공");
-					  
-			
+		if (check == null) {
+		  out.println("<script language='javascript'> ");
+		  out.println("alert('로그인부터 하세요 ^^;');"); //
+		  // out.println("location.href=login;");
+		  out.println("history.back();");
+		  out.println("</script>"); 
+		  out.flush();
+		  response.flushBuffer();
+		  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
+		  request.getRemoteAddr());
+		  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
+		}else {
+			return "mypage"; // null아니면, 즉 정상로그인이면 보드작성페이지로
+		}
+		
+		return "login";
 	}
 	
 	
-	/**********************************************************/
-	public boolean UserValidationFail(HttpSession session, HttpServletRequest request,
-			HttpServletResponse response) throws IOException { // 맴버의 세션 ID와 DB상의 ID가 맞는지 확인용
-				
-				request.setCharacterEncoding("UTF-8");
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
 	
-		
-			
-			
-					  out.println("<script language='javascript'> ");
-					   out.println("alert('잘못된 접근입니다');"); //
-					//  out.println("alert('허가 되지 않은 아이피 입니다 \\n접근이 불가합니다') ;"); //
-					  // out.println("location.href=login;");
-					  out.println("history.back();");
-					  out.println("</script>"); 
-					  out.flush();
-					  
-					  response.flushBuffer();
-					  System.out.println("!!!!!!!!!!!!!!! 비정상적인 사용자 감지 아이피 : " +
-					  request.getRemoteAddr());
-					  System.out.println("!!!!!!!!!!!!!!! 사유 : 계정null로 관리자 페이지 접속시도");
-						return false;
-				}
-				
 	
 	public void checkVirutalBoard(HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 가상게시판 존재여부
@@ -521,7 +187,4 @@ public class Customfunction { // 사용자 지정 함수 클래스
 		  System.out.println("!!!!!!!!!!!!!!! 사유 : NULL로 접근");
 	
 		}
-	
-	
-	
 }
